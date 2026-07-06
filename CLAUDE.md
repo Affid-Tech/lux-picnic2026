@@ -4,18 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-The **«Пикник» Design System** — the visual foundation for *«Большой русскоязычный
-пикник»*, a Russian-language community event by BesedaTech. It is **not an app**: there
-is no server, no bundler, no `package.json`, no test suite. It is a set of design tokens
-(CSS custom properties), React component primitives, and static HTML specimen pages.
+This repo holds **two things** for *«Большой русскоязычный пикник»*, a Russian-language
+community event by BesedaTech:
 
-The source of truth for the whole aesthetic is `readme.md` (read it first — it is the
-design brief) and the origin concept `Пикник - концепты главной.dc.html`. The repo is also
-packaged as a Claude Code skill via `SKILL.md` (`piknik-design`).
+1. **The «Пикник» Design System** — the visual foundation: design tokens (CSS custom
+   properties in `tokens/`), React component primitives (`components/core/`), and static
+   HTML specimen pages (`guidelines/`, `ui_kits/`). Its source of truth for the whole
+   aesthetic is `readme.md` (read it first — it is the design brief) and the origin
+   concept `Пикник - концепты главной.dc.html`. Packaged as a Claude Code skill via
+   `SKILL.md` (`piknik-design`).
+2. **The event microsite app** — a React + Vite + TypeScript static SPA (added after the
+   design system) that reuses the tokens to render the actual event page. Its spec is
+   `PRD.md`. The app is JSON-driven (all content in `public/data/*.json`) and lives in
+   `src/`, `public/`, `index.html`, and the Vite/TS config at the repo root. See the
+   "Event microsite app" section below.
+
+The design-system files and the app coexist in the same repo root. Both must honor the
+same design invariants (tokens as the only styling layer, fixed category colours, etc.).
 
 ## How to run / preview
 
-There is no build step. Preview any `*.html` file by opening it directly in a browser:
+**The app** has a build step (Vite):
+
+- `npm install` — once.
+- `npm run dev` — dev server at http://localhost:5173.
+- `npm run build` — static production build to `dist/` (deployable to any static host).
+- `npm run typecheck` — `tsc` project references, no emit.
+
+**The design-system specimens** have no build step — preview any `*.html` file by opening
+it directly in a browser:
 
 - `ui_kits/event-homepage/index.html` — the full interactive mobile homepage.
 - `components/core/core.card.html` — a gallery of every core component.
@@ -73,6 +90,44 @@ Every specimen/kit HTML file starts with an HTML comment like
 registers the page as a card in an external DesignCraft-style viewer. Preserve this
 first-line annotation when creating or editing specimen pages; follow the existing
 `group` / `viewport` / `name` / `subtitle` shape.
+
+## Event microsite app (React + Vite + TypeScript)
+
+The SPA that renders the actual event page. Spec: `PRD.md`. Built in the phase order of
+PRD §14 (data → skeleton → timeline → cards+calendar → partners+footer → day-of/a11y),
+one git commit per phase.
+
+**Core principle — everything is JSON-driven.** No content, groups, colours, or UI copy
+is hardcoded in components. All of it lives in `public/data/`:
+
+- `groups.json` — the 4 category groups (id, label, short, color, order). Filter chips
+  and category colours are read from here, never hardcoded.
+- `event.json` — the headline event (name, date `2026-07-12`, times, location, hero, CTA).
+- `events.json` — the 18 sub-events. `group` refs a group id; `organizers` are inline
+  hosts (name-only, optional url); `partnerIds` link to `partners.json` (usually empty);
+  `end: null` marks start-only point events; `signup.mode` gates the signup button.
+- `partners.json` — the 14 featured/branded partners (the sole source for the Partners
+  section). Organizers are never promoted here.
+- `strings.json` — all user-facing UI copy (labels, section titles, hints).
+
+Seed data was extracted from `internal_doc.xlsx` (the working schedule), which is the
+authoritative source over the smaller PRD Appendix A table when they disagree.
+
+**Layout under the repo root:** `index.html`, `vite.config.ts`, `tsconfig*.json`,
+`package.json`, and `src/`:
+
+- `src/types.ts` — the content model (mirrors PRD §7).
+- `src/data/useData.ts` — parallel JSON loader; resolves URLs against Vite `base`.
+- `src/lib/time.ts`, `src/lib/date.ts` — time/date/duration/parallel-overlap helpers.
+- `src/components/` — `Hero`, `Agenda`, `Partners`, `Footer`, `CategoryTag`,
+  `SectionHeading` (TSX, data-driven; `CategoryTag` takes a `Group`, no hardcoded map).
+- `src/App.tsx`, `src/main.tsx` — root; `main.tsx` imports repo-root `styles.css` so the
+  app and the specimens share the exact same tokens.
+
+**App conventions:** `base` is `'/'` with hash routing (`/#/event/:id`) so it deploys to
+any static host (set `base` to `/<repo>/` only for GitHub Pages sub-paths). Mobile-first
+~390–460px, tap targets ≥44px, WCAG AA, honor `prefers-reduced-motion`. All copy is
+Russian. Run `npm run typecheck` and `npm run build` before committing.
 
 ## Design invariants (do not violate)
 
