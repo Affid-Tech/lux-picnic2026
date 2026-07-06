@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { AppData, EventInfo, Group, Partner, SubEvent, Strings } from '../types'
+import { validateEvent, validateEvents, validateGroups, validatePartners } from './schema'
 
 // Resolve data URLs against Vite's base so it works from a domain root or a
 // GitHub Pages sub-path without code changes.
@@ -40,10 +41,18 @@ export function useData(): LoadState {
     ])
       .then(([event, groups, events, partners, strings]) => {
         if (cancelled) return
-        const sortedGroups = [...groups].sort((a, b) => a.order - b.order)
+        // Validate shape + security-sensitive fields (colours, URLs, timezone,
+        // ids) at the boundary before any of it reaches the DOM.
+        const sortedGroups = [...validateGroups(groups)].sort((a, b) => a.order - b.order)
         setState({
           status: 'ready',
-          data: { event, groups: sortedGroups, events, partners, strings },
+          data: {
+            event: validateEvent(event),
+            groups: sortedGroups,
+            events: validateEvents(events),
+            partners: validatePartners(partners),
+            strings,
+          },
           error: null,
         })
       })
