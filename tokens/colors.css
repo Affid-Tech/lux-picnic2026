@@ -14,16 +14,18 @@
   /* --- Warm ink (text) --- */
   --brown-900: #3a2c1c; /* headings, inverse surface */
   --brown-700: #6b5d47; /* body text */
-  --brown-500: #9c8d6f; /* muted labels, captions */
-  --brown-400: #a2926f; /* mono placeholder text */
+  --brown-600: #756545; /* muted / mono text — AA on all cream surfaces */
+  --brown-500: #9c8d6f; /* faint labels (decorative use only, not body text) */
+  --brown-400: #a2926f; /* mono placeholder text (decorative) */
   --brown-300: #b3a685; /* faint placeholder glyphs */
   --paper-text:   #e9dcc4; /* text on the dark brown surface */
   --paper-strong: #fff8ec; /* strong/bright text on the dark brown surface */
   --paper-muted:  #c7b596; /* muted text on the dark brown surface (AA, solid) */
 
   /* --- Brand accents --- */
-  --terracotta:      #c26a4a; /* primary accent */
+  --terracotta:      #c26a4a; /* primary accent (decorative: borders, dots, focus) */
   --terracotta-ink:  #a8593d; /* pressed / hover accent */
+  --terracotta-deep: #9c4f34; /* AA accent: button fills (white text) + accent text on cream */
   --sage:            #7d8b6a; /* secondary botanical accent */
 
   /* --- Program categories (fixed, shared across all surfaces) --- */
@@ -44,13 +46,18 @@
 
   --text-strong:     var(--brown-900);
   --text-body:       var(--brown-700);
-  --text-muted:      var(--brown-500);
-  --text-mono:       var(--brown-400);
+  --text-muted:      var(--brown-600);
+  --text-mono:       var(--brown-600);
   --text-on-inverse:        var(--paper-text);
   --text-on-inverse-strong: var(--paper-strong);
   --text-on-inverse-muted:  var(--paper-muted);
 
-  --accent:       var(--terracotta);
-  --accent-hover: var(--terracotta-ink);
-  --accent-on:    #ffffff;
+  /* --accent is the decorative terracotta (borders, dots, focus rings).
+     Use --accent-strong for button fills (white text) and --accent-text for
+     accent-coloured text on light surfaces — both meet WCAG AA. */
+  --accent:        var(--terracotta);
+  --accent-strong: var(--terracotta-deep);
+  --accent-text:   var(--terracotta-deep);
+  --accent-hover:  var(--terracotta-ink);
+  --accent-on:     #ffffff;
 }

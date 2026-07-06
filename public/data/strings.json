@@ -6,9 +6,11 @@
     "scrollHint": "прокрути весь день ↓"
   },
   "nowNext": {
+    "regionLabel": "Что сейчас на пикнике",
     "nowLabel": "Сейчас",
     "nextLabel": "Далее",
     "dismiss": "Скрыть",
+    "betweenEvents": "Небольшой перерыв",
     "endedToday": "На сегодня всё — спасибо, что были с нами",
     "notStarted": "Пикник ещё впереди"
   },

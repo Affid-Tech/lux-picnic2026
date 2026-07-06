@@ -1,7 +1,15 @@
 import type { EventInfo, Strings } from '../types'
 
 /** Footer — dark brown band with the BesedaTech mark and the CTA from event.json. */
-export function Footer({ event, strings }: { event: EventInfo; strings: Strings }) {
+export function Footer({
+  event,
+  strings,
+  onCtaClick,
+}: {
+  event: EventInfo
+  strings: Strings
+  onCtaClick?: () => void
+}) {
   const cta = event.besedatech
   return (
     <footer
@@ -43,6 +51,7 @@ export function Footer({ event, strings }: { event: EventInfo; strings: Strings 
           href={cta.ctaUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onCtaClick}
           style={{
             display: 'inline-block',
             minHeight: 44,
@@ -51,7 +60,7 @@ export function Footer({ event, strings }: { event: EventInfo; strings: Strings 
             fontWeight: 'var(--fw-bold)',
             fontSize: '14px',
             color: 'var(--accent-on)',
-            background: 'var(--accent)',
+            background: 'var(--accent-strong)',
             borderRadius: 'var(--radius-md)',
             textDecoration: 'none',
           }}

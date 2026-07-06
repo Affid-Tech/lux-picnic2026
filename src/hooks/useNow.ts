@@ -10,6 +10,9 @@ export function useNow(activeDateIso: string, intervalMs = 30_000): Date {
   const [now, setNow] = useState<Date>(() => new Date())
 
   useEffect(() => {
+    // Assumption (fine for a single-day microsite): a tab left open across
+    // midnight into the event day won't start ticking, since activeDateIso
+    // never changes. A same-day visit arms the interval as expected.
     if (!isSameLocalDate(new Date(), activeDateIso)) return
     const tick = () => setNow(new Date())
     tick()

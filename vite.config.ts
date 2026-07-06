@@ -16,8 +16,15 @@ export default defineConfig({
     target: 'es2020',
   },
   test: {
-    // Pure logic units (time/date/filter/gantt/router) run in a node env.
+    // Pure logic units (time/date/filter/gantt/router/…) plus static-render
+    // component smoke tests run in a node env.
     environment: 'node',
     include: ['src/**/*.test.{ts,tsx}'],
+    coverage: {
+      // Measure the app only — exclude the vendored design system (root *.js,
+      // components/core/*.jsx) and non-logic entry/types files.
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/**/*.test.{ts,tsx}', 'src/main.tsx', 'src/vite-env.d.ts', 'src/types.ts'],
+    },
   },
 })

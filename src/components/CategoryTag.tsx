@@ -29,7 +29,9 @@ export function CategoryTag({
         fontWeight: 'var(--fw-semibold)',
         fontSize: sm ? '11px' : 'var(--fs-label)',
         lineHeight: 1,
-        color: group.color,
+        // Label in ink for AA; the fixed category colour still reads via the
+        // 1.5px outline + filled dot (never colour alone).
+        color: 'var(--text-strong)',
         background: 'var(--surface-card)',
         border: `var(--border-sticker) solid ${group.color}`,
         padding: sm ? '5px 9px' : '7px 12px',

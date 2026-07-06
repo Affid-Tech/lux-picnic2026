@@ -25,7 +25,7 @@ export function Partners({
   if (partners.length === 0) return null
 
   return (
-    <section style={{ padding: 'var(--space-7) 0', background: 'var(--surface-page)' }}>
+    <section aria-label={strings.partners.title} style={{ padding: 'var(--space-7) 0', background: 'var(--surface-page)' }}>
       <div style={{ padding: '0 var(--gutter)' }}>
         <SectionHeading meta={strings.partners.swipeHint}>{strings.partners.title}</SectionHeading>
         {strings.partners.subtitle ? (
@@ -158,5 +158,5 @@ const CARD_MORE = {
   marginTop: 'auto',
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--fs-caption)',
-  color: 'var(--accent)',
+  color: 'var(--accent-text)',
 }

@@ -1,21 +1,24 @@
 import { useMemo } from 'react'
 import { useData } from './data/useData'
 import { useHashRoute } from './lib/router'
+import { useNow } from './hooks/useNow'
 import { Hero } from './components/Hero'
 import { Timeline } from './components/Timeline'
 import { Partners } from './components/Partners'
 import { Footer } from './components/Footer'
-import { EventSheet } from './components/EventSheet'
-import { PartnerSheet } from './components/PartnerSheet'
+import { ActiveSheets } from './components/ActiveSheets'
+import { NowNextBanner } from './components/NowNextBanner'
 import { pointDuration, toCalEntries } from './lib/calendar'
 import { buildIcs } from './lib/ics'
 import { downloadTextFile } from './lib/download'
+import { track } from './lib/analytics'
 
 export function App() {
   const state = useData()
   const [route, navigate] = useHashRoute()
 
   const data = state.status === 'ready' ? state.data : null
+  const now = useNow(data?.event.date ?? '')
   const groupById = useMemo(
     () => new Map((data?.groups ?? []).map((g) => [g.id, g])),
     [data],
@@ -41,64 +44,48 @@ export function App() {
       strings.calendar.wholeDayTitle as string,
     )
     downloadTextFile('piknik-2026.ics', ics)
+    track('calendar_add_whole_day')
   }
 
   // The hash route drives the detail sheets: `/#/event/:id` and `/#/partner/:id`
   // open the matching entity; an unknown id resolves to nothing and stays home.
-  const handleOpenEvent = (id: string) => navigate({ name: 'event', id })
-  const handleOpenPartner = (id: string) => navigate({ name: 'partner', id })
+  const openEvent = (id: string) => navigate({ name: 'event', id })
+  const openPartner = (id: string) => navigate({ name: 'partner', id })
   const closeSheet = () => navigate({ name: 'home' })
-
-  const activeEvent =
-    route.name === 'event' ? events.find((e) => e.id === route.id) : undefined
-  const activePartner =
-    route.name === 'partner' ? partners.find((p) => p.id === route.id) : undefined
 
   return (
     <>
       {/* Everything except the active sheet lives under #page-content so the
           sheet can mark it inert/aria-hidden while open (see Sheet.tsx). */}
       <div id="page-content">
+        <NowNextBanner
+          now={now}
+          events={events}
+          dateIso={event.date}
+          pointDurationMin={pointDuration(strings)}
+          strings={strings}
+          onOpen={openEvent}
+        />
         <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} />
         <main>
-          <Timeline
-            event={event}
-            events={events}
-            groups={groups}
-            strings={strings}
-            onOpen={handleOpenEvent}
-          />
-          <Partners partners={partners} strings={strings} onOpen={handleOpenPartner} />
+          <Timeline event={event} events={events} groups={groups} strings={strings} onOpen={openEvent} />
+          <Partners partners={partners} strings={strings} onOpen={openPartner} />
         </main>
-        <Footer event={event} strings={strings} />
+        <Footer event={event} strings={strings} onCtaClick={() => track('cta_click')} />
       </div>
 
-      {activeEvent ? (
-        <EventSheet
-          event={activeEvent}
-          eventInfo={event}
-          group={groupById.get(activeEvent.group)}
-          relatedPartners={activeEvent.partnerIds
-            .map((id) => partnerById.get(id))
-            .filter((p): p is NonNullable<typeof p> => Boolean(p))}
-          strings={strings}
-          onClose={closeSheet}
-          onOpenPartner={handleOpenPartner}
-        />
-      ) : null}
-
-      {activePartner ? (
-        <PartnerSheet
-          partner={activePartner}
-          relatedEvents={activePartner.relatedEventIds
-            .map((id) => events.find((e) => e.id === id))
-            .filter((e): e is NonNullable<typeof e> => Boolean(e))}
-          groupById={groupById}
-          strings={strings}
-          onClose={closeSheet}
-          onOpenEvent={handleOpenEvent}
-        />
-      ) : null}
+      <ActiveSheets
+        route={route}
+        events={events}
+        partners={partners}
+        eventInfo={event}
+        groupById={groupById}
+        partnerById={partnerById}
+        strings={strings}
+        onClose={closeSheet}
+        onOpenEvent={openEvent}
+        onOpenPartner={openPartner}
+      />
     </>
   )
 }
@@ -115,7 +102,7 @@ function StatusScreen({ text, tone = 'muted' }: { text: string; tone?: 'muted' |
         textAlign: 'center',
         fontFamily: 'var(--font-body)',
         fontSize: 'var(--fs-body)',
-        color: tone === 'error' ? 'var(--accent)' : 'var(--text-muted)',
+        color: tone === 'error' ? 'var(--accent-text)' : 'var(--text-muted)',
       }}
     >
       {text}

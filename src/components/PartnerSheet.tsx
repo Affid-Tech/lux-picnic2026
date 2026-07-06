@@ -18,6 +18,7 @@ export function PartnerSheet({
   strings,
   onClose,
   onOpenEvent,
+  onVisit,
 }: {
   partner: Partner
   relatedEvents: SubEvent[]
@@ -25,6 +26,7 @@ export function PartnerSheet({
   strings: Strings
   onClose: () => void
   onOpenEvent: (id: string) => void
+  onVisit?: () => void
 }) {
   return (
     <Sheet labelledById={TITLE_ID} closeLabel={strings.eventCard.close} onClose={onClose}>
@@ -51,7 +53,7 @@ export function PartnerSheet({
       {partner.description ? <p style={BODY}>{partner.description}</p> : null}
 
       {partner.url ? (
-        <a href={partner.url} target="_blank" rel="noopener noreferrer" style={ACTION}>
+        <a href={partner.url} target="_blank" rel="noopener noreferrer" onClick={onVisit} style={ACTION}>
           {strings.partners.visitSite} ↗
         </a>
       ) : null}
@@ -120,7 +122,7 @@ const CATEGORY = {
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-semibold)',
   fontSize: 'var(--fs-body-sm)',
-  color: 'var(--accent)',
+  color: 'var(--accent-text)',
 }
 
 const BODY = {
@@ -152,7 +154,7 @@ const ACTION = {
   fontWeight: 'var(--fw-bold)',
   fontSize: 'var(--fs-body)',
   color: 'var(--accent-on)',
-  background: 'var(--accent)',
+  background: 'var(--accent-strong)',
   borderRadius: 'var(--radius-md)',
   textDecoration: 'none',
 }

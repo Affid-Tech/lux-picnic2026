@@ -315,7 +315,7 @@ const LINK = {
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--fs-body-sm)',
   fontWeight: 'var(--fw-semibold)',
-  color: 'var(--accent)',
+  color: 'var(--accent-text)',
   textDecoration: 'none',
 }
 
@@ -345,7 +345,7 @@ const ACTION_PRIMARY = {
   fontWeight: 'var(--fw-bold)',
   fontSize: '15px',
   color: 'var(--accent-on)',
-  background: 'var(--accent)',
+  background: 'var(--accent-strong)',
   borderRadius: 'var(--radius-md)',
   textDecoration: 'none',
 }

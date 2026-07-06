@@ -33,7 +33,7 @@ export function Hero({
           fontSize: 'var(--fs-caption)',
           letterSpacing: 'var(--ls-eyebrow)',
           textTransform: 'uppercase',
-          color: 'var(--accent)',
+          color: 'var(--accent-text)',
         }}
       >
         {formatDateLong(event.date)} · {formatWeekday(event.date)}
@@ -80,7 +80,7 @@ export function Hero({
                 href={event.location.mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 'var(--fw-semibold)' }}
+                style={{ color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 'var(--fw-semibold)' }}
               >
                 {locationText} · {strings.hero.openMap} ↗
               </a>
@@ -101,7 +101,7 @@ export function Hero({
           fontWeight: 'var(--fw-bold)',
           fontSize: '15px',
           color: 'var(--accent-on)',
-          background: 'var(--accent)',
+          background: 'var(--accent-strong)',
           border: 'var(--border-sticker) solid transparent',
           borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
