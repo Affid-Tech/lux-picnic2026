@@ -18,6 +18,8 @@
     "overviewTitle": "Обзор дня",
     "agendaTitle": "Программа дня",
     "filterAll": "Все",
+    "filterGroupLabel": "Программа",
+    "filterAudienceLabel": "Аудитория",
     "nowMarker": "сейчас",
     "empty": "В этом фильтре пока нет событий",
     "pointShort": "точка",

@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 // typography and spacing (the single styling layer, per the design system).
 import '../styles.css'
 import './styles/global.css'
+import './styles/interactive.css'
 
 import { App } from './App'
 

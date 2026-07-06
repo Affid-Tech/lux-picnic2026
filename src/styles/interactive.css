@@ -1,0 +1,37 @@
+/* Interactive micro-states for the app's controls.
+
+   The components style themselves with inline token objects and set no
+   `filter`/`transform`, so these two properties layer cleanly on top without a
+   specificity fight (no !important needed). Effects stay within the design
+   language: a subtle darken on hover (the "button darkens" cue) and a 1px
+   press that nudges each control toward its hard offset shadow, like pressing a
+   printed sticker onto paper. No opacity, blur or gradient is used.
+
+   Reduced-motion is already honoured globally (global.css zeroes
+   transition-duration under prefers-reduced-motion), so these transitions
+   collapse to instant for those users. Scoped to #root so nothing outside the
+   app mount is affected, and hover is gated to real pointers so touch taps
+   don't leave a stuck hover state. */
+
+#root button,
+#root a[href] {
+  transition: transform 0.12s ease, filter 0.15s ease;
+}
+
+@media (hover: hover) {
+  #root button:hover,
+  #root a[href]:hover {
+    filter: brightness(0.97);
+  }
+}
+
+#root button:active,
+#root a[href]:active {
+  transform: translateY(1px);
+}
+
+#root button:disabled {
+  filter: none;
+  transform: none;
+  cursor: default;
+}

@@ -26,7 +26,7 @@ export function FilterChips({
 
   return (
     <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
-      <ChipRow ariaLabel="Фильтр по программе">
+      <ChipRow ariaLabel="Фильтр по программе" label={strings.timeline.filterGroupLabel}>
         <Chip
           label={allLabel}
           active={state.group === 'all'}
@@ -45,7 +45,7 @@ export function FilterChips({
       </ChipRow>
 
       {audiences.length > 0 ? (
-        <ChipRow ariaLabel="Фильтр по аудитории">
+        <ChipRow ariaLabel="Фильтр по аудитории" label={strings.timeline.filterAudienceLabel}>
           <Chip
             label={allLabel}
             active={state.audience === 'all'}
@@ -65,22 +65,48 @@ export function FilterChips({
   )
 }
 
-function ChipRow({ children, ariaLabel }: { children: React.ReactNode; ariaLabel: string }) {
+function ChipRow({
+  children,
+  ariaLabel,
+  label,
+}: {
+  children: React.ReactNode
+  ariaLabel: string
+  label?: string
+}) {
   return (
-    <div
-      role="group"
-      aria-label={ariaLabel}
-      style={{
-        display: 'flex',
-        gap: 'var(--space-2)',
-        overflowX: 'auto',
-        paddingBottom: 2,
-        scrollbarWidth: 'none',
-      }}
-    >
-      {children}
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+      {/* Fixed-width row caption so the two filter dimensions read distinctly
+          (they both start with a "Все" chip) and the chips align across rows. */}
+      {label ? <span style={ROW_LABEL}>{label}</span> : null}
+      <div
+        role="group"
+        aria-label={ariaLabel}
+        style={{
+          display: 'flex',
+          flex: 1,
+          minWidth: 0,
+          gap: 'var(--space-2)',
+          overflowX: 'auto',
+          paddingBottom: 2,
+          scrollbarWidth: 'none',
+        }}
+      >
+        {children}
+      </div>
     </div>
   )
+}
+
+const ROW_LABEL: CSSProperties = {
+  flex: 'none',
+  width: 74,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)',
+  fontSize: 'var(--fs-caption)',
+  letterSpacing: 'var(--ls-label)',
+  textTransform: 'uppercase',
+  color: 'var(--text-muted)',
 }
 
 function Chip({

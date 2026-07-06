@@ -90,6 +90,9 @@ export function Sheet({
         }}
       >
         <div style={HEADER}>
+          {/* Grabber: the conventional bottom-sheet affordance signalling this
+              panel is a dismissible sheet (decorative — Esc/backdrop/✕ dismiss). */}
+          <span aria-hidden style={GRABBER} />
           <button type="button" aria-label={closeLabel} onClick={requestClose} style={CLOSE_BTN}>
             <span aria-hidden>✕</span>
           </button>
@@ -145,8 +148,19 @@ const HEADER = {
   zIndex: 1,
   display: 'flex',
   justifyContent: 'flex-end',
-  padding: 'var(--space-3) var(--space-3) var(--space-2)',
+  padding: 'var(--space-4) var(--space-3) var(--space-2)',
   background: 'var(--surface-page)',
+}
+
+const GRABBER = {
+  position: 'absolute' as const,
+  top: 8,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  width: 36,
+  height: 4,
+  borderRadius: 'var(--radius-pill)',
+  background: 'var(--border-card)',
 }
 
 const CLOSE_BTN = {
