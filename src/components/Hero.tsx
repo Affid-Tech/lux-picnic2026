@@ -124,6 +124,22 @@ export function Hero({
           {event.note}
         </p>
       ) : null}
+
+      {strings.hero.scrollHint ? (
+        <p
+          style={{
+            margin: 'var(--space-4) 0 0',
+            textAlign: 'center',
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--fs-caption)',
+            letterSpacing: 'var(--ls-label)',
+            textTransform: 'uppercase',
+            color: 'var(--text-muted)',
+          }}
+        >
+          {strings.hero.scrollHint}
+        </p>
+      ) : null}
     </header>
   )
 }

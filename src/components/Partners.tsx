@@ -80,7 +80,7 @@ function PartnerCard({
       onClick={onOpen}
       style={{ ...CARD, width: featured ? 200 : 150, border: featured ? CARD_BORDER_FEATURED : CARD_BORDER }}
     >
-      <div style={{ ...LOGO_SLOT, ...(partner.logo ? null : LOGO_SLOT_EMPTY) }}>
+      <div style={LOGO_SLOT}>
         {partner.logo ? (
           <img
             src={partner.logo}
@@ -89,12 +89,14 @@ function PartnerCard({
             style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
           />
         ) : (
-          <span style={LOGO_PLACEHOLDER}>{partner.category}</span>
+          // No logo asset yet: render the brand name as a terracotta wordmark
+          // (per the design brief) rather than a grey category chip.
+          <span style={WORDMARK}>{partner.name}</span>
         )}
       </div>
 
       <div style={{ minWidth: 0 }}>
-        <div style={CARD_NAME}>{partner.name}</div>
+        {partner.logo ? <div style={CARD_NAME}>{partner.name}</div> : null}
         <div style={CARD_CATEGORY}>{partner.category}</div>
       </div>
 
@@ -129,12 +131,16 @@ const LOGO_SLOT = {
   padding: '0 6px',
 }
 
-const LOGO_SLOT_EMPTY = { background: 'var(--surface-panel)' }
-
-const LOGO_PLACEHOLDER = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: 'var(--fs-mono)',
-  color: 'var(--text-mono)',
+const WORDMARK = {
+  minWidth: 0,
+  padding: '0 4px',
+  fontFamily: 'var(--font-display)',
+  fontWeight: 'var(--fw-semibold)',
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--accent-text)',
+  whiteSpace: 'nowrap' as const,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
   textAlign: 'center' as const,
 }
 

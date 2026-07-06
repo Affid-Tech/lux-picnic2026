@@ -145,21 +145,28 @@
   // --- PartnerTile -------------------------------------------------
   function PartnerTile(props) {
     props = props || {};
+    var name = props.name;
     var brand = props.brand || false;
     var style = props.style || {};
     return h('div', {
       style: Object.assign({
         height: 56,
         background: 'var(--surface-card)',
-        border: 'var(--border-hairline) solid var(--border-card)',
+        border: 'var(--border-hairline) solid ' + (brand ? 'var(--accent)' : 'var(--border-card)'),
         borderRadius: 'var(--radius-md)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: brand ? 'var(--font-body)' : 'var(--font-mono)',
-        fontWeight: brand ? 'var(--fw-semibold)' : 'var(--fw-medium)',
-        fontSize: brand ? '11px' : '10px',
-        color: brand ? 'var(--accent)' : 'var(--text-mono)',
+        padding: '0 8px',
       }, style),
-    }, props.name || 'лого');
+    }, h('span', {
+      style: {
+        minWidth: 0,
+        fontFamily: name ? 'var(--font-display)' : 'var(--font-mono)',
+        fontWeight: name ? 'var(--fw-semibold)' : 'var(--fw-medium)',
+        fontSize: name ? 'var(--fs-body-sm)' : '10px',
+        color: name ? 'var(--accent-text)' : 'var(--text-mono)',
+        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'center',
+      },
+    }, name || 'лого'));
   }
 
   // --- SectionHeading ----------------------------------------------

@@ -16,12 +16,8 @@
   },
   "timeline": {
     "overviewTitle": "Обзор дня",
-    "overviewToggleShow": "Обзор дня ▾",
-    "overviewToggleHide": "Обзор дня ▴",
     "agendaTitle": "Программа дня",
     "filterAll": "Все",
-    "parallelHint": "идёт параллельно",
-    "parallelCount": "параллельно · {count}",
     "nowMarker": "сейчас",
     "empty": "В этом фильтре пока нет событий",
     "pointShort": "точка",

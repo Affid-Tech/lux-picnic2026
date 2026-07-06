@@ -1,9 +1,10 @@
 import React from 'react';
 
 /**
- * Flat partner logo tile. Cream surface, hairline border. Use `brand` for the
- * host / headline partner (renders the name in the terracotta accent); the
- * rest are placeholders until real logos land.
+ * Flat partner tile. Cream surface, hairline border. With no logo asset the
+ * brand NAME is set as a Spectral terracotta wordmark (per the design brief —
+ * never a grey category chip); an empty name falls back to the mono "лого"
+ * placeholder. `brand` marks the host / headline partner with a terracotta border.
  */
 export function PartnerTile({ name, brand = false, style = {} }) {
   return (
@@ -11,19 +12,30 @@ export function PartnerTile({ name, brand = false, style = {} }) {
       style={{
         height: 56,
         background: 'var(--surface-card)',
-        border: 'var(--border-hairline) solid var(--border-card)',
+        border: `var(--border-hairline) solid ${brand ? 'var(--accent)' : 'var(--border-card)'}`,
         borderRadius: 'var(--radius-md)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: brand ? 'var(--font-body)' : 'var(--font-mono)',
-        fontWeight: brand ? 'var(--fw-semibold)' : 'var(--fw-medium)',
-        fontSize: brand ? '11px' : '10px',
-        color: brand ? 'var(--accent)' : 'var(--text-mono)',
+        padding: '0 8px',
         ...style,
       }}
     >
-      {name || 'лого'}
+      <span
+        style={{
+          minWidth: 0,
+          fontFamily: name ? 'var(--font-display)' : 'var(--font-mono)',
+          fontWeight: name ? 'var(--fw-semibold)' : 'var(--fw-medium)',
+          fontSize: name ? 'var(--fs-body-sm)' : '10px',
+          color: name ? 'var(--accent-text)' : 'var(--text-mono)',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          textAlign: 'center',
+        }}
+      >
+        {name || 'лого'}
+      </span>
     </div>
   );
 }

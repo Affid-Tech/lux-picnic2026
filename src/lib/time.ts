@@ -42,15 +42,3 @@ export function sortEvents(events: SubEvent[], groups: Group[]): SubEvent[] {
     return a.title.localeCompare(b.title, 'ru')
   })
 }
-
-/** How many events overlap this one in time (used for the parallel hint). */
-export function parallelCount(target: SubEvent, all: SubEvent[]): number {
-  const tStart = toMinutes(target.start)
-  const tEnd = target.end ? toMinutes(target.end) : tStart + 30
-  return all.filter((e) => {
-    if (e.id === target.id) return false
-    const s = toMinutes(e.start)
-    const en = e.end ? toMinutes(e.end) : s + 30
-    return s < tEnd && en > tStart
-  }).length
-}

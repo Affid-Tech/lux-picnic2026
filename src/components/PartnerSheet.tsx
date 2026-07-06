@@ -30,20 +30,18 @@ export function PartnerSheet({
 }) {
   return (
     <Sheet labelledById={TITLE_ID} closeLabel={strings.eventCard.close} onClose={onClose}>
-      <div style={LOGO_SLOT}>
-        {partner.logo ? (
+      {/* The H2 title names the partner prominently, so when there is no logo
+          asset we omit the empty logo box entirely (no grey category chip). */}
+      {partner.logo ? (
+        <div style={LOGO_SLOT}>
           <img
             src={partner.logo}
             alt={partner.name}
             loading="lazy"
             style={{ maxWidth: '70%', maxHeight: '70%', objectFit: 'contain' }}
           />
-        ) : (
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-mono)', color: 'var(--text-mono)' }}>
-            {partner.category}
-          </span>
-        )}
-      </div>
+        </div>
+      ) : null}
 
       <h2 id={TITLE_ID} style={TITLE}>
         {partner.name}
