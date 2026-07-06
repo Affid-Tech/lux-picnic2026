@@ -1,11 +1,13 @@
 import { useData } from './data/useData'
+import { useHashRoute } from './lib/router'
 import { Hero } from './components/Hero'
-import { Agenda } from './components/Agenda'
+import { Timeline } from './components/Timeline'
 import { Partners } from './components/Partners'
 import { Footer } from './components/Footer'
 
 export function App() {
   const state = useData()
+  const [, navigate] = useHashRoute()
 
   if (state.status === 'loading') {
     return <StatusScreen text="Загружаем программу…" />
@@ -16,20 +18,26 @@ export function App() {
 
   const { event, groups, events, partners, strings } = state.data
 
-  // Calendar export (phase 4) and event detail cards (phase 4) are wired here.
-  // For now these are placeholders so the seeded data is browsable end-to-end.
   const handleAddWholeDay = () => {
     // TODO(phase 4): generate a combined whole-day .ics from event + events.
   }
+  // Opening an event addresses it via the hash route (`/#/event/:id`) so links
+  // are shareable. TODO(phase 4): render the detail card / bottom sheet for the
+  // active route — for now the route just becomes deep-linkable.
   const handleOpenEvent = (id: string) => {
-    // TODO(phase 4): open the full event card / route to /#/event/:id.
-    window.location.hash = `#/event/${id}`
+    navigate({ name: 'event', id })
   }
 
   return (
     <>
       <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} />
-      <Agenda events={events} groups={groups} strings={strings} onOpen={handleOpenEvent} />
+      <Timeline
+        event={event}
+        events={events}
+        groups={groups}
+        strings={strings}
+        onOpen={handleOpenEvent}
+      />
       <Partners partners={partners} strings={strings} />
       <Footer event={event} strings={strings} />
     </>
