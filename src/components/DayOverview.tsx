@@ -60,6 +60,9 @@ export function DayOverview({
         overflow: 'hidden',
       }}
     >
+      {/* Heading for the document outline; the visible control below is the
+          disclosure button. */}
+      <h2 className="sr-only">{strings.timeline.overviewTitle}</h2>
       <button
         type="button"
         onClick={onToggle}

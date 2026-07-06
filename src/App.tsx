@@ -58,6 +58,9 @@ export function App() {
       {/* Everything except the active sheet lives under #page-content so the
           sheet can mark it inert/aria-hidden while open (see Sheet.tsx). */}
       <div id="page-content">
+        <a className="pk-skip" href="#programme">
+          {strings.timeline.skipToContent}
+        </a>
         <NowNextBanner
           now={now}
           events={events}
@@ -67,7 +70,7 @@ export function App() {
           onOpen={openEvent}
         />
         <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} />
-        <main>
+        <main id="programme" tabIndex={-1}>
           <Timeline event={event} events={events} groups={groups} strings={strings} onOpen={openEvent} />
           <Partners partners={partners} strings={strings} onOpen={openPartner} />
         </main>

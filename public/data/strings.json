@@ -16,6 +16,7 @@
   },
   "timeline": {
     "overviewTitle": "Обзор дня",
+    "skipToContent": "Перейти к программе",
     "agendaTitle": "Программа дня",
     "filterAll": "Все",
     "filterGroupLabel": "Программа",
