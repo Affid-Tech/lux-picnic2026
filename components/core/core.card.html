@@ -1,0 +1,97 @@
+<!-- @dsCard group="Components" viewport="700x600" name="Core" subtitle="Buttons, category tags, day bar, event cards, partners" -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-page); font-family: var(--font-body); }
+  .wrap { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 9px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 340px; }
+  .agenda { display: flex; flex-direction: column; gap: 12px; max-width: 340px; }
+</style>
+</head>
+<body>
+<div id="root" class="wrap"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  // Resolve the generated DS namespace at runtime (robust to its exact name).
+  const NS = Object.values(window).find(o => o && typeof o === 'object' && 'CategoryTag' in o && 'EventCard' in o) || {};
+  const { Button, CategoryTag, EventCard, DayOverviewBar, PartnerTile, SectionHeading } = NS;
+
+  function Block({ label, children }) {
+    return (
+      <div>
+        <div className="lbl">{label}</div>
+        {children}
+      </div>
+    );
+  }
+
+  function Demo() {
+    return (
+      <React.Fragment>
+        <Block label="Button">
+          <div className="row">
+            <Button variant="primary">Регистрация</Button>
+            <Button variant="secondary">Программа</Button>
+            <Button variant="primary" disabled style={{ opacity: .45, cursor: 'not-allowed' }}>Мест нет</Button>
+          </div>
+        </Block>
+
+        <Block label="CategoryTag — md / sm">
+          <div className="row" style={{ marginBottom: 8 }}>
+            <CategoryTag category="general" />
+            <CategoryTag category="it" />
+            <CategoryTag category="kids" />
+            <CategoryTag category="games" />
+          </div>
+          <div className="row">
+            <CategoryTag category="general" size="sm" />
+            <CategoryTag category="it" size="sm" />
+            <CategoryTag category="kids" size="sm" />
+            <CategoryTag category="games" size="sm" />
+          </div>
+        </Block>
+
+        <Block label="SectionHeading + DayOverviewBar">
+          <div style={{ maxWidth: 340 }}>
+            <SectionHeading meta="11:00 – 19:00" style={{ marginBottom: 14 }}>Программа дня</SectionHeading>
+            <DayOverviewBar
+              segments={[
+                { category: 'general', flex: 2 }, { category: 'it', flex: 2 },
+                { category: 'kids', flex: 1 }, { category: 'games', flex: 2 },
+                { category: 'general', flex: 1 },
+              ]}
+              ticks={[11, 13, 15, 17, 19]}
+            />
+          </div>
+        </Block>
+
+        <Block label="EventCard">
+          <div className="agenda">
+            <EventCard time="13:00" duration="1 ч" title="IT-панель: карьера в эмиграции" location="Сцена А · 4 спикера" category="it" />
+            <EventCard time="15:00" duration="1 ч" title="Детский уголок: рисуем лето" location="Шатёр детей" category="kids" />
+          </div>
+        </Block>
+
+        <Block label="PartnerTile">
+          <div className="grid3">
+            <PartnerTile name="Beseda" brand />
+            <PartnerTile />
+            <PartnerTile />
+          </div>
+        </Block>
+      </React.Fragment>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

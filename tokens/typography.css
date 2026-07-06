@@ -1,0 +1,39 @@
+/* ============================================================
+   TYPOGRAPHY — Spectral (display serif) + Onest (UI sans)
+   ============================================================ */
+:root {
+  /* Families */
+  --font-display: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-body:    'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale (mobile-first, 390px) */
+  --fs-hero:       41px; /* Spectral hero headline */
+  --fs-title:      23px; /* Spectral section title */
+  --fs-heading:    20px; /* Spectral sub-section / partners */
+  --fs-card-title: 16px; /* Onest event-card title */
+  --fs-body:       15px; /* Onest body copy */
+  --fs-body-sm:    13px; /* Onest meta / secondary */
+  --fs-label:      12px; /* Onest tag & button labels */
+  --fs-caption:    11px; /* Onest smallest label */
+  --fs-mono:       11px; /* mono placeholder / ticks */
+
+  /* Weights */
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-extrabold:800;
+
+  /* Line heights */
+  --lh-hero:   1.0;
+  --lh-tight:  1.02;
+  --lh-snug:   1.25;
+  --lh-normal: 1.5;
+
+  /* Letter spacing */
+  --ls-display:  -0.01em; /* Spectral display, slightly tight */
+  --ls-normal:    0;
+  --ls-label:     0.06em; /* small caps-ish labels */
+  --ls-eyebrow:   0.14em; /* uppercase eyebrow / brand line */
+}

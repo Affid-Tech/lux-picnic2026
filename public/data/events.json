@@ -1,0 +1,310 @@
+[
+  {
+    "id": "book-fair",
+    "title": "Книжная ярмарка",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "10:00",
+    "end": "18:00",
+    "area": "",
+    "shortDescription": "Книжная ярмарка — весь день",
+    "description": "Книжная ярмарка разворачивается и работает весь день. Заходи полистать и выбрать книги.",
+    "organizers": [
+      { "name": "Книжная ярмарка", "type": "org", "role": "Подрядчик ярмарки" }
+    ],
+    "partnerIds": ["yana-dodina"],
+    "tags": ["Книги"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "photo-zone-morning",
+    "title": "Фотозона с фотографом",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "10:00",
+    "end": "12:00",
+    "area": "",
+    "shortDescription": "Фотозона — утренняя сессия",
+    "description": "Фотозона с фотографом. Приходи сделать тёплые кадры с семьёй и друзьями.",
+    "organizers": [
+      { "name": "Оля", "type": "person", "role": "Фотограф" }
+    ],
+    "partnerIds": ["lux-photo-pro"],
+    "tags": ["Фото"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "photo-zone-afternoon",
+    "title": "Фотозона с фотографом",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "14:00",
+    "end": "16:00",
+    "area": "",
+    "shortDescription": "Фотозона — дневная сессия",
+    "description": "Фотозона с фотографом. Вторая сессия во второй половине дня.",
+    "organizers": [
+      { "name": "Оля", "type": "person", "role": "Фотограф" }
+    ],
+    "partnerIds": ["lux-photo-pro"],
+    "tags": ["Фото"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "parenting-sociology",
+    "title": "Родительство глазами социолога",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "15:00",
+    "end": "16:30",
+    "area": "",
+    "shortDescription": "Почему растить детей сегодня сложнее, чем когда-либо",
+    "description": "Родительство глазами социолога: почему в современном обществе растить детей сложнее, чем когда-либо. Разговор и вопросы из зала.",
+    "organizers": [
+      { "name": "Анна Кулешова", "type": "person", "role": "Спикер" },
+      { "name": "Ольга Кузоваткина", "type": "person", "role": "Спикер" }
+    ],
+    "partnerIds": ["luxeureka"],
+    "tags": ["Лекция"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "film-club",
+    "title": "Киноклуб",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "16:00",
+    "end": "18:00",
+    "area": "",
+    "shortDescription": "Показ киноклуба + обсуждение",
+    "description": "Показ киноклуба с последующим обсуждением. Приходи посмотреть и поговорить.",
+    "organizers": [
+      { "name": "Паша Алексеев", "type": "person", "role": "Ведущий", "url": "https://t.me/pawel_alexeev" }
+    ],
+    "partnerIds": [],
+    "tags": ["Кино"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "lottery",
+    "title": "Лотерея",
+    "group": "obshee",
+    "audience": ["Все"],
+    "start": "17:00",
+    "end": null,
+    "area": "",
+    "shortDescription": "Объявление победителей лотереи",
+    "description": "Объявление победителей лотереи. Один билет каждому гостю на входе; отрывной корешок бросай в коробку — и жди розыгрыша призов от наших партнёров.",
+    "organizers": [
+      { "name": "Юля", "type": "person", "role": "Ведущая" }
+    ],
+    "partnerIds": [],
+    "tags": ["Розыгрыш"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "beseda-ai",
+    "title": "Beseda AI Meetup",
+    "group": "it",
+    "audience": ["Взрослые"],
+    "start": "13:00",
+    "end": "18:00",
+    "area": "",
+    "shortDescription": "Митап / секция AI-сообщества",
+    "description": "Митап и секция AI-сообщества Beseda: доклады, разговоры и знакомство с теми, кто делает и применяет AI.",
+    "organizers": [
+      { "name": "Beseda", "type": "community", "role": "Хост секции" },
+      { "name": "Армен", "type": "person", "role": "Координатор", "url": "https://t.me/EULawyer" }
+    ],
+    "partnerIds": [],
+    "tags": ["AI"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "ai-algorithms",
+    "title": "AI: учимся приручать алгоритмы",
+    "group": "it",
+    "audience": ["Подростки"],
+    "start": "15:00",
+    "end": "16:00",
+    "area": "",
+    "shortDescription": "Чтобы алгоритмы работали на тебя, а не против",
+    "description": "AI: учимся приручать алгоритмы, чтобы они работали на тебя, а не против тебя. Практичный разговор для подростков.",
+    "organizers": [
+      { "name": "Олег Грешнев", "type": "person", "role": "Спикер" }
+    ],
+    "partnerIds": [],
+    "tags": ["AI"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "ai-human",
+    "title": "Об AI по-человечески",
+    "group": "it",
+    "audience": ["Взрослые"],
+    "start": "16:00",
+    "end": "17:00",
+    "area": "",
+    "shortDescription": "Он нам коллега, друг или конкурент?",
+    "description": "Об AI по-человечески: он нам коллега, друг или конкурент? Разговор без хайпа и без паники.",
+    "organizers": [
+      { "name": "Олег Грешнев", "type": "person", "role": "Спикер" }
+    ],
+    "partnerIds": [],
+    "tags": ["AI"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "kids-animation",
+    "title": "Анимация для детей 4–8 лет",
+    "group": "kids",
+    "audience": ["Дети 4–8"],
+    "start": "11:00",
+    "end": "13:00",
+    "area": "",
+    "shortDescription": "Детская анимация и развлечения",
+    "description": "Детская анимация и развлечения для ребят 4–8 лет под тентами от солнца.",
+    "organizers": [
+      { "name": "Юля", "type": "person", "role": "Ведущая" }
+    ],
+    "partnerIds": [],
+    "tags": ["Дети"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "bubble-show",
+    "title": "Шоу мыльных пузырей и аквагрим",
+    "group": "kids",
+    "audience": ["Дети 4–8"],
+    "start": "13:00",
+    "end": "13:30",
+    "area": "",
+    "shortDescription": "Шоу мыльных пузырей + аквагрим",
+    "description": "Шоу мыльных пузырей и аквагрим (face painting) для самых маленьких.",
+    "organizers": [
+      { "name": "Юля", "type": "person", "role": "Ведущая" }
+    ],
+    "partnerIds": [],
+    "tags": ["Дети"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "kids-music-class",
+    "title": "Музыкальный мастер-класс для детей 4–8 лет",
+    "group": "kids",
+    "audience": ["Дети 4–8"],
+    "start": "14:00",
+    "end": "15:00",
+    "area": "",
+    "shortDescription": "Музыкальный мастер-класс",
+    "description": "Музыкальный мастер-класс для детей 4–8 лет: слушаем, играем и пробуем сами.",
+    "organizers": [
+      { "name": "Юля", "type": "person", "role": "Ведущая" }
+    ],
+    "partnerIds": ["monde-des-arts"],
+    "tags": ["Дети", "Музыка"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "dnd-adults",
+    "title": "D&D для взрослых",
+    "group": "games",
+    "audience": ["Взрослые"],
+    "start": "10:30",
+    "end": "12:30",
+    "area": "",
+    "shortDescription": "Сессия Dungeons & Dragons",
+    "description": "Сессия Dungeons & Dragons для взрослых. Опыт не обязателен — мастер проведёт.",
+    "organizers": [
+      { "name": "Андрей Федоров", "type": "person", "role": "Мастер", "url": "https://t.me/Affid_fedorov" }
+    ],
+    "partnerIds": ["letzroll"],
+    "tags": ["D&D", "Настолки"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "mafia-teens",
+    "title": "Мафия для подростков",
+    "group": "games",
+    "audience": ["Подростки"],
+    "start": "12:00",
+    "end": "15:00",
+    "area": "",
+    "shortDescription": "Мафия для подростков",
+    "description": "Классическая «Мафия» для подростков. Ведёт Катя.",
+    "organizers": [
+      { "name": "Катя", "type": "person", "role": "Ведущая", "url": "https://t.me/katepred" }
+    ],
+    "partnerIds": ["lux-mafia"],
+    "tags": ["Мафия", "Настолки"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "dnd-kids",
+    "title": "D&D для детей 8–12 лет",
+    "group": "games",
+    "audience": ["Дети 8–12"],
+    "start": "13:00",
+    "end": "15:00",
+    "area": "",
+    "shortDescription": "Сессия D&D для детей 8–12",
+    "description": "Сессия Dungeons & Dragons для детей 8–12 лет с ведущим мастером.",
+    "organizers": [
+      { "name": "Андрей Федоров", "type": "person", "role": "Мастер", "url": "https://t.me/Affid_fedorov" }
+    ],
+    "partnerIds": ["letzroll"],
+    "tags": ["D&D", "Настолки"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "mafia-adults",
+    "title": "Мафия и настолки для взрослых",
+    "group": "games",
+    "audience": ["Взрослые"],
+    "start": "14:00",
+    "end": "19:00",
+    "area": "",
+    "shortDescription": "Мафия и настольные игры",
+    "description": "Мафия и настольные игры для взрослых — заходи в любой момент, столы работают до вечера.",
+    "organizers": [
+      { "name": "Оксана", "type": "person", "role": "Ведущая", "url": "https://t.me/oxanaluxoxana" }
+    ],
+    "partnerIds": ["lux-mafia"],
+    "tags": ["Мафия", "Настолки"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "chgk",
+    "title": "«Что? Где? Когда?»",
+    "group": "games",
+    "audience": ["Подростки", "Взрослые"],
+    "start": "17:00",
+    "end": "19:00",
+    "area": "",
+    "shortDescription": "Викторина «Что? Где? Когда?»",
+    "description": "Викторина «Что? Где? Когда?» для подростков и взрослых. Собирай команду или присоединяйся на месте.",
+    "organizers": [
+      { "name": "Игорь Осмоловский", "type": "person", "role": "Ведущий", "url": "https://t.me/igosm" }
+    ],
+    "partnerIds": ["chgk"],
+    "tags": ["Викторина"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  },
+  {
+    "id": "dnd-teens",
+    "title": "D&D для подростков 12–18 лет",
+    "group": "games",
+    "audience": ["Подростки 12–18"],
+    "start": "16:00",
+    "end": "18:00",
+    "area": "",
+    "shortDescription": "Сессия D&D для подростков 12–18",
+    "description": "Сессия Dungeons & Dragons для подростков 12–18 лет с ведущим мастером.",
+    "organizers": [
+      { "name": "Андрей Федоров", "type": "person", "role": "Мастер", "url": "https://t.me/Affid_fedorov" }
+    ],
+    "partnerIds": ["letzroll"],
+    "tags": ["D&D", "Настолки"],
+    "signup": { "mode": "none", "url": null, "capacity": null }
+  }
+]

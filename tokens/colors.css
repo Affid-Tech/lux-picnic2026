@@ -1,0 +1,52 @@
+/* ============================================================
+   COLORS — "Пикник" warm tactile palette
+   Base ramps first, semantic aliases at the bottom.
+   ============================================================ */
+:root {
+  /* --- Warm paper neutrals (backgrounds & surfaces) --- */
+  --cream-50:  #fffdf7; /* card surface, near-white warm */
+  --cream-100: #f6efe0; /* page background */
+  --cream-200: #f1e7d2; /* raised panel / band */
+  --cream-300: #ece0c6; /* placeholder stripe light */
+  --cream-400: #e6d9bf; /* card border, placeholder stripe dark */
+  --cream-500: #e0d2b6; /* stronger hairline / dashed rules */
+
+  /* --- Warm ink (text) --- */
+  --brown-900: #3a2c1c; /* headings, inverse surface */
+  --brown-700: #6b5d47; /* body text */
+  --brown-500: #9c8d6f; /* muted labels, captions */
+  --brown-400: #a2926f; /* mono placeholder text */
+  --brown-300: #b3a685; /* faint placeholder glyphs */
+  --paper-text: #e9dcc4; /* text on the dark brown surface */
+
+  /* --- Brand accents --- */
+  --terracotta:      #c26a4a; /* primary accent */
+  --terracotta-ink:  #a8593d; /* pressed / hover accent */
+  --sage:            #7d8b6a; /* secondary botanical accent */
+
+  /* --- Program categories (fixed, shared across all surfaces) --- */
+  --cat-general: #888780; /* Общее */
+  --cat-it:      #2A78D6; /* IT */
+  --cat-kids:    #E0642A; /* Детская программа */
+  --cat-games:   #6B62C0; /* Игры */
+
+  /* ---------- Semantic aliases ---------- */
+  --surface-page:    var(--cream-100);
+  --surface-panel:   var(--cream-200);
+  --surface-card:    var(--cream-50);
+  --surface-inverse: var(--brown-900);
+
+  --border-soft:  var(--cream-500);
+  --border-card:  var(--cream-400);
+  --border-dashed: var(--cream-500);
+
+  --text-strong:     var(--brown-900);
+  --text-body:       var(--brown-700);
+  --text-muted:      var(--brown-500);
+  --text-mono:       var(--brown-400);
+  --text-on-inverse: var(--paper-text);
+
+  --accent:       var(--terracotta);
+  --accent-hover: var(--terracotta-ink);
+  --accent-on:    #ffffff;
+}

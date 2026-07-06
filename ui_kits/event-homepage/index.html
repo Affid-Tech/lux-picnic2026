@@ -1,0 +1,132 @@
+<!-- @dsCard group="Homepage" viewport="390x780" name="Event homepage" subtitle="Hero · day bar · agenda · partners · footer" -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--cream-300); font-family: var(--font-body); display: flex; justify-content: center; padding: 28px 0; }
+  #root { width: 390px; }
+  .screen { width: 390px; background: var(--surface-page); border-radius: var(--radius-screen); overflow: hidden; box-shadow: var(--shadow-screen); }
+  button { font-family: var(--font-body); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  const { useState } = React;
+  const NS = Object.values(window).find(o => o && typeof o === 'object' && 'EventCard' in o && 'DayOverviewBar' in o) || {};
+  const { Button, CategoryTag, EventCard, DayOverviewBar, PartnerTile, SectionHeading, CATEGORIES } = NS;
+
+  const EVENTS = [
+    { time: '11:00', duration: '1 ч',   title: 'Сбор гостей и открытие',        location: 'Главная поляна',      category: 'general' },
+    { time: '12:00', duration: '1 ч',   title: 'Нетворкинг и знакомства',        location: 'Главная поляна',      category: 'general' },
+    { time: '13:00', duration: '1 ч',   title: 'IT-панель: карьера в эмиграции',  location: 'Сцена А · 4 спикера',  category: 'it' },
+    { time: '14:00', duration: '1 ч',   title: 'Мастер-класс: первое приложение', location: 'Сцена А',             category: 'it' },
+    { time: '15:00', duration: '1 ч',   title: 'Детский уголок: рисуем лето',     location: 'Шатёр детей',         category: 'kids' },
+    { time: '16:00', duration: '1.5 ч', title: 'Семейные игры на траве',          location: 'Поле у реки',         category: 'games' },
+    { time: '18:00', duration: '1 ч',   title: 'Большой квиз и закрытие',         location: 'Сцена А',             category: 'general' },
+  ];
+  const CATS = ['general', 'it', 'kids', 'games'];
+
+  function FilterChip({ active, onClick, children }) {
+    return (
+      <button onClick={onClick} style={{
+        fontWeight: 600, fontSize: 12, lineHeight: 1, cursor: 'pointer',
+        padding: '7px 12px', borderRadius: 'var(--radius-pill)',
+        border: '1.5px solid ' + (active ? 'var(--brown-900)' : 'var(--border-card)'),
+        background: active ? 'var(--brown-900)' : 'var(--surface-card)',
+        color: active ? 'var(--paper-text)' : 'var(--text-muted)',
+      }}>{children}</button>
+    );
+  }
+
+  function Home() {
+    const [going, setGoing] = useState(false);
+    const [filter, setFilter] = useState(null);
+    const shown = filter ? EVENTS.filter(e => e.category === filter) : EVENTS;
+
+    return (
+      <div className="screen">
+
+        {/* hero */}
+        <div style={{ padding: '28px 22px 24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <span style={{ fontWeight: 700, fontSize: 12, lineHeight: 1, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--brown-500)' }}>Beseda Community</span>
+            <span style={{ fontWeight: 600, fontSize: 12, lineHeight: 1, color: 'var(--accent)', background: 'var(--surface-card)', border: '1px solid var(--border-card)', padding: '6px 11px', borderRadius: 'var(--radius-pill)' }}>6 июля</span>
+          </div>
+          <h1 style={{ margin: '0 0 14px', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 41, lineHeight: 1.0, letterSpacing: '-.01em', color: 'var(--text-strong)' }}>
+            Большой<br /><span style={{ color: 'var(--accent)' }}>русскоязычный</span><br />пикник
+          </h1>
+          <p style={{ margin: '0 0 18px', fontWeight: 400, fontSize: 15, lineHeight: 1.5, color: 'var(--text-body)', maxWidth: '30ch' }}>
+            Целый день на траве: доклады, игры, дети и много новых знакомств. Приходи всей семьёй.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
+            {CATS.map(c => <CategoryTag key={c} category={c} />)}
+          </div>
+          <div style={{ height: 154, borderRadius: 'var(--radius-xl)', border: '1px solid var(--cream-500)', display: 'flex', alignItems: 'flex-end', padding: 12, boxSizing: 'border-box', marginBottom: 18, background: 'repeating-linear-gradient(45deg,var(--cream-300),var(--cream-300) 9px,var(--cream-400) 9px,var(--cream-400) 18px)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, color: 'var(--text-mono)', background: 'var(--surface-page)', padding: '5px 9px', borderRadius: 7 }}>фото · главная поляна</span>
+          </div>
+          <Button variant={going ? 'secondary' : 'primary'} fullWidth onClick={() => setGoing(g => !g)}>
+            {going ? 'Вы идёте! ✓' : 'Зарегистрироваться'}
+          </Button>
+        </div>
+
+        {/* day overview */}
+        <div style={{ padding: 22, background: 'var(--surface-panel)' }}>
+          <SectionHeading meta="11:00 – 19:00" style={{ marginBottom: 14 }}>Программа дня</SectionHeading>
+          <DayOverviewBar
+            segments={[
+              { category: 'general', flex: 2 }, { category: 'it', flex: 2 },
+              { category: 'kids', flex: 1 }, { category: 'games', flex: 2 },
+              { category: 'general', flex: 1 },
+            ]}
+            ticks={[11, 13, 15, 17, 19]}
+          />
+        </div>
+
+        {/* filters + agenda */}
+        <div style={{ padding: '22px 22px 8px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+            <FilterChip active={filter === null} onClick={() => setFilter(null)}>Все</FilterChip>
+            {CATS.map(c => (
+              <FilterChip key={c} active={filter === c} onClick={() => setFilter(c)}>{CATEGORIES[c].label}</FilterChip>
+            ))}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {shown.map((e, i) => <EventCard key={i} {...e} />)}
+          </div>
+          {filter === null && (
+            <div style={{ textAlign: 'center', fontWeight: 500, fontSize: 12, color: 'var(--text-mono)', padding: '14px 0 6px' }}>прокрутите весь день ↑</div>
+          )}
+        </div>
+
+        {/* partners */}
+        <div style={{ padding: '14px 22px 22px' }}>
+          <h2 style={{ margin: '0 0 14px', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 20, color: 'var(--text-strong)' }}>Партнёры</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+            <PartnerTile name="Beseda" brand />
+            <PartnerTile /><PartnerTile /><PartnerTile /><PartnerTile /><PartnerTile />
+          </div>
+        </div>
+
+        {/* footer */}
+        <div style={{ padding: '24px 22px 28px', background: 'var(--surface-inverse)', color: 'var(--text-on-inverse)', textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 15, lineHeight: 1.3, marginBottom: 6 }}>До встречи на поляне 🌿</div>
+          <div style={{ fontWeight: 400, fontSize: 12, color: 'var(--brown-400)', marginBottom: 16 }}>6 июля · вход свободный</div>
+          <div style={{ fontWeight: 500, fontSize: 11, lineHeight: 1, letterSpacing: '.04em', color: 'var(--brown-400)' }}>Powered by <span style={{ color: 'var(--text-on-inverse)' }}>BesedaTech</span></div>
+        </div>
+
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<Home />);
+</script>
+</body>
+</html>

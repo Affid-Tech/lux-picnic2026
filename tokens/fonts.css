@@ -1,0 +1,7 @@
+/* ============================================================
+   WEBFONTS — loaded from Google Fonts CDN.
+   NOTE: these are the genuine chosen families (not substitutes).
+   If you need self-hosted binaries for offline/production, download
+   Onest + Spectral and replace this @import with @font-face rules.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap');

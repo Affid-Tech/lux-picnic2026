@@ -1,0 +1,18 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Radii" subtitle="sm → screen frame" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+ body{margin:0;background:var(--surface-page);font-family:var(--font-body)}
+ .row{display:flex;gap:16px;padding:22px;flex-wrap:wrap}
+ .cell{text-align:center}
+ .box{width:76px;height:56px;background:var(--surface-card);border:1.5px solid var(--cream-500)}
+ .n{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:8px}
+</style></head><body>
+<div class="row">
+ <div class="cell"><div class="box" style="border-radius:var(--radius-sm)"></div><div class="n">sm · 7</div></div>
+ <div class="cell"><div class="box" style="border-radius:var(--radius-md)"></div><div class="n">md · 12</div></div>
+ <div class="cell"><div class="box" style="border-radius:var(--radius-lg)"></div><div class="n">lg · 16</div></div>
+ <div class="cell"><div class="box" style="border-radius:var(--radius-xl)"></div><div class="n">xl · 18</div></div>
+ <div class="cell"><div class="box" style="border-radius:var(--radius-pill)"></div><div class="n">pill · 999</div></div>
+ <div class="cell"><div class="box" style="border-radius:var(--radius-screen)"></div><div class="n">screen · 30</div></div>
+</div>
+</body></html>

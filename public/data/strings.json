@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "addWholeDay": "Добавить весь день в календарь",
+    "openMap": "Открыть на карте",
+    "locationTbd": "Место уточняется",
+    "scrollHint": "прокрути весь день ↓"
+  },
+  "nowNext": {
+    "nowLabel": "Сейчас",
+    "nextLabel": "Далее",
+    "dismiss": "Скрыть",
+    "endedToday": "На сегодня всё — спасибо, что были с нами",
+    "notStarted": "Пикник ещё впереди"
+  },
+  "timeline": {
+    "overviewTitle": "Обзор дня",
+    "overviewToggleShow": "Обзор дня ▾",
+    "overviewToggleHide": "Обзор дня ▴",
+    "agendaTitle": "Программа дня",
+    "filterAll": "Все",
+    "parallelHint": "идёт параллельно",
+    "parallelCount": "параллельно · {count}",
+    "nowMarker": "сейчас",
+    "empty": "В этом фильтре пока нет событий"
+  },
+  "eventCard": {
+    "organizersTitle": "Ведущие",
+    "partnersTitle": "Партнёры события",
+    "areaTitle": "Где",
+    "addToCalendar": "Добавить в календарь",
+    "downloadIcs": "Скачать .ics",
+    "googleCalendar": "Google Календарь",
+    "signup": "Записаться",
+    "dropIn": "Без записи — просто приходи",
+    "close": "Закрыть",
+    "pointEvent": "Точечное событие",
+    "typePerson": "человек",
+    "typeCommunity": "сообщество",
+    "typeOrg": "организация"
+  },
+  "partners": {
+    "title": "Партнёры и друзья пикника",
+    "subtitle": "Те, благодаря кому пикник состоится",
+    "relatedEvents": "События на пикнике",
+    "visitSite": "Перейти на сайт",
+    "swipeHint": "листай вбок →"
+  },
+  "footer": {
+    "poweredBy": "Powered by BesedaTech",
+    "credit": "Организатор пикника · сообщество BesedaTech",
+    "closing": "До встречи на поляне 🌿"
+  },
+  "calendar": {
+    "wholeDayTitle": "Большой русскоязычный пикник — весь день",
+    "defaultPointDurationMin": 30
+  }
+}

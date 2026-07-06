@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#e9e6df;font-family:system-ui,sans-serif}
+.dv-turn{padding:44px 44px 36px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 24px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:11px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.09);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 12px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.6)}
+.dv-card{width:390px;border-radius:30px;overflow:hidden;box-shadow:0 16px 50px rgba(40,30,15,.16)}
+.dv-opt:target .dv-oid{background:#2A78D6;color:#fff}
+.dv-next{margin:26px 0 0;font:12px/1.6 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+.dv-next a{margin:0 1px}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Большой русскоязычный пикник — три концепта главной (390px)</span></div>
+<div class="dv-opts">
+
+<!-- ===================== 1a  WARM TACTILE PICNIC ===================== -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Тёплый тактильный «пикник» — крафт-бумага, терракота + шалфей, стикеры</div>
+<div class="dv-card" style="background:#f6efe0;font-family:Onest,sans-serif;color:#3a2c1c;">
+
+  <!-- hero -->
+  <div style="padding:28px 22px 24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <span style="font:700 12px/1 Onest;letter-spacing:.14em;text-transform:uppercase;color:#9c8d6f;">Beseda Community</span>
+      <span style="font:600 12px/1 Onest;color:#c26a4a;background:#fff;border:1px solid #e6d9bf;padding:6px 11px;border-radius:999px;">6 июля</span>
+    </div>
+    <h1 style="margin:0 0 14px;font:600 41px/1.0 Spectral,serif;letter-spacing:-.01em;color:#3a2c1c;">Большой<br><span style="color:#c26a4a;">русскоязычный</span><br>пикник</h1>
+    <p style="margin:0 0 18px;font:400 15px/1.5 Onest;color:#6b5d47;max-width:30ch;">Целый день на траве: доклады, игры, дети и много новых знакомств. Приходи всей семьёй.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px/1 Onest;color:#5c5b54;background:#fff;border:1.5px solid #888780;padding:7px 12px;border-radius:999px;box-shadow:0 2px 0 rgba(136,135,128,.3);"><span style="width:8px;height:8px;border-radius:50%;background:#888780;"></span>Общее</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px/1 Onest;color:#2A78D6;background:#fff;border:1.5px solid #2A78D6;padding:7px 12px;border-radius:999px;box-shadow:0 2px 0 rgba(42,120,214,.3);"><span style="width:8px;height:8px;border-radius:50%;background:#2A78D6;"></span>IT</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px/1 Onest;color:#E0642A;background:#fff;border:1.5px solid #E0642A;padding:7px 12px;border-radius:999px;box-shadow:0 2px 0 rgba(224,100,42,.3);"><span style="width:8px;height:8px;border-radius:50%;background:#E0642A;"></span>Детская</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px/1 Onest;color:#6B62C0;background:#fff;border:1.5px solid #6B62C0;padding:7px 12px;border-radius:999px;box-shadow:0 2px 0 rgba(107,98,192,.3);"><span style="width:8px;height:8px;border-radius:50%;background:#6B62C0;"></span>Игры</span>
+    </div>
+    <div style="height:154px;border-radius:18px;background:repeating-linear-gradient(45deg,#ece0c6,#ece0c6 9px,#e6d9bf 9px,#e6d9bf 18px);border:1px solid #e0d2b6;display:flex;align-items:flex-end;padding:12px;">
+      <span style="font:500 11px/1 ui-monospace,monospace;color:#a2926f;background:#f6efe0;padding:5px 9px;border-radius:7px;">фото · главная поляна</span>
+    </div>
+  </div>
+
+  <!-- day overview bar -->
+  <div style="padding:22px;background:#f1e7d2;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
+      <h2 style="margin:0;font:600 23px/1 Spectral,serif;color:#3a2c1c;">Программа дня</h2>
+      <span style="font:500 12px Onest;color:#9c8d6f;">11:00 – 19:00</span>
+    </div>
+    <div style="display:flex;gap:3px;height:16px;border-radius:999px;overflow:hidden;margin-bottom:8px;">
+      <div style="flex:2;background:#888780;"></div><div style="flex:2;background:#2A78D6;"></div><div style="flex:1;background:#E0642A;"></div><div style="flex:2;background:#6B62C0;"></div><div style="flex:1;background:#888780;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font:500 10px ui-monospace,monospace;color:#a2926f;">
+      <span>11</span><span>13</span><span>15</span><span>17</span><span>19</span>
+    </div>
+  </div>
+
+  <!-- agenda -->
+  <div style="padding:22px 22px 8px;display:flex;flex-direction:column;gap:12px;">
+    <div style="display:flex;gap:14px;padding:16px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:16px;box-shadow:0 2px 0 rgba(150,130,90,.14);">
+      <div style="flex:none;text-align:center;"><div style="font:600 18px/1 Spectral,serif;color:#3a2c1c;">11:00</div><div style="font:500 10px Onest;color:#a2926f;margin-top:3px;">1 ч</div></div>
+      <div style="flex:1;min-width:0;border-left:1px dashed #e0d2b6;padding-left:14px;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font:600 11px/1 Onest;color:#5c5b54;background:#fff;border:1.5px solid #888780;padding:5px 9px;border-radius:999px;margin-bottom:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#888780;"></span>Общее</span>
+        <h3 style="margin:0 0 4px;font:600 16px/1.25 Onest;color:#3a2c1c;">Сбор гостей и открытие</h3>
+        <p style="margin:0;font:400 13px Onest;color:#9c8d6f;">Главная поляна</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:16px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:16px;box-shadow:0 2px 0 rgba(150,130,90,.14);">
+      <div style="flex:none;text-align:center;"><div style="font:600 18px/1 Spectral,serif;color:#3a2c1c;">13:00</div><div style="font:500 10px Onest;color:#a2926f;margin-top:3px;">1 ч</div></div>
+      <div style="flex:1;min-width:0;border-left:1px dashed #e0d2b6;padding-left:14px;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font:600 11px/1 Onest;color:#2A78D6;background:#fff;border:1.5px solid #2A78D6;padding:5px 9px;border-radius:999px;margin-bottom:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#2A78D6;"></span>IT</span>
+        <h3 style="margin:0 0 4px;font:600 16px/1.25 Onest;color:#3a2c1c;">IT-панель: карьера в эмиграции</h3>
+        <p style="margin:0;font:400 13px Onest;color:#9c8d6f;">Сцена А · 4 спикера</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:16px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:16px;box-shadow:0 2px 0 rgba(150,130,90,.14);">
+      <div style="flex:none;text-align:center;"><div style="font:600 18px/1 Spectral,serif;color:#3a2c1c;">15:00</div><div style="font:500 10px Onest;color:#a2926f;margin-top:3px;">1 ч</div></div>
+      <div style="flex:1;min-width:0;border-left:1px dashed #e0d2b6;padding-left:14px;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font:600 11px/1 Onest;color:#E0642A;background:#fff;border:1.5px solid #E0642A;padding:5px 9px;border-radius:999px;margin-bottom:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#E0642A;"></span>Детская</span>
+        <h3 style="margin:0 0 4px;font:600 16px/1.25 Onest;color:#3a2c1c;">Детский уголок: рисуем лето</h3>
+        <p style="margin:0;font:400 13px Onest;color:#9c8d6f;">Шатёр детей</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:16px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:16px;box-shadow:0 2px 0 rgba(150,130,90,.14);">
+      <div style="flex:none;text-align:center;"><div style="font:600 18px/1 Spectral,serif;color:#3a2c1c;">16:00</div><div style="font:500 10px Onest;color:#a2926f;margin-top:3px;">1.5 ч</div></div>
+      <div style="flex:1;min-width:0;border-left:1px dashed #e0d2b6;padding-left:14px;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font:600 11px/1 Onest;color:#6B62C0;background:#fff;border:1.5px solid #6B62C0;padding:5px 9px;border-radius:999px;margin-bottom:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#6B62C0;"></span>Игры</span>
+        <h3 style="margin:0 0 4px;font:600 16px/1.25 Onest;color:#3a2c1c;">Семейные игры на траве</h3>
+        <p style="margin:0;font:400 13px Onest;color:#9c8d6f;">Поле у реки</p>
+      </div>
+    </div>
+    <div style="text-align:center;font:500 12px Onest;color:#a2926f;padding:4px 0 6px;">↓ ещё 5 событий</div>
+  </div>
+
+  <!-- partners -->
+  <div style="padding:16px 22px 22px;">
+    <h2 style="margin:0 0 14px;font:600 20px/1 Spectral,serif;color:#3a2c1c;">Партнёры</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:600 11px ui-monospace,monospace;color:#c26a4a;">Beseda</div>
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#b3a685;">лого</div>
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#b3a685;">лого</div>
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#b3a685;">лого</div>
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#b3a685;">лого</div>
+      <div style="height:56px;background:#fffdf7;border:1px solid #e6d9bf;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#b3a685;">лого</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="padding:24px 22px 28px;background:#3a2c1c;color:#e9dcc4;text-align:center;">
+    <div style="font:600 15px/1.3 Spectral,serif;margin-bottom:6px;">До встречи на поляне 🌿</div>
+    <div style="font:400 12px Onest;color:#a2926f;margin-bottom:16px;">6 июля · вход свободный</div>
+    <div style="font:500 11px/1 Onest;letter-spacing:.04em;color:#8a7a5e;">Powered by <span style="color:#e9dcc4;">BesedaTech</span></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ===================== 1b  CLEAN & AIRY MODERN ===================== -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Чистый и воздушный модерн — один тёплый акцент, много воздуха</div>
+<div class="dv-card" style="background:#ffffff;font-family:Manrope,sans-serif;color:#141414;">
+
+  <!-- hero -->
+  <div style="padding:32px 24px 28px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:38px;">
+      <span style="font:700 13px/1 Manrope;color:#141414;">Beseda<span style="color:#d2643a;">.</span>Community</span>
+      <span style="font:600 12px/1 Manrope;color:#8a8a8a;">6 июля 2026</span>
+    </div>
+    <div style="font:700 12px/1 Manrope;letter-spacing:.14em;text-transform:uppercase;color:#d2643a;margin-bottom:16px;">Встреча сообщества</div>
+    <h1 style="margin:0 0 16px;font:800 33px/1.1 Manrope;letter-spacing:-.03em;color:#141414;">Большой русскоязычный пикник</h1>
+    <p style="margin:0 0 26px;font:400 15px/1.55 Manrope;color:#6f6f6f;max-width:32ch;">Один день, четыре программы и целая поляна для новых знакомств.</p>
+    <div style="display:flex;gap:10px;">
+      <button style="flex:1;font:700 14px Manrope;color:#fff;background:#d2643a;border:none;padding:14px;border-radius:12px;">Регистрация</button>
+      <button style="font:700 14px Manrope;color:#141414;background:#fff;border:1.5px solid #e6e6e6;padding:14px 18px;border-radius:12px;">Программа</button>
+    </div>
+  </div>
+
+  <!-- day overview bar -->
+  <div style="padding:0 24px 30px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;">
+      <span style="font:700 11px/1 Manrope;letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a;">Весь день</span>
+      <span style="font:600 12px Manrope;color:#9a9a9a;">11:00–19:00</span>
+    </div>
+    <div style="display:flex;gap:3px;height:6px;border-radius:3px;overflow:hidden;margin-bottom:9px;">
+      <div style="flex:2;background:#888780;"></div><div style="flex:2;background:#2A78D6;"></div><div style="flex:1;background:#E0642A;"></div><div style="flex:2;background:#6B62C0;"></div><div style="flex:1;background:#888780;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font:500 10px ui-monospace,monospace;color:#b6b6b6;margin-bottom:16px;">
+      <span>11</span><span>13</span><span>15</span><span>17</span><span>19</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;">
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px Manrope;color:#6f6f6f;"><span style="width:9px;height:9px;border-radius:2px;background:#888780;"></span>Общее</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px Manrope;color:#6f6f6f;"><span style="width:9px;height:9px;border-radius:2px;background:#2A78D6;"></span>IT</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px Manrope;color:#6f6f6f;"><span style="width:9px;height:9px;border-radius:2px;background:#E0642A;"></span>Детская</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font:600 12px Manrope;color:#6f6f6f;"><span style="width:9px;height:9px;border-radius:2px;background:#6B62C0;"></span>Игры</span>
+    </div>
+  </div>
+
+  <!-- agenda -->
+  <div style="padding:0 24px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:6px;">
+      <h2 style="margin:0;font:800 19px Manrope;letter-spacing:-.02em;color:#141414;">Расписание</h2>
+    </div>
+    <div style="display:flex;gap:16px;padding:18px 0;border-top:1px solid #ededed;">
+      <div style="flex:none;width:46px;font:700 15px Manrope;color:#141414;">11:00</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;font:700 11px/1 Manrope;letter-spacing:.06em;text-transform:uppercase;color:#888780;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#888780;"></span>Общее</div>
+        <h3 style="margin:0 0 3px;font:700 15px/1.3 Manrope;color:#141414;">Сбор гостей и открытие</h3>
+        <p style="margin:0;font:400 13px Manrope;color:#9a9a9a;">Главная поляна · 1 ч</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;padding:18px 0;border-top:1px solid #ededed;">
+      <div style="flex:none;width:46px;font:700 15px Manrope;color:#141414;">13:00</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;font:700 11px/1 Manrope;letter-spacing:.06em;text-transform:uppercase;color:#2A78D6;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#2A78D6;"></span>IT</div>
+        <h3 style="margin:0 0 3px;font:700 15px/1.3 Manrope;color:#141414;">IT-панель: карьера в эмиграции</h3>
+        <p style="margin:0;font:400 13px Manrope;color:#9a9a9a;">Сцена А · 4 спикера</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;padding:18px 0;border-top:1px solid #ededed;">
+      <div style="flex:none;width:46px;font:700 15px Manrope;color:#141414;">15:00</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;font:700 11px/1 Manrope;letter-spacing:.06em;text-transform:uppercase;color:#E0642A;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#E0642A;"></span>Детская</div>
+        <h3 style="margin:0 0 3px;font:700 15px/1.3 Manrope;color:#141414;">Детский уголок: рисуем лето</h3>
+        <p style="margin:0;font:400 13px Manrope;color:#9a9a9a;">Шатёр детей · 1 ч</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;padding:18px 0;border-top:1px solid #ededed;border-bottom:1px solid #ededed;">
+      <div style="flex:none;width:46px;font:700 15px Manrope;color:#141414;">16:00</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;font:700 11px/1 Manrope;letter-spacing:.06em;text-transform:uppercase;color:#6B62C0;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#6B62C0;"></span>Игры</div>
+        <h3 style="margin:0 0 3px;font:700 15px/1.3 Manrope;color:#141414;">Семейные игры на траве</h3>
+        <p style="margin:0;font:400 13px Manrope;color:#9a9a9a;">Поле у реки · 1.5 ч</p>
+      </div>
+    </div>
+    <div style="text-align:center;font:600 13px Manrope;color:#d2643a;padding:16px 0;">Показать все события →</div>
+  </div>
+
+  <!-- partners -->
+  <div style="padding:8px 24px 28px;">
+    <h2 style="margin:0 0 16px;font:800 19px Manrope;letter-spacing:-.02em;color:#141414;">Партнёры</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #ededed;border-radius:14px;overflow:hidden;">
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:700 11px ui-monospace,monospace;color:#d2643a;border-right:1px solid #ededed;border-bottom:1px solid #ededed;">Beseda</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#c2c2c2;border-right:1px solid #ededed;border-bottom:1px solid #ededed;">лого</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#c2c2c2;border-bottom:1px solid #ededed;">лого</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#c2c2c2;border-right:1px solid #ededed;">лого</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#c2c2c2;border-right:1px solid #ededed;">лого</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#c2c2c2;">лого</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="padding:26px 24px 30px;background:#f7f7f5;text-align:center;">
+    <div style="font:800 16px Manrope;letter-spacing:-.02em;color:#141414;margin-bottom:5px;">До встречи 6 июля</div>
+    <div style="font:400 12px Manrope;color:#9a9a9a;margin-bottom:18px;">Вход свободный</div>
+    <div style="font:600 11px/1 Manrope;color:#b0b0b0;">Powered by <span style="color:#141414;">BesedaTech</span></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ===================== 1c  PLAYFUL & BOLD ===================== -->
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Игривый и смелый — большие цветные блоки, выразительные заголовки</div>
+<div class="dv-card" style="background:#ffffff;font-family:Manrope,sans-serif;color:#17141f;">
+
+  <!-- hero -->
+  <div style="padding:26px 22px 32px;background:#17141f;color:#fff;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;">
+      <span style="font:700 13px/1 Manrope;color:#fff;">BESEDA</span>
+      <span style="font:800 11px/1 Manrope;letter-spacing:.04em;color:#17141f;background:#E0642A;padding:7px 11px;border-radius:999px;">6 ИЮЛЯ</span>
+    </div>
+    <h1 style="margin:0 0 16px;font:800 27px/1.05 Unbounded,sans-serif;letter-spacing:-.03em;text-transform:uppercase;">Большой<br>русско&shy;язычный<br><span style="color:#E0642A;">пикник</span></h1>
+    <p style="margin:0 0 22px;font:500 14px/1.5 Manrope;color:#b8b3c4;max-width:30ch;">Целый день на траве. Четыре программы. Одна большая тусовка.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <span style="font:800 12px/1 Manrope;color:#fff;background:#888780;padding:9px 13px;border-radius:9px;">Общее</span>
+      <span style="font:800 12px/1 Manrope;color:#fff;background:#2A78D6;padding:9px 13px;border-radius:9px;">IT</span>
+      <span style="font:800 12px/1 Manrope;color:#fff;background:#E0642A;padding:9px 13px;border-radius:9px;">Детская</span>
+      <span style="font:800 12px/1 Manrope;color:#fff;background:#6B62C0;padding:9px 13px;border-radius:9px;">Игры</span>
+    </div>
+  </div>
+
+  <!-- day overview bar -->
+  <div style="padding:24px 22px;">
+    <h2 style="margin:0 0 14px;font:800 20px/1 Unbounded,sans-serif;text-transform:uppercase;letter-spacing:-.02em;color:#17141f;">Весь день</h2>
+    <div style="display:flex;gap:4px;height:38px;margin-bottom:8px;">
+      <div style="flex:2;background:#888780;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">11</div>
+      <div style="flex:2;background:#2A78D6;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">13</div>
+      <div style="flex:1;background:#E0642A;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">15</div>
+      <div style="flex:2;background:#6B62C0;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">16</div>
+      <div style="flex:1;background:#888780;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">18</div>
+    </div>
+    <div style="font:600 11px Manrope;color:#9a9a9a;">с 11:00 до 19:00 · без перерыва</div>
+  </div>
+
+  <!-- agenda -->
+  <div style="padding:0 22px;display:flex;flex-direction:column;gap:14px;">
+    <div style="border:2px solid #17141f;border-radius:16px;overflow:hidden;">
+      <div style="background:#888780;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;"><span style="font:800 12px/1 Manrope;letter-spacing:.05em;text-transform:uppercase;color:#fff;">Общее</span><span style="font:800 14px/1 Manrope;color:#fff;">11:00</span></div>
+      <div style="padding:14px;"><h3 style="margin:0 0 4px;font:800 17px/1.2 Manrope;letter-spacing:-.01em;color:#17141f;">Сбор гостей и открытие</h3><p style="margin:0;font:500 13px Manrope;color:#8a8a8a;">Главная поляна · 1 ч</p></div>
+    </div>
+    <div style="border:2px solid #17141f;border-radius:16px;overflow:hidden;">
+      <div style="background:#2A78D6;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;"><span style="font:800 12px/1 Manrope;letter-spacing:.05em;text-transform:uppercase;color:#fff;">IT</span><span style="font:800 14px/1 Manrope;color:#fff;">13:00</span></div>
+      <div style="padding:14px;"><h3 style="margin:0 0 4px;font:800 17px/1.2 Manrope;letter-spacing:-.01em;color:#17141f;">IT-панель: карьера в эмиграции</h3><p style="margin:0;font:500 13px Manrope;color:#8a8a8a;">Сцена А · 4 спикера</p></div>
+    </div>
+    <div style="border:2px solid #17141f;border-radius:16px;overflow:hidden;">
+      <div style="background:#E0642A;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;"><span style="font:800 12px/1 Manrope;letter-spacing:.05em;text-transform:uppercase;color:#fff;">Детская</span><span style="font:800 14px/1 Manrope;color:#fff;">15:00</span></div>
+      <div style="padding:14px;"><h3 style="margin:0 0 4px;font:800 17px/1.2 Manrope;letter-spacing:-.01em;color:#17141f;">Детский уголок: рисуем лето</h3><p style="margin:0;font:500 13px Manrope;color:#8a8a8a;">Шатёр детей · 1 ч</p></div>
+    </div>
+    <div style="border:2px solid #17141f;border-radius:16px;overflow:hidden;">
+      <div style="background:#6B62C0;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;"><span style="font:800 12px/1 Manrope;letter-spacing:.05em;text-transform:uppercase;color:#fff;">Игры</span><span style="font:800 14px/1 Manrope;color:#fff;">16:00</span></div>
+      <div style="padding:14px;"><h3 style="margin:0 0 4px;font:800 17px/1.2 Manrope;letter-spacing:-.01em;color:#17141f;">Семейные игры на траве</h3><p style="margin:0;font:500 13px Manrope;color:#8a8a8a;">Поле у реки · 1.5 ч</p></div>
+    </div>
+    <div style="text-align:center;font:800 13px Manrope;color:#6B62C0;padding:2px 0 4px;">ЕЩЁ 5 СОБЫТИЙ ↓</div>
+  </div>
+
+  <!-- partners -->
+  <div style="padding:22px;">
+    <h2 style="margin:0 0 14px;font:800 20px/1 Unbounded,sans-serif;text-transform:uppercase;letter-spacing:-.02em;color:#17141f;">Партнёры</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div style="height:58px;background:#E0642A;border-radius:12px;display:flex;align-items:center;justify-content:center;font:800 11px Manrope;color:#fff;">Beseda</div>
+      <div style="height:58px;background:#f0eef3;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#a8a4b0;">лого</div>
+      <div style="height:58px;background:#f0eef3;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#a8a4b0;">лого</div>
+      <div style="height:58px;background:#f0eef3;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#a8a4b0;">лого</div>
+      <div style="height:58px;background:#f0eef3;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#a8a4b0;">лого</div>
+      <div style="height:58px;background:#f0eef3;border-radius:12px;display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#a8a4b0;">лого</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="padding:28px 22px 32px;background:#17141f;color:#fff;">
+    <div style="font:800 22px/1 Unbounded,sans-serif;text-transform:uppercase;letter-spacing:-.02em;margin-bottom:10px;">До <span style="color:#E0642A;">встречи!</span></div>
+    <div style="font:500 13px Manrope;color:#b8b3c4;margin-bottom:20px;">6 июля · вход свободный</div>
+    <div style="font:700 11px/1 Manrope;color:#6f6a7d;">Powered by <span style="color:#fff;">BesedaTech</span></div>
+  </div>
+
+</div>
+</div>
+
+</div>
+<p class="dv-next">Дальше можно: «сделай <a class="dv-oid" href="#1a">1a</a> с фото вместо штриховки» · «<a class="dv-oid" href="#1b">1b</a>, но заголовок как в <a class="dv-oid" href="#1c">1c</a>» · «раскрой полное расписание для <a class="dv-oid" href="#1c">1c</a>» · «новые направления»</p>
+</section>
+</x-dc>
+</body>
+</html>
