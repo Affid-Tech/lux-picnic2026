@@ -4,17 +4,26 @@ import { useEffect, useState } from 'react'
 // `/#/event/:id`; anything else is treated as the home route. Hash routing
 // keeps the app deployable under any static base (see vite.config `base`).
 
-export type Route = { name: 'home' } | { name: 'event'; id: string }
+export type Route =
+  | { name: 'home' }
+  | { name: 'event'; id: string }
+  | { name: 'partner'; id: string }
 
 /** Parse a raw `location.hash` string into a Route. Pure — safe to unit-test. */
 export function parseHash(hash: string): Route {
   // Strip a leading '#', then a leading '/', so both "#/event/x" and
   // "#event/x" resolve the same way.
   const path = hash.replace(/^#/, '').replace(/^\//, '')
-  const match = /^event\/(.+)$/.exec(path)
+  const match = /^(event|partner)\/(.+)$/.exec(path)
   if (match) {
-    const id = decodeURIComponent(match[1])
-    if (id) return { name: 'event', id }
+    // A malformed percent-sequence (e.g. "#/event/%") throws URIError; fall back
+    // to home rather than letting it blank-screen the SPA.
+    try {
+      const id = decodeURIComponent(match[2])
+      if (id) return { name: match[1] as 'event' | 'partner', id }
+    } catch {
+      return { name: 'home' }
+    }
   }
   return { name: 'home' }
 }
@@ -22,6 +31,7 @@ export function parseHash(hash: string): Route {
 /** Build the canonical hash for a route (inverse of parseHash). */
 export function routeToHash(route: Route): string {
   if (route.name === 'event') return `#/event/${encodeURIComponent(route.id)}`
+  if (route.name === 'partner') return `#/partner/${encodeURIComponent(route.id)}`
   return '#/'
 }
 

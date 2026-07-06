@@ -21,6 +21,18 @@ const urlOrEmpty = z
     message: 'ожидался http(s)-URL или пустая строка',
   })
 
+/**
+ * A local asset path (logo / hero image), or null. No URL scheme and no
+ * protocol-relative `//host` prefix — images are bundled assets, not arbitrary
+ * remote fetches (avoids referer/privacy leaks and mixed content).
+ */
+const localAssetOrNull = z
+  .string()
+  .refine((v) => !v.includes(':') && !v.startsWith('//'), {
+    message: 'ожидался локальный путь к файлу (без схемы)',
+  })
+  .nullable()
+
 const GroupSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
@@ -72,7 +84,7 @@ const EventSchema = z.object({
   endTime: z.string(),
   timezone: z.string().regex(TIMEZONE, 'ожидалась IANA-таймзона'),
   location: z.object({ name: z.string(), address: z.string(), mapUrl: urlOrEmpty }),
-  heroImage: z.string().nullable(),
+  heroImage: localAssetOrNull,
   heroCaption: z.string().optional(),
   description: z.string(),
   note: z.string().optional(),
@@ -86,7 +98,7 @@ const EventSchema = z.object({
 const PartnerSchema = z.object({
   id: z.string().regex(ID),
   name: z.string().min(1),
-  logo: z.string().nullable(),
+  logo: localAssetOrNull,
   category: z.string(),
   url: urlOrEmpty,
   description: z.string(),

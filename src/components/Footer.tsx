@@ -17,7 +17,7 @@ export function Footer({ event, strings }: { event: EventInfo; strings: Strings 
           fontFamily: 'var(--font-body)',
           fontWeight: 'var(--fw-bold)',
           fontSize: 'var(--fs-heading)',
-          color: '#fff',
+          color: 'var(--text-on-inverse-strong)',
         }}
       >
         {strings.footer.poweredBy}
@@ -65,8 +65,7 @@ export function Footer({ event, strings }: { event: EventInfo; strings: Strings 
           margin: 'var(--space-6) 0 0',
           fontFamily: 'var(--font-body)',
           fontSize: 'var(--fs-body-sm)',
-          color: 'var(--text-on-inverse)',
-          opacity: 0.8,
+          color: 'var(--text-on-inverse-muted)',
         }}
       >
         {strings.footer.credit} · {new Date().getFullYear()}

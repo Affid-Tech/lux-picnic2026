@@ -6,6 +6,7 @@ import { Timeline } from './components/Timeline'
 import { Partners } from './components/Partners'
 import { Footer } from './components/Footer'
 import { EventSheet } from './components/EventSheet'
+import { PartnerSheet } from './components/PartnerSheet'
 import { pointDuration, toCalEntries } from './lib/calendar'
 import { buildIcs } from './lib/ics'
 import { downloadTextFile } from './lib/download'
@@ -42,13 +43,16 @@ export function App() {
     downloadTextFile('piknik-2026.ics', ics)
   }
 
-  // The hash route drives the detail sheet: `/#/event/:id` opens the matching
-  // event; an unknown id resolves to nothing and simply stays on the home view.
+  // The hash route drives the detail sheets: `/#/event/:id` and `/#/partner/:id`
+  // open the matching entity; an unknown id resolves to nothing and stays home.
   const handleOpenEvent = (id: string) => navigate({ name: 'event', id })
+  const handleOpenPartner = (id: string) => navigate({ name: 'partner', id })
   const closeSheet = () => navigate({ name: 'home' })
 
   const activeEvent =
     route.name === 'event' ? events.find((e) => e.id === route.id) : undefined
+  const activePartner =
+    route.name === 'partner' ? partners.find((p) => p.id === route.id) : undefined
 
   return (
     <>
@@ -64,7 +68,7 @@ export function App() {
             strings={strings}
             onOpen={handleOpenEvent}
           />
-          <Partners partners={partners} strings={strings} />
+          <Partners partners={partners} strings={strings} onOpen={handleOpenPartner} />
         </main>
         <Footer event={event} strings={strings} />
       </div>
@@ -79,6 +83,20 @@ export function App() {
             .filter((p): p is NonNullable<typeof p> => Boolean(p))}
           strings={strings}
           onClose={closeSheet}
+          onOpenPartner={handleOpenPartner}
+        />
+      ) : null}
+
+      {activePartner ? (
+        <PartnerSheet
+          partner={activePartner}
+          relatedEvents={activePartner.relatedEventIds
+            .map((id) => events.find((e) => e.id === id))
+            .filter((e): e is NonNullable<typeof e> => Boolean(e))}
+          groupById={groupById}
+          strings={strings}
+          onClose={closeSheet}
+          onOpenEvent={handleOpenEvent}
         />
       ) : null}
     </>

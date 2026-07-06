@@ -17,7 +17,9 @@
   --brown-500: #9c8d6f; /* muted labels, captions */
   --brown-400: #a2926f; /* mono placeholder text */
   --brown-300: #b3a685; /* faint placeholder glyphs */
-  --paper-text: #e9dcc4; /* text on the dark brown surface */
+  --paper-text:   #e9dcc4; /* text on the dark brown surface */
+  --paper-strong: #fff8ec; /* strong/bright text on the dark brown surface */
+  --paper-muted:  #c7b596; /* muted text on the dark brown surface (AA, solid) */
 
   /* --- Brand accents --- */
   --terracotta:      #c26a4a; /* primary accent */
@@ -44,7 +46,9 @@
   --text-body:       var(--brown-700);
   --text-muted:      var(--brown-500);
   --text-mono:       var(--brown-400);
-  --text-on-inverse: var(--paper-text);
+  --text-on-inverse:        var(--paper-text);
+  --text-on-inverse-strong: var(--paper-strong);
+  --text-on-inverse-muted:  var(--paper-muted);
 
   --accent:       var(--terracotta);
   --accent-hover: var(--terracotta-ink);

@@ -1,12 +1,27 @@
+import { useMemo } from 'react'
 import type { Partner, Strings } from '../types'
 import { SectionHeading } from './SectionHeading'
 
 /**
  * Flat partners section — the sole surface for featured partners/sponsors
- * (from partners.json). Renders a horizontally swipeable row on phones; no
- * autoplay. Organizers/hosts never appear here.
+ * (from partners.json). A horizontally swipeable, non-autoplay row on phones;
+ * `featured` partners are pinned to the front and enlarged. Tapping a card
+ * opens its detail via `/#/partner/:id`. Organizers/hosts never appear here.
  */
-export function Partners({ partners, strings }: { partners: Partner[]; strings: Strings }) {
+export function Partners({
+  partners,
+  strings,
+  onOpen,
+}: {
+  partners: Partner[]
+  strings: Strings
+  onOpen: (id: string) => void
+}) {
+  // Pin featured partners first without mutating the source order.
+  const ordered = useMemo(
+    () => [...partners].sort((a, b) => Number(b.featured) - Number(a.featured)),
+    [partners],
+  )
   if (partners.length === 0) return null
 
   return (
@@ -32,18 +47,16 @@ export function Partners({ partners, strings }: { partners: Partner[]; strings: 
           listStyle: 'none',
           margin: 'var(--space-5) 0 0',
           padding: '0 var(--gutter)',
-          display: 'grid',
-          gridAutoFlow: 'column',
-          gridAutoColumns: '150px',
+          display: 'flex',
           gap: 'var(--space-3)',
           overflowX: 'auto',
           scrollSnapType: 'x proximity',
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {partners.map((p) => (
-          <li key={p.id} style={{ scrollSnapAlign: 'start' }}>
-            <PartnerCard partner={p} label={strings.partners.visitSite} />
+        {ordered.map((p) => (
+          <li key={p.id} style={{ scrollSnapAlign: 'start', flex: 'none' }}>
+            <PartnerCard partner={p} moreLabel={strings.partners.more} onOpen={() => onOpen(p.id)} />
           </li>
         ))}
       </ul>
@@ -51,45 +64,23 @@ export function Partners({ partners, strings }: { partners: Partner[]; strings: 
   )
 }
 
-function PartnerCard({ partner, label }: { partner: Partner; label: string }) {
-  const Tag = partner.url ? 'a' : 'div'
-  const linkProps = partner.url
-    ? { href: partner.url, target: '_blank', rel: 'noopener noreferrer' }
-    : {}
-
+function PartnerCard({
+  partner,
+  moreLabel,
+  onOpen,
+}: {
+  partner: Partner
+  moreLabel: string
+  onOpen: () => void
+}) {
+  const featured = partner.featured
   return (
-    <Tag
-      {...linkProps}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-2)',
-        height: '100%',
-        padding: 'var(--space-4)',
-        background: 'var(--surface-card)',
-        border: 'var(--border-hairline) solid var(--border-card)',
-        borderRadius: 'var(--radius-md)',
-        boxShadow: 'var(--shadow-card)',
-        textDecoration: 'none',
-      }}
+    <button
+      type="button"
+      onClick={onOpen}
+      style={{ ...CARD, width: featured ? 200 : 150, border: featured ? CARD_BORDER_FEATURED : CARD_BORDER }}
     >
-      {/* Logo slot — real logo when supplied, type placeholder until then. */}
-      <div
-        style={{
-          height: 48,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 'var(--radius-sm)',
-          background: partner.logo ? 'transparent' : 'var(--surface-panel)',
-          fontFamily: partner.featured ? 'var(--font-body)' : 'var(--font-mono)',
-          fontWeight: partner.featured ? 'var(--fw-bold)' : 'var(--fw-medium)',
-          fontSize: partner.featured ? '13px' : '11px',
-          color: partner.featured ? 'var(--accent)' : 'var(--text-mono)',
-          textAlign: 'center',
-          padding: '0 6px',
-        }}
-      >
+      <div style={{ ...LOGO_SLOT, ...(partner.logo ? null : LOGO_SLOT_EMPTY) }}>
         {partner.logo ? (
           <img
             src={partner.logo}
@@ -98,34 +89,74 @@ function PartnerCard({ partner, label }: { partner: Partner; label: string }) {
             style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
           />
         ) : (
-          partner.name
+          <span style={LOGO_PLACEHOLDER}>{partner.category}</span>
         )}
       </div>
 
       <div style={{ minWidth: 0 }}>
-        <div
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontWeight: 'var(--fw-semibold)',
-            fontSize: 'var(--fs-body-sm)',
-            color: 'var(--text-strong)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {partner.name}
-        </div>
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--fs-caption)', color: 'var(--text-muted)' }}>
-          {partner.category}
-        </div>
+        <div style={CARD_NAME}>{partner.name}</div>
+        <div style={CARD_CATEGORY}>{partner.category}</div>
       </div>
 
-      {partner.url ? (
-        <span style={{ marginTop: 'auto', fontFamily: 'var(--font-body)', fontSize: 'var(--fs-caption)', color: 'var(--accent)' }}>
-          {label} ↗
-        </span>
-      ) : null}
-    </Tag>
+      <span style={CARD_MORE}>{moreLabel} ›</span>
+    </button>
   )
+}
+
+const CARD = {
+  display: 'flex',
+  flexDirection: 'column' as const,
+  gap: 'var(--space-2)',
+  height: '100%',
+  textAlign: 'left' as const,
+  padding: 'var(--space-4)',
+  background: 'var(--surface-card)',
+  borderRadius: 'var(--radius-md)',
+  boxShadow: 'var(--shadow-card)',
+  cursor: 'pointer',
+  font: 'inherit',
+}
+
+const CARD_BORDER = 'var(--border-hairline) solid var(--border-card)'
+const CARD_BORDER_FEATURED = 'var(--border-sticker) solid var(--accent)'
+
+const LOGO_SLOT = {
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 'var(--radius-sm)',
+  padding: '0 6px',
+}
+
+const LOGO_SLOT_EMPTY = { background: 'var(--surface-panel)' }
+
+const LOGO_PLACEHOLDER = {
+  fontFamily: 'var(--font-mono)',
+  fontSize: 'var(--fs-mono)',
+  color: 'var(--text-mono)',
+  textAlign: 'center' as const,
+}
+
+const CARD_NAME = {
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)',
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--text-strong)',
+  whiteSpace: 'nowrap' as const,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}
+
+const CARD_CATEGORY = {
+  fontFamily: 'var(--font-body)',
+  fontSize: 'var(--fs-caption)',
+  color: 'var(--text-muted)',
+}
+
+const CARD_MORE = {
+  marginTop: 'auto',
+  fontFamily: 'var(--font-body)',
+  fontSize: 'var(--fs-caption)',
+  color: 'var(--accent)',
 }
