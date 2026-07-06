@@ -71,7 +71,7 @@ export function App() {
         />
         <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} />
         <main id="programme" tabIndex={-1}>
-          <Timeline event={event} events={events} groups={groups} strings={strings} onOpen={openEvent} />
+          <Timeline events={events} groups={groups} strings={strings} onOpen={openEvent} />
           <Partners partners={partners} strings={strings} onOpen={openPartner} />
         </main>
         <Footer event={event} strings={strings} onCtaClick={() => track('cta_click')} />

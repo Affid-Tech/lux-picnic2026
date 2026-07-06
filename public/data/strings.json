@@ -15,13 +15,11 @@
     "notStarted": "Пикник ещё впереди"
   },
   "timeline": {
-    "overviewTitle": "Обзор дня",
     "skipToContent": "Перейти к программе",
     "agendaTitle": "Программа дня",
     "filterAll": "Все",
     "filterGroupLabel": "Программа",
     "filterAudienceLabel": "Аудитория",
-    "nowMarker": "сейчас",
     "empty": "В этом фильтре пока нет событий",
     "pointShort": "точка",
     "eventsOne": "событие",

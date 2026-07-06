@@ -4,7 +4,7 @@ import type { EventInfo, Group, Partner, SubEvent } from '../types'
 // Runtime validation at the JSON boundary. Everything the app renders enters
 // here, so this is the single choke point that pins the shapes and — crucially —
 // the security-sensitive fields before they reach the DOM:
-//   • group colours flow into inline `style` (tag outlines, Gantt blocks);
+//   • group colours flow into inline `style` (category tag outlines);
 //   • organizer/partner/signup URLs flow into `href`;
 //   • event id and timezone flow into `.ics` property lines.
 // A malformed value must fail loudly at load, never silently reach the DOM.
