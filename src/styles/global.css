@@ -32,6 +32,33 @@ body {
   box-shadow: var(--shadow-screen);
 }
 
+/* Desktop: float the phone-width column as an intentional framed "device" on a
+   warm surround (distinct from the footer's dark brown, so it no longer reads
+   as a letterbox). We round #root plus the top/bottom bands rather than
+   clipping with overflow:hidden — which would break the sticky filter bar
+   (position:sticky fails inside a non-scrolling overflow-hidden ancestor). */
+@media (min-width: 500px) {
+  body {
+    background: var(--brown-300);
+    padding: var(--space-8) 0;
+  }
+
+  #root {
+    min-height: auto;
+    border-radius: var(--radius-screen);
+  }
+
+  #page-content > header {
+    border-top-left-radius: var(--radius-screen);
+    border-top-right-radius: var(--radius-screen);
+  }
+
+  #page-content > footer {
+    border-bottom-left-radius: var(--radius-screen);
+    border-bottom-right-radius: var(--radius-screen);
+  }
+}
+
 img {
   display: block;
   max-width: 100%;

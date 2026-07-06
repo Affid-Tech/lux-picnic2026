@@ -4,9 +4,13 @@ import { ganttDomain, hourTicks, laneSegments, nowMarkerPct, type Segment } from
 import { fromMinutes } from '../lib/time'
 import { useNow } from '../hooks/useNow'
 
-const LANE_H = 30 // px per lane row
-const BLOCK_H = 26 // px block height (≥24 tap target)
+const LANE_H = 48 // px per lane row (roomy enough for ≥44px tap targets)
+const BLOCK_H = 40 // px ranged-block height
 const MIN_W = 28 // px min block width (holds the dot when very short)
+const POINT_HIT = 44 // px transparent tap area around a point sticker
+const POINT_DOT = 30 // px visible circular sticker for a point event
+const TITLE_MIN_WIDTH_PCT = 15 // below this a ranged block shows the dot only (a
+// ~1h block is too narrow for a legible label — better a clean dot than a stub)
 
 /**
  * Collapsible "Обзор дня" mini-Gantt. Lanes are packed by concurrency (not by
@@ -144,20 +148,17 @@ function Gridlines({ ticks, pctOf }: { ticks: number[]; pctOf: (min: number) => 
 function GanttBlock({ seg, onOpen }: { seg: Segment; onOpen: (id: string) => void }) {
   const range = seg.end ? `${seg.start}–${seg.end}` : seg.start
   const ariaLabel = [seg.title, seg.groupLabel, range].filter(Boolean).join(', ')
+  // Shared positioning only; each branch adds its own visible sticker styling.
   const base = {
     position: 'absolute' as const,
-    top: seg.lane * LANE_H,
-    height: BLOCK_H,
     left: `${seg.leftPct}%`,
-    background: 'var(--surface-card)',
-    border: `var(--border-sticker) solid ${seg.color}`,
-    boxShadow: 'var(--shadow-card)',
     cursor: 'pointer',
     padding: 0,
   }
 
   if (seg.point) {
-    // Point event: a compact circular sticker with a filled colour dot.
+    // Point event: a 44px transparent hit area around a compact circular
+    // sticker (cream fill, coloured outline, filled dot).
     return (
       <button
         type="button"
@@ -165,15 +166,33 @@ function GanttBlock({ seg, onOpen }: { seg: Segment; onOpen: (id: string) => voi
         onClick={() => onOpen(seg.id)}
         style={{
           ...base,
-          width: BLOCK_H,
+          top: seg.lane * LANE_H + (LANE_H - POINT_HIT) / 2,
+          height: POINT_HIT,
+          width: POINT_HIT,
           transform: 'translateX(-50%)',
-          borderRadius: '50%',
+          background: 'transparent',
+          border: 'none',
+          boxShadow: 'none',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <span style={{ width: 8, height: 8, borderRadius: '50%', background: seg.color }} />
+        <span
+          style={{
+            width: POINT_DOT,
+            height: POINT_DOT,
+            borderRadius: '50%',
+            background: 'var(--surface-card)',
+            border: `var(--border-sticker) solid ${seg.color}`,
+            boxShadow: 'var(--shadow-card)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: seg.color }} />
+        </span>
       </button>
     )
   }
@@ -185,8 +204,13 @@ function GanttBlock({ seg, onOpen }: { seg: Segment; onOpen: (id: string) => voi
       onClick={() => onOpen(seg.id)}
       style={{
         ...base,
+        top: seg.lane * LANE_H + (LANE_H - BLOCK_H) / 2,
+        height: BLOCK_H,
         width: `${seg.widthPct}%`,
         minWidth: MIN_W,
+        background: 'var(--surface-card)',
+        border: `var(--border-sticker) solid ${seg.color}`,
+        boxShadow: 'var(--shadow-card)',
         borderRadius: 'var(--radius-sm)',
         display: 'flex',
         alignItems: 'center',
@@ -196,20 +220,25 @@ function GanttBlock({ seg, onOpen }: { seg: Segment; onOpen: (id: string) => voi
       }}
     >
       <span style={{ width: 7, height: 7, borderRadius: '50%', background: seg.color, flex: 'none' }} />
-      <span
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontWeight: 'var(--fw-semibold)',
-          fontSize: '11px',
-          lineHeight: 1,
-          color: 'var(--text-strong)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}
-      >
-        {seg.title}
-      </span>
+      {/* Only show the title when the block is wide enough to hold something
+          legible; narrow blocks stay a clean dot chip (aria-label still names
+          the event for assistive tech). */}
+      {seg.widthPct >= TITLE_MIN_WIDTH_PCT ? (
+        <span
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontWeight: 'var(--fw-semibold)',
+            fontSize: '11px',
+            lineHeight: 1,
+            color: 'var(--text-strong)',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {seg.title}
+        </span>
+      ) : null}
     </button>
   )
 }
