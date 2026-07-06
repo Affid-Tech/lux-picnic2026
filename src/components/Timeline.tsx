@@ -1,10 +1,14 @@
+import { useMemo, useState } from 'react'
 import type { EventInfo, Group, Strings, SubEvent } from '../types'
+import { deriveAudienceBuckets, filterEvents, type FilterState } from '../lib/filter'
+import { FilterChips } from './FilterChips'
+import { DayOverview } from './DayOverview'
 import { Agenda } from './Agenda'
 
 /**
- * Timeline section shell (phase 2 skeleton). Hosts the sticky filter-bar
- * scaffold and the vertical agenda. Phase 3 fills the sticky bar with filter
- * chips and adds the "Обзор дня" mini-Gantt above the agenda.
+ * Timeline section. Owns the filter and overview-open state, hosts the sticky
+ * filter chips, the collapsible "Обзор дня" mini-Gantt, and the filtered
+ * vertical agenda. Everything below is driven by the JSON data.
  */
 export function Timeline({
   event,
@@ -19,13 +23,16 @@ export function Timeline({
   strings: Strings
   onOpen: (id: string) => void
 }) {
-  // `event` is threaded through now so phase 3's Gantt can read the day window;
-  // referenced here to keep it in the contract without an unused-var warning.
-  void event
+  const [filter, setFilter] = useState<FilterState>({ group: 'all', audience: 'all' })
+  // Collapsed by default (mobile-first): the overview expands on demand.
+  const [overviewOpen, setOverviewOpen] = useState(false)
+
+  const audiences = useMemo(() => deriveAudienceBuckets(events), [events])
+  const filtered = useMemo(() => filterEvents(events, filter), [events, filter])
 
   return (
     <section style={{ background: 'var(--surface-panel)' }}>
-      {/* Sticky filter-bar scaffold — phase 3 mounts FilterChips here. */}
+      {/* Sticky filter bar. */}
       <div
         style={{
           position: 'sticky',
@@ -34,11 +41,32 @@ export function Timeline({
           background: 'var(--surface-panel)',
           borderBottom: 'var(--border-hairline) solid var(--border-card)',
           padding: 'var(--space-3) var(--gutter)',
-          minHeight: 44,
         }}
-      />
+      >
+        <FilterChips
+          groups={groups}
+          audiences={audiences}
+          state={filter}
+          onChange={setFilter}
+          strings={strings}
+        />
+      </div>
 
-      <Agenda events={events} groups={groups} strings={strings} onOpen={onOpen} />
+      {/* Обзор дня mini-Gantt — always shows the full day, independent of the
+          agenda filter, so parallelism stays glanceable. */}
+      <div style={{ padding: 'var(--space-5) var(--gutter) 0' }}>
+        <DayOverview
+          event={event}
+          events={events}
+          groups={groups}
+          strings={strings}
+          open={overviewOpen}
+          onToggle={() => setOverviewOpen((v) => !v)}
+          onOpen={onOpen}
+        />
+      </div>
+
+      <Agenda events={filtered} groups={groups} strings={strings} onOpen={onOpen} />
     </section>
   )
 }

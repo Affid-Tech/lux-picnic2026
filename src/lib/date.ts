@@ -24,3 +24,13 @@ export function formatDateLong(iso: string): string {
 export function formatWeekday(iso: string): string {
   return WEEKDAYS[parseDate(iso).getDay()]
 }
+
+/** True when the given local Date falls on the "YYYY-MM-DD" calendar day. */
+export function isSameLocalDate(date: Date, iso: string): boolean {
+  const target = parseDate(iso)
+  return (
+    date.getFullYear() === target.getFullYear() &&
+    date.getMonth() === target.getMonth() &&
+    date.getDate() === target.getDate()
+  )
+}

@@ -1,0 +1,21 @@
+import { useEffect, useState } from 'react'
+import { isSameLocalDate } from '../lib/date'
+
+/**
+ * Returns the current Date, re-rendering on an interval — but only when
+ * `activeDateIso` is today. Off-day there is no live clock to track, so we
+ * skip the timer entirely (the "сейчас" marker only shows on the event date).
+ */
+export function useNow(activeDateIso: string, intervalMs = 30_000): Date {
+  const [now, setNow] = useState<Date>(() => new Date())
+
+  useEffect(() => {
+    if (!isSameLocalDate(new Date(), activeDateIso)) return
+    const tick = () => setNow(new Date())
+    tick()
+    const id = window.setInterval(tick, intervalMs)
+    return () => window.clearInterval(id)
+  }, [activeDateIso, intervalMs])
+
+  return now
+}

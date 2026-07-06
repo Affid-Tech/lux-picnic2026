@@ -5,11 +5,14 @@ import { SectionHeading } from './SectionHeading'
 import { formatDuration, formatTimeRange, isPointEvent, parallelCount, sortEvents, toMinutes } from '../lib/time'
 
 /**
- * Vertical agenda (phase 1: chronological list). A time rail on the left,
- * category-tagged event rows on the right. Point events render as slim
- * markers; overlapping events show an "идёт параллельно" hint.
+ * Vertical agenda: a time rail on the left, category-tagged event rows on the
+ * right. Point events render as slim markers; overlapping events show an
+ * "идёт параллельно" hint. Receives an already-filtered list; parallel counts
+ * are computed within the visible set. Rows carry `id="event-:id"` anchors and
+ * are the primary ≥44px tap target for opening an event.
  *
- * Filter chips and the "Обзор дня" mini-Gantt arrive in phase 3.
+ * The Timeline section provides the surrounding band; this renders the heading,
+ * list and empty state only.
  */
 export function Agenda({
   events,
@@ -24,34 +27,64 @@ export function Agenda({
 }) {
   const groupById = useMemo(() => new Map(groups.map((g) => [g.id, g])), [groups])
   const ordered = useMemo(() => sortEvents(events, groups), [events, groups])
+  const t = strings.timeline
+  const countLabel = `${events.length} ${plural(events.length, t.eventsOne, t.eventsFew, t.eventsMany)}`
 
   return (
-    <section style={{ padding: 'var(--space-7) var(--gutter)', background: 'var(--surface-panel)' }}>
-      <SectionHeading meta={`${events.length} событий`}>{strings.timeline.agendaTitle}</SectionHeading>
+    <div style={{ padding: 'var(--space-6) var(--gutter) var(--space-7)' }}>
+      <SectionHeading meta={countLabel}>{strings.timeline.agendaTitle}</SectionHeading>
 
-      <ol style={{ listStyle: 'none', margin: 'var(--space-5) 0 0', padding: 0, display: 'grid', gap: 'var(--space-3)' }}>
-        {ordered.map((e) => {
-          const group = groupById.get(e.group)
-          const parallel = parallelCount(e, events)
-          const point = isPointEvent(e)
-          const durMin = point ? null : toMinutes(e.end as string) - toMinutes(e.start)
-          return (
-            <li key={e.id}>
-              <AgendaRow
-                event={e}
-                group={group}
-                point={point}
-                durationLabel={durMin ? formatDuration(durMin) : strings.eventCard.pointEvent}
-                parallel={parallel}
-                parallelHint={strings.timeline.parallelHint}
-                onOpen={() => onOpen(e.id)}
-              />
-            </li>
-          )
-        })}
-      </ol>
-    </section>
+      {ordered.length === 0 ? (
+        <p
+          style={{
+            margin: 'var(--space-5) 0 0',
+            padding: 'var(--space-5)',
+            textAlign: 'center',
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--fs-body-sm)',
+            color: 'var(--text-muted)',
+            background: 'var(--surface-card)',
+            border: 'var(--border-hairline) dashed var(--border-dashed)',
+            borderRadius: 'var(--radius-lg)',
+          }}
+        >
+          {strings.timeline.empty}
+        </p>
+      ) : (
+        <ol style={{ listStyle: 'none', margin: 'var(--space-5) 0 0', padding: 0, display: 'grid', gap: 'var(--space-3)' }}>
+          {ordered.map((e) => {
+            const group = groupById.get(e.group)
+            const parallel = parallelCount(e, events)
+            const point = isPointEvent(e)
+            const durMin = point ? null : toMinutes(e.end as string) - toMinutes(e.start)
+            return (
+              <li key={e.id} id={`event-${e.id}`}>
+                <AgendaRow
+                  event={e}
+                  group={group}
+                  point={point}
+                  durationLabel={durMin ? formatDuration(durMin) : strings.eventCard.pointEvent}
+                  pointShort={t.pointShort}
+                  parallel={parallel}
+                  parallelHint={t.parallelHint}
+                  onOpen={() => onOpen(e.id)}
+                />
+              </li>
+            )
+          })}
+        </ol>
+      )}
+    </div>
   )
+}
+
+/** Russian plural selector: (1) событие, (2–4) события, (5+) событий. */
+function plural(n: number, one: string, few: string, many: string): string {
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod10 === 1 && mod100 !== 11) return one
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few
+  return many
 }
 
 function AgendaRow({
@@ -59,6 +92,7 @@ function AgendaRow({
   group,
   point,
   durationLabel,
+  pointShort,
   parallel,
   parallelHint,
   onOpen,
@@ -67,6 +101,7 @@ function AgendaRow({
   group: Group | undefined
   point: boolean
   durationLabel: string
+  pointShort: string
   parallel: number
   parallelHint: string
   onOpen: () => void
@@ -112,7 +147,7 @@ function AgendaRow({
             marginTop: 3,
           }}
         >
-          {point ? '· точка' : (event.end ?? '')}
+          {point ? `· ${pointShort}` : (event.end ?? '')}
         </div>
       </div>
 
@@ -151,12 +186,18 @@ function AgendaRow({
           <p
             style={{
               margin: '6px 0 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
               fontFamily: 'var(--font-body)',
-              fontWeight: 'var(--fw-medium)',
+              fontWeight: 'var(--fw-semibold)',
               fontSize: 'var(--fs-caption)',
-              color: 'var(--sage)',
+              color: 'var(--text-body)',
             }}
           >
+            {/* Sage dot keeps the botanical accent while the label text meets
+                AA contrast (colour is paired with the label, never alone). */}
+            <span aria-hidden style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--sage)', flex: 'none' }} />
             {parallelHint} · {parallel}
           </p>
         ) : null}

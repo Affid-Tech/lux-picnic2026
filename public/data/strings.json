@@ -21,7 +21,11 @@
     "parallelHint": "идёт параллельно",
     "parallelCount": "параллельно · {count}",
     "nowMarker": "сейчас",
-    "empty": "В этом фильтре пока нет событий"
+    "empty": "В этом фильтре пока нет событий",
+    "pointShort": "точка",
+    "eventsOne": "событие",
+    "eventsFew": "события",
+    "eventsMany": "событий"
   },
   "eventCard": {
     "organizersTitle": "Ведущие",
