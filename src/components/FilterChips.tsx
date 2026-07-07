@@ -25,7 +25,10 @@ export function FilterChips({
   const allLabel = strings.timeline.filterAll
 
   return (
-    <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+    // minWidth: 0 so this grid item can shrink inside the sticky bar's track
+    // instead of growing to its max-content width; gridTemplateColumns keeps
+    // its own single column from doing the same to the chip rows below it.
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--space-2)', minWidth: 0 }}>
       <ChipRow ariaLabel="Фильтр по программе" label={strings.timeline.filterGroupLabel}>
         <Chip
           label={allLabel}
@@ -75,7 +78,9 @@ function ChipRow({
   label?: string
 }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+    // minWidth: 0 lets this row shrink to its grid track's width instead of
+    // stretching to the chips' unscrolled max-content width (see FilterChips).
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', minWidth: 0 }}>
       {/* Fixed-width row caption so the two filter dimensions read distinctly
           (they both start with a "Все" chip) and the chips align across rows. */}
       {label ? <span style={ROW_LABEL}>{label}</span> : null}

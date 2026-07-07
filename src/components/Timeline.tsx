@@ -35,6 +35,13 @@ export function Timeline({
           background: 'var(--surface-panel)',
           borderBottom: 'var(--border-hairline) solid var(--border-card)',
           padding: 'var(--space-3) var(--gutter)',
+          display: 'grid',
+          // Explicit minmax(0, 1fr) keeps the track pinned to the available
+          // width; a bare 'auto' track sizes to the max-content width of its
+          // item (the chip rows), blowing out past the frame instead of
+          // letting FilterChips' own overflow-x:auto scroll internally.
+          gridTemplateColumns: 'minmax(0, 1fr)',
+          gap: 'var(--space-2)',
         }}
       >
         <FilterChips
