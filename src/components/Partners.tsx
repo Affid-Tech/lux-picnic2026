@@ -71,25 +71,32 @@ function PartnerCard({
 }) {
   return (
     <button type="button" onClick={onOpen} style={CARD}>
-      <div style={LOGO_SLOT}>
-        {partner.logo ? (
-          <img
-            src={partner.logo}
-            alt={partner.name}
-            loading="lazy"
-            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-          />
-        ) : (
-          // No logo asset yet: render the brand name as a terracotta wordmark
-          // (per the design brief) rather than a grey category chip.
-          <span style={WORDMARK}>{partner.name}</span>
-        )}
-      </div>
-
-      <div style={{ minWidth: 0 }}>
-        {partner.logo ? <div style={CARD_NAME}>{partner.name}</div> : null}
-        <div style={CARD_CATEGORY}>{partner.category}</div>
-      </div>
+      {partner.logo ? (
+        <>
+          <div style={LOGO_SLOT}>
+            {/* Name already renders as visible text below — alt="" avoids
+                announcing it twice as this button's accessible name. */}
+            <img src={partner.logo} alt="" loading="lazy" style={LOGO_IMG} />
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <div style={CARD_NAME}>{partner.name}</div>
+            <div style={CARD_CATEGORY}>{partner.category}</div>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* No logo asset: a monogram anchors the card visually (echoing
+              the sticker dot/outline motif) so the name below can be a
+              confident typographic headline instead of a squeezed wordmark. */}
+          <span style={MONOGRAM} aria-hidden="true">
+            {partner.name.trim().charAt(0).toUpperCase()}
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <div style={CARD_NAME_TEXT_ONLY}>{partner.name}</div>
+            <div style={CARD_CATEGORY_LABEL}>{partner.category}</div>
+          </div>
+        </>
+      )}
     </button>
   )
 }
@@ -111,7 +118,7 @@ const CARD = {
 }
 
 const LOGO_SLOT = {
-  minHeight: 48,
+  minHeight: 56,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -121,28 +128,42 @@ const LOGO_SLOT = {
   padding: 'var(--space-2) 6px',
 }
 
-const CLAMP_2_LINES = {
-  display: '-webkit-box',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical' as const,
-  overflow: 'hidden',
+const LOGO_IMG = {
+  maxWidth: '100%',
+  maxHeight: 48,
+  objectFit: 'contain' as const,
+  borderRadius: 4,
 }
 
-const WORDMARK = {
-  ...CLAMP_2_LINES,
-  minWidth: 0,
-  padding: '0 4px',
+const MONOGRAM = {
+  width: 40,
+  height: 40,
+  flex: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   fontFamily: 'var(--font-display)',
   fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-heading)',
-  letterSpacing: 'var(--ls-display)',
-  lineHeight: 'var(--lh-snug)',
-  color: 'var(--accent-text)',
-  textAlign: 'center' as const,
+  fontSize: 17,
+  lineHeight: 1,
+  color: 'var(--text-strong)',
+  background: 'var(--surface-card)',
+  border: 'var(--border-sticker) solid var(--accent)',
+  borderRadius: '50%',
+  boxShadow: '0 2px 0 rgba(0,0,0,.12)',
+}
+
+function clampLines(lines: number) {
+  return {
+    display: '-webkit-box',
+    WebkitLineClamp: lines,
+    WebkitBoxOrient: 'vertical' as const,
+    overflow: 'hidden',
+  }
 }
 
 const CARD_NAME = {
-  ...CLAMP_2_LINES,
+  ...clampLines(2),
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-semibold)',
   fontSize: 'var(--fs-body-sm)',
@@ -153,5 +174,26 @@ const CARD_NAME = {
 const CARD_CATEGORY = {
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--fs-caption)',
+  color: 'var(--text-muted)',
+}
+
+const CARD_NAME_TEXT_ONLY = {
+  ...clampLines(3),
+  marginTop: 2,
+  fontFamily: 'var(--font-display)',
+  fontWeight: 'var(--fw-semibold)',
+  fontSize: 'var(--fs-card-title)',
+  letterSpacing: 'var(--ls-display)',
+  lineHeight: 'var(--lh-snug)',
+  color: 'var(--text-strong)',
+}
+
+const CARD_CATEGORY_LABEL = {
+  marginTop: 2,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)',
+  fontSize: 'var(--fs-caption)',
+  letterSpacing: 'var(--ls-label)',
+  textTransform: 'uppercase' as const,
   color: 'var(--text-muted)',
 }
