@@ -25,6 +25,9 @@
     "liveNow": "идёт сейчас",
     "jumpToNow": "Что идёт сейчас",
     "pointShort": "точка",
+    "daypartMorning": "Утро",
+    "daypartDay": "День",
+    "daypartEvening": "Вечер",
     "eventsOne": "событие",
     "eventsFew": "события",
     "eventsMany": "событий"

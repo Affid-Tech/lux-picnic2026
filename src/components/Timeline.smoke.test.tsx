@@ -25,6 +25,15 @@ describe('Timeline (static render with seed data)', () => {
     for (const e of events) expect(html).toContain(escapeHtml(e.title))
   })
 
+  it('splits the agenda into morning/day/evening daypart sections', () => {
+    const html = renderToStaticMarkup(
+      <Timeline events={events} groups={groups} strings={strings} onOpen={noop} />,
+    )
+    expect(html).toContain(strings.timeline.daypartMorning)
+    expect(html).toContain(strings.timeline.daypartDay)
+    expect(html).toContain(strings.timeline.daypartEvening)
+  })
+
   it('shows the event count', () => {
     const html = renderToStaticMarkup(
       <Timeline events={events} groups={groups} strings={strings} onOpen={noop} />,

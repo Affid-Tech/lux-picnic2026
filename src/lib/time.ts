@@ -31,6 +31,16 @@ export function isPointEvent(e: SubEvent): boolean {
   return e.end === null
 }
 
+export type Daypart = 'morning' | 'day' | 'evening'
+
+/** Coarse part-of-day bucket for an event's start time: утро ≤12:00, день ≤15:00, вечер ≥16:00. */
+export function getDaypart(start: string): Daypart {
+  const mins = toMinutes(start)
+  if (mins <= 12 * 60) return 'morning'
+  if (mins <= 15 * 60) return 'day'
+  return 'evening'
+}
+
 /** Sort by start time, then by group order, then title. */
 export function sortEvents(events: SubEvent[], groups: Group[]): SubEvent[] {
   const order = new Map(groups.map((g) => [g.id, g.order]))

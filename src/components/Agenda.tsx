@@ -2,16 +2,31 @@ import { useMemo } from 'react'
 import type { Group, Strings, SubEvent } from '../types'
 import { CategoryTag } from './CategoryTag'
 import { SectionHeading } from './SectionHeading'
-import { formatDuration, isPointEvent, sortEvents, toMinutes } from '../lib/time'
+import { type Daypart, formatDuration, getDaypart, isPointEvent, sortEvents, toMinutes } from '../lib/time'
+
+const DAYPART_ORDER: Daypart[] = ['morning', 'day', 'evening']
+
+/** Partition an already start-time-sorted list into non-empty daypart buckets, in order. */
+function groupByDaypart(events: SubEvent[]): { daypart: Daypart; events: SubEvent[] }[] {
+  const buckets = new Map<Daypart, SubEvent[]>()
+  for (const e of events) {
+    const d = getDaypart(e.start)
+    const list = buckets.get(d)
+    if (list) list.push(e)
+    else buckets.set(d, [e])
+  }
+  return DAYPART_ORDER.filter((d) => buckets.has(d)).map((daypart) => ({ daypart, events: buckets.get(daypart)! }))
+}
 
 /**
  * Vertical agenda: a time rail on the left, category-tagged event rows on the
  * right. Point events render as slim markers. Receives an already-filtered
- * list. Rows carry `id="event-:id"` anchors and are the primary ≥44px tap
- * target for opening an event.
+ * list, grouped into Утро/День/Вечер daypart sections by start time. Rows
+ * carry `id="event-:id"` anchors and are the primary ≥44px tap target for
+ * opening an event.
  *
  * The Timeline section provides the surrounding band; this renders the heading,
- * list and empty state only.
+ * daypart sections and empty state only.
  */
 export function Agenda({
   events,
@@ -29,8 +44,14 @@ export function Agenda({
 }) {
   const groupById = useMemo(() => new Map(groups.map((g) => [g.id, g])), [groups])
   const ordered = useMemo(() => sortEvents(events, groups), [events, groups])
+  const grouped = useMemo(() => groupByDaypart(ordered), [ordered])
   const t = strings.timeline
   const countLabel = `${events.length} ${plural(events.length, t.eventsOne, t.eventsFew, t.eventsMany)}`
+  const daypartLabel: Record<Daypart, string> = {
+    morning: t.daypartMorning,
+    day: t.daypartDay,
+    evening: t.daypartEvening,
+  }
 
   return (
     <div style={{ padding: 'var(--space-6) var(--gutter) var(--space-7)' }}>
@@ -53,31 +74,73 @@ export function Agenda({
           {strings.timeline.empty}
         </p>
       ) : (
-        <ol style={{ listStyle: 'none', margin: 'var(--space-5) 0 0', padding: 0, display: 'grid', gap: 'var(--space-3)' }}>
-          {ordered.map((e) => {
-            const group = groupById.get(e.group)
-            const point = isPointEvent(e)
-            const durMin = point ? null : toMinutes(e.end as string) - toMinutes(e.start)
-            return (
-              // scrollMarginTop clears the sticky filter bar when jump-to-now lands here.
-              <li key={e.id} id={`event-${e.id}`} style={{ scrollMarginTop: 120 }}>
-                <AgendaRow
-                  event={e}
-                  group={group}
-                  point={point}
-                  live={liveIds?.has(e.id) ?? false}
-                  liveLabel={t.liveNow}
-                  durationLabel={durMin ? formatDuration(durMin) : strings.eventCard.pointEvent}
-                  pointShort={t.pointShort}
-                  onOpen={() => onOpen(e.id)}
-                />
-              </li>
-            )
-          })}
-        </ol>
+        grouped.map(({ daypart, events: bucket }, i) => (
+          <div key={daypart} style={{ marginTop: i === 0 ? 'var(--space-5)' : 'var(--space-6)' }}>
+            <h3 style={DAYPART_HEADING}>{daypartLabel[daypart]}</h3>
+            <AgendaRowList
+              events={bucket}
+              groupById={groupById}
+              t={t}
+              pointEventLabel={strings.eventCard.pointEvent}
+              liveIds={liveIds}
+              onOpen={onOpen}
+            />
+          </div>
+        ))
       )}
     </div>
   )
+}
+
+function AgendaRowList({
+  events,
+  groupById,
+  t,
+  pointEventLabel,
+  liveIds,
+  onOpen,
+}: {
+  events: SubEvent[]
+  groupById: Map<string, Group>
+  t: Strings['timeline']
+  pointEventLabel: string
+  liveIds?: Set<string>
+  onOpen: (id: string) => void
+}) {
+  return (
+    <ol style={{ listStyle: 'none', margin: 'var(--space-3) 0 0', padding: 0, display: 'grid', gap: 'var(--space-3)' }}>
+      {events.map((e) => {
+        const group = groupById.get(e.group)
+        const point = isPointEvent(e)
+        const durMin = point ? null : toMinutes(e.end as string) - toMinutes(e.start)
+        return (
+          // scrollMarginTop clears the sticky filter bar when jump-to-now lands here.
+          <li key={e.id} id={`event-${e.id}`} style={{ scrollMarginTop: 120 }}>
+            <AgendaRow
+              event={e}
+              group={group}
+              point={point}
+              live={liveIds?.has(e.id) ?? false}
+              liveLabel={t.liveNow}
+              durationLabel={durMin ? formatDuration(durMin) : pointEventLabel}
+              pointShort={t.pointShort}
+              onOpen={() => onOpen(e.id)}
+            />
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
+const DAYPART_HEADING = {
+  margin: 0,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-caption)',
+  letterSpacing: 'var(--ls-label)',
+  textTransform: 'uppercase' as const,
+  color: 'var(--text-muted)',
 }
 
 const LIVE_PILL = {
@@ -187,7 +250,7 @@ function AgendaRow({
             </span>
           ) : null}
         </div>
-        <h3
+        <h4
           style={{
             margin: '0 0 4px',
             fontFamily: 'var(--font-body)',
@@ -198,7 +261,7 @@ function AgendaRow({
           }}
         >
           {event.title}
-        </h3>
+        </h4>
         {event.shortDescription ? (
           <p
             style={{
