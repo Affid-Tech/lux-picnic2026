@@ -2,6 +2,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 // Static SPA build.
 //
 // `base` is '/' so the site works from a domain root (Netlify / Vercel /
@@ -10,7 +12,7 @@ import react from '@vitejs/plugin-react'
 // keep working under any base.
 export default defineConfig({
   base: '/',
-  plugins: [react()],
+  plugins: [react(), cloudflare()],
   build: {
     outDir: 'dist',
     target: 'es2020',
