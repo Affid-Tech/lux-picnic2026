@@ -95,7 +95,8 @@ const GRID_LIST = {
   margin: 'var(--space-5) 0 0',
   padding: '0 var(--gutter)',
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fill, 150px)',
+  justifyContent: 'center' as const,
   gap: 'var(--space-3)',
 }
 
@@ -108,32 +109,24 @@ function PartnerCard({
 }) {
   return (
     <button type="button" onClick={onOpen} style={CARD}>
-      {partner.logo ? (
-        <>
-          <div style={LOGO_FRAME}>
-            {/* Name already renders as visible text below — alt="" avoids
-                announcing it twice as this button's accessible name. */}
-            <img src={partner.logo} alt="" loading="lazy" style={LOGO_IMG} />
-          </div>
-          <div style={{ minWidth: 0 }}>
-            <div style={CARD_NAME}>{partner.name}</div>
-            <div style={CARD_CATEGORY}>{partner.category}</div>
-          </div>
-        </>
-      ) : (
-        <>
-          {/* No logo asset: a monogram anchors the card visually (echoing
-              the sticker dot/outline motif) so the name below can be a
-              confident typographic headline instead of a squeezed wordmark. */}
+      <div style={LOGO_FRAME}>
+        {partner.logo ? (
+          // Name already renders as visible text below — alt="" avoids
+          // announcing it twice as this button's accessible name.
+          <img src={partner.logo} alt="" loading="lazy" style={LOGO_IMG} />
+        ) : (
+          // No logo asset: a monogram fills the same frame a logo would
+          // (echoing the sticker dot/outline motif), so the two card
+          // variants read as the same shape.
           <span style={MONOGRAM} aria-hidden="true">
             {partner.name.trim().charAt(0).toUpperCase()}
           </span>
-          <div style={{ minWidth: 0 }}>
-            <div style={CARD_NAME_TEXT_ONLY}>{partner.name}</div>
-            <div style={CARD_CATEGORY_LABEL}>{partner.category}</div>
-          </div>
-        </>
-      )}
+        )}
+      </div>
+      <div style={{ minWidth: 0 }}>
+        <div style={CARD_NAME}>{partner.name}</div>
+        <div style={CARD_CATEGORY}>{partner.category}</div>
+      </div>
     </button>
   )
 }
@@ -171,15 +164,14 @@ const LOGO_IMG = {
 }
 
 const MONOGRAM = {
-  width: 40,
-  height: 40,
-  flex: 'none',
+  height: '100%',
+  aspectRatio: '1',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontFamily: 'var(--font-display)',
   fontWeight: 'var(--fw-semibold)',
-  fontSize: 17,
+  fontSize: 'var(--fs-title)',
   lineHeight: 1,
   color: 'var(--text-strong)',
   background: 'var(--surface-card)',
@@ -209,26 +201,5 @@ const CARD_NAME = {
 const CARD_CATEGORY = {
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--fs-caption)',
-  color: 'var(--text-muted)',
-}
-
-const CARD_NAME_TEXT_ONLY = {
-  ...clampLines(3),
-  marginTop: 2,
-  fontFamily: 'var(--font-display)',
-  fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-card-title)',
-  letterSpacing: 'var(--ls-display)',
-  lineHeight: 'var(--lh-snug)',
-  color: 'var(--text-strong)',
-}
-
-const CARD_CATEGORY_LABEL = {
-  marginTop: 2,
-  fontFamily: 'var(--font-body)',
-  fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-caption)',
-  letterSpacing: 'var(--ls-label)',
-  textTransform: 'uppercase' as const,
   color: 'var(--text-muted)',
 }
