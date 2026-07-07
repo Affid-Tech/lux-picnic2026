@@ -27,7 +27,7 @@ export function Sheet({
 }) {
   const reduced = usePrefersReducedMotion()
   const panelRef = useRef<HTMLDivElement>(null)
-  const closeTimer = useRef<number>()
+  const closeTimer = useRef<number>(null)
   const closedRef = useRef(false)
   const [entered, setEntered] = useState(reduced)
   const [closing, setClosing] = useState(false)
