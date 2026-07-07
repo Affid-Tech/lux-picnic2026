@@ -89,7 +89,7 @@ Each event shows:
 - Full description / details (long text from JSON).
 - **Area / location** within the venue (if provided).
 - **Organizers / hosts** — the people or communities running *this* event (e.g. *Катя* hosting *«мафия для подростков»*). Shown as a name, an optional role, a type indicator (person / community / org), and an outbound link **only if one exists**. Organizers are lightweight and inline to the event — they do **not** need a logo or site and do **not** appear in the Partners section.
-- **Related partners** *(optional)* — shown only when this event is tied to an actual featured partner/sponsor (via `partnerIds`). Renders that partner's logo, linking into the Partners section / partner site. Most events won't have any.
+- **Related partners** *(optional)* — shown only when this event is tied to an actual partner/sponsor (via `partnerIds`). Renders that partner's logo, linking into the Partners section / partner site. Most events won't have any.
 - **"Добавить в календарь"** action (see 5.4).
 - **Signup / capacity** — *rendered only if present in data* (see §7 & Open Questions). If absent, the event is treated as drop-in and no button shows.
 
@@ -102,12 +102,11 @@ Each event shows:
 - All `.ics` generation is **client-side** (no server). Point events without an end time need a default duration for the calendar entry — **default 30 min** unless specified (Open Question).
 
 ### 5.5 Partners section (flat)
-- **Source of truth:** this section renders **only** entries from `partners.json` — i.e. featured partners/sponsors with a logo, site, and brand presence. Event **organizers/hosts** (like Katya) live inline on their event card and are **never** pulled in here. An organizer can *also* be a partner, but only if they're explicitly listed in `partners.json`.
-- **One flat section** — partners and sponsors shown together, no tiers.
+- **Source of truth:** this section renders **only** entries from `partners.json` — i.e. partners/sponsors with a logo, site, and brand presence. Event **organizers/hosts** (like Katya) live inline on their event card and are **never** pulled in here. An organizer can *also* be a partner, but only if they're explicitly listed in `partners.json`.
+- **One flat section** — partners and sponsors shown together, no tiers, all cards the same size.
 - Layout: responsive **logo grid** on wider screens that becomes a **horizontally swipeable row** on phones; each tile is tappable.
 - Tap → detail (modal or expand): name, short description, category, outbound link, and related events.
 - **No autoplay carousel** (accessibility + battery). If a moving element is desired, use a manually-swiped, non-auto row with visible controls.
-- Optional `featured` flag can enlarge/pin a partner.
 
 ### 5.6 Footer / BesedaTech CTA
 - **"Powered by BesedaTech"** wordmark/logo.
@@ -204,7 +203,7 @@ Field notes:
 - `group` references an entry in `groups.json` (by `id` or `label`); the group's color, chip label, and ordering come from that file — nothing about groups is hardcoded.
 - `audience` is an array of tag strings for filter chips.
 - **`organizers`** — the people/communities running the event, shown inline on the card. Fields: `name` (required), `type` ∈ `{ "person", "community", "org" }`, optional `role`, optional `url`. **Lightweight and self-contained** — a host needs nothing more than a name. Example for a host with no web presence: `{ "name": "Катя", "type": "person", "role": "Ведущая" }` (no `url`, no logo).
-- **`partnerIds`** — links this event to featured partners/sponsors defined in `partners.json`. This is the **only** field that surfaces an entity in the Partners section. Organizers are *not* auto-promoted to partners; keep it empty (or omit) when an event is just run by a host like Katya. Usually empty.
+- **`partnerIds`** — links this event to partners/sponsors defined in `partners.json`. This is the **only** field that surfaces an entity in the Partners section. Organizers are *not* auto-promoted to partners; keep it empty (or omit) when an event is just run by a host like Katya. Usually empty.
 - **`signup.mode`** ∈ `{ "none", "external", "internal" }`. v1 default `"none"` (drop-in). `"external"` shows a button to `url`; `"internal"` reserved for future. This keeps the signup decision deferrable without a schema change later.
 
 ### `partners.json`
@@ -217,13 +216,12 @@ Field notes:
     "category": "AI",
     "url": "https://…",
     "description": "…",
-    "relatedEventIds": ["beseda-ai"],
-    "featured": false
+    "relatedEventIds": ["beseda-ai"]
   }
 ]
 ```
 
-The spreadsheet already produced maps directly onto these shapes — the `Расписание` sheet → `events.json`, the `Партнёры` sheet → `partners.json`, and the group legend → `groups.json`. *(Note: with the organizer/partner split, some rows currently seeded on the spreadsheet's `Партнёры` sheet — e.g. the games/D&D masters, the kids animation team — are really per-event **organizers**, not featured partners. When exporting, route those onto their events' `organizers` and keep `partners.json` for entities that genuinely have a logo/site.)*
+The spreadsheet already produced maps directly onto these shapes — the `Расписание` sheet → `events.json`, the `Партнёры` sheet → `partners.json`, and the group legend → `groups.json`. *(Note: with the organizer/partner split, some rows currently seeded on the spreadsheet's `Партнёры` sheet — e.g. the games/D&D masters, the kids animation team — are really per-event **organizers**, not partners. When exporting, route those onto their events' `organizers` and keep `partners.json` for entities that genuinely have a logo/site.)*
 
 **UI copy:** user-facing labels that aren't event content (section titles, "Обзор дня", "Добавить в календарь", "Сейчас / Далее", footer text) are also externalized into a small **`strings.json`** so nothing user-visible is buried in code. This keeps the whole surface swappable and makes a future language toggle a drop-in. *(Optional for a one-off, but consistent with the "all data in JSON" principle.)*
 

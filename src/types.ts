@@ -79,7 +79,7 @@ export interface SubEvent {
   shortDescription: string
   description: string
   organizers: Organizer[]
-  /** references Partner.id — only featured partners, usually empty */
+  /** references Partner.id, usually empty */
   partnerIds: string[]
   tags: string[]
   signup: Signup
@@ -93,7 +93,6 @@ export interface Partner {
   url: string
   description: string
   relatedEventIds: string[]
-  featured: boolean
 }
 
 // strings.json — user-facing UI copy (see PRD §7). Loosely typed as nested

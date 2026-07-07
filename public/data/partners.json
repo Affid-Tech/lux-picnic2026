@@ -6,8 +6,10 @@
     "category": "Игры",
     "url": "https://t.me/lux_mafia",
     "description": "Мафия и настольные игры в Люксембурге.",
-    "relatedEventIds": ["mafia-teens", "mafia-adults"],
-    "featured": true
+    "relatedEventIds": [
+      "mafia-teens",
+      "mafia-adults"
+    ]
   },
   {
     "id": "letzroll",
@@ -16,8 +18,11 @@
     "category": "Игры",
     "url": "",
     "description": "Настольные ролевые игры и D&D-сессии по возрастам.",
-    "relatedEventIds": ["dnd-adults", "dnd-kids", "dnd-teens"],
-    "featured": true
+    "relatedEventIds": [
+      "dnd-adults",
+      "dnd-kids",
+      "dnd-teens"
+    ]
   },
   {
     "id": "chgk",
@@ -26,8 +31,9 @@
     "category": "Игры",
     "url": "https://www.facebook.com/share/g/14hx72DWhfz/",
     "description": "Клуб интеллектуальных игр «Что? Где? Когда?».",
-    "relatedEventIds": ["chgk"],
-    "featured": false
+    "relatedEventIds": [
+      "chgk"
+    ]
   },
   {
     "id": "luxeureka",
@@ -36,8 +42,9 @@
     "category": "Лекции",
     "url": "https://luxeureka.lu",
     "description": "Научно-популярные лекции и разговоры.",
-    "relatedEventIds": ["parenting-sociology"],
-    "featured": false
+    "relatedEventIds": [
+      "parenting-sociology"
+    ]
   },
   {
     "id": "monde-des-arts",
@@ -46,8 +53,9 @@
     "category": "Искусство",
     "url": "https://mondedesarts.lu/",
     "description": "Творческие и музыкальные занятия для детей.",
-    "relatedEventIds": ["kids-music-class"],
-    "featured": false
+    "relatedEventIds": [
+      "kids-music-class"
+    ]
   },
   {
     "id": "educateme",
@@ -56,8 +64,7 @@
     "category": "Образование",
     "url": "https://educateme.lu",
     "description": "Образовательные программы и занятия.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "lux-photo-pro",
@@ -66,8 +73,10 @@
     "category": "Фото",
     "url": "https://luxphotopro.com",
     "description": "Профессиональная фотосъёмка мероприятий.",
-    "relatedEventIds": ["photo-zone-morning", "photo-zone-afternoon"],
-    "featured": false
+    "relatedEventIds": [
+      "photo-zone-morning",
+      "photo-zone-afternoon"
+    ]
   },
   {
     "id": "storytime",
@@ -76,8 +85,7 @@
     "category": "Дети",
     "url": "",
     "description": "Детские программы и чтения.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "maison-skazka",
@@ -86,8 +94,7 @@
     "category": "Дети",
     "url": "",
     "description": "Детский творческий дом «Сказка».",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "luxtoday",
@@ -96,8 +103,7 @@
     "category": "Медиа",
     "url": "https://luxtoday.lu",
     "description": "Медиа о жизни в Люксембурге.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "cest-lux",
@@ -106,8 +112,7 @@
     "category": "Сообщество",
     "url": "",
     "description": "Сообщество русскоязычного Люксембурга.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "chat-vinograd",
@@ -116,8 +121,7 @@
     "category": "Сообщество",
     "url": "https://t.me/+RCR1b25dUXVmMzA0",
     "description": "Тёплое сообщество и чат.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   },
   {
     "id": "yana-dodina",
@@ -126,8 +130,9 @@
     "category": "Книги",
     "url": "https://t.me/litkvartira",
     "description": "Книжный клуб и «Литквартира».",
-    "relatedEventIds": ["book-fair"],
-    "featured": false
+    "relatedEventIds": [
+      "book-fair"
+    ]
   },
   {
     "id": "salon-shokolad",
@@ -136,7 +141,6 @@
     "category": "Еда",
     "url": "",
     "description": "Шоколад и сладкие радости.",
-    "relatedEventIds": [],
-    "featured": false
+    "relatedEventIds": []
   }
 ]

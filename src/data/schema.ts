@@ -106,7 +106,6 @@ const PartnerSchema = z.object({
   url: urlOrEmpty,
   description: z.string(),
   relatedEventIds: z.array(z.string()),
-  featured: z.boolean(),
 })
 
 function parseOrThrow<T>(schema: z.ZodType, raw: unknown, file: string): T {

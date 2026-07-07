@@ -1,13 +1,12 @@
-import { useMemo } from 'react'
 import type { Partner, Strings } from '../types'
 import { SectionHeading } from './SectionHeading'
 import { plural } from '../lib/plural'
 
 /**
- * Flat partners section — the sole surface for featured partners/sponsors
- * (from partners.json). A horizontally swipeable, non-autoplay row on phones;
- * `featured` partners are pinned to the front and enlarged. Tapping a card
- * opens its detail via `/#/partner/:id`. Organizers/hosts never appear here.
+ * Flat partners section — the sole surface for partners/sponsors
+ * (from partners.json). A horizontally swipeable, non-autoplay row on
+ * phones, all cards the same size. Tapping a card opens its detail via
+ * `/#/partner/:id`. Organizers/hosts never appear here.
  */
 export function Partners({
   partners,
@@ -18,11 +17,6 @@ export function Partners({
   strings: Strings
   onOpen: (id: string) => void
 }) {
-  // Pin featured partners first without mutating the source order.
-  const ordered = useMemo(
-    () => [...partners].sort((a, b) => Number(b.featured) - Number(a.featured)),
-    [partners],
-  )
   if (partners.length === 0) return null
 
   const t = strings.partners
@@ -58,7 +52,7 @@ export function Partners({
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {ordered.map((p) => (
+        {partners.map((p) => (
           <li key={p.id} style={{ scrollSnapAlign: 'start', flex: 'none' }}>
             <PartnerCard partner={p} onOpen={() => onOpen(p.id)} />
           </li>
@@ -75,13 +69,8 @@ function PartnerCard({
   partner: Partner
   onOpen: () => void
 }) {
-  const featured = partner.featured
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      style={{ ...CARD, width: featured ? 200 : 150, border: featured ? CARD_BORDER_FEATURED : CARD_BORDER }}
-    >
+    <button type="button" onClick={onOpen} style={CARD}>
       <div style={LOGO_SLOT}>
         {partner.logo ? (
           <img
@@ -109,18 +98,17 @@ const CARD = {
   display: 'flex',
   flexDirection: 'column' as const,
   gap: 'var(--space-2)',
+  width: 150,
   height: '100%',
   textAlign: 'left' as const,
   padding: 'var(--space-4)',
   background: 'var(--surface-card)',
+  border: 'var(--border-hairline) solid var(--border-card)',
   borderRadius: 'var(--radius-md)',
   boxShadow: 'var(--shadow-card)',
   cursor: 'pointer',
   font: 'inherit',
 }
-
-const CARD_BORDER = 'var(--border-hairline) solid var(--border-card)'
-const CARD_BORDER_FEATURED = 'var(--border-sticker) solid var(--accent)'
 
 const LOGO_SLOT = {
   minHeight: 48,
