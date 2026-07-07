@@ -118,7 +118,7 @@ const CARD = {
 }
 
 const LOGO_FRAME = {
-  height: 72,
+  aspectRatio: '3 / 2',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
