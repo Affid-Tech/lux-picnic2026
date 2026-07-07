@@ -25,7 +25,7 @@ export function Timeline({
   /** Scroll the agenda to the first live row. Shown only when something is live. */
   onJumpToNow?: () => void
 }) {
-  const [filter, setFilter] = useState<FilterState>({ group: 'all', audience: 'all' })
+  const [filter, setFilter] = useState<FilterState>({ groups: new Set(), audiences: new Set() })
 
   const audiences = useMemo(() => deriveAudienceBuckets(events), [events])
   const filtered = useMemo(() => filterEvents(events, filter), [events, filter])

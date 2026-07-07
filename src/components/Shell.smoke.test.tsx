@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
-import type { EventInfo, Partner, Strings } from '../types'
+import type { EventInfo, Partner, Strings, SubEvent } from '../types'
 import { Hero } from './Hero'
 import { Footer } from './Footer'
 import { Partners } from './Partners'
@@ -10,21 +10,27 @@ const read = <T,>(file: string): T =>
   JSON.parse(readFileSync(`public/data/${file}`, 'utf8')) as T
 
 const event = read<EventInfo>('event.json')
+const events = read<SubEvent[]>('events.json')
 const partners = read<Partner[]>('partners.json')
 const strings = read<Strings>('strings.json')
 const noop = () => {}
 
 describe('Hero (static render)', () => {
-  const html = renderToStaticMarkup(<Hero event={event} strings={strings} onAddWholeDay={noop} />)
+  const html = renderToStaticMarkup(<Hero event={event} events={events} strings={strings} />)
   it('renders the event name, tagline and whole-day CTA in a header landmark', () => {
     expect(html).toContain('<header')
     expect(html).toContain(escapeHtml(event.name))
     expect(html).toContain(escapeHtml(event.tagline))
     expect(html).toContain(strings.hero.addWholeDay)
   })
-  it('falls back to the placeholder when there is no location map', () => {
-    // Seed location has no mapUrl → shows the plain location text, no map link.
-    expect(html).not.toContain(strings.hero.openMap)
+  it('links the location to the map when a mapUrl is present', () => {
+    expect(html).toContain(strings.hero.openMap)
+    expect(html).toContain(`href="${event.location.mapUrl}"`)
+  })
+  it('offers all three calendar providers in the whole-day dropdown', () => {
+    expect(html).toContain(strings.eventCard.googleCalendar)
+    expect(html).toContain(strings.eventCard.outlookCalendar)
+    expect(html).toContain(strings.eventCard.appleCalendar)
   })
 })
 

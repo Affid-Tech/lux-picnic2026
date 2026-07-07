@@ -1,12 +1,14 @@
+import { useState } from 'react'
 import type { Partner, Strings } from '../types'
 import { SectionHeading } from './SectionHeading'
 import { plural } from '../lib/plural'
 
 /**
  * Flat partners section — the sole surface for partners/sponsors
- * (from partners.json). A horizontally swipeable, non-autoplay row on
- * phones, all cards the same size. Tapping a card opens its detail via
- * `/#/partner/:id`. Organizers/hosts never appear here.
+ * (from partners.json). Defaults to a horizontally swipeable, non-autoplay
+ * row on phones, all cards the same size; "Показать все" switches to a
+ * wrapping grid showing every card at once, and back. Tapping a card opens
+ * its detail via `/#/partner/:id`. Organizers/hosts never appear here.
  */
 export function Partners({
   partners,
@@ -17,6 +19,8 @@ export function Partners({
   strings: Strings
   onOpen: (id: string) => void
 }) {
+  const [expanded, setExpanded] = useState(false)
+
   if (partners.length === 0) return null
 
   const t = strings.partners
@@ -25,7 +29,18 @@ export function Partners({
   return (
     <section aria-label={strings.partners.title} style={{ padding: 'var(--space-7) 0', background: 'var(--surface-page)' }}>
       <div style={{ padding: '0 var(--gutter)' }}>
-        <SectionHeading meta={countLabel}>{strings.partners.title}</SectionHeading>
+        <SectionHeading
+          meta={
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+              {countLabel}
+              <button type="button" onClick={() => setExpanded((v) => !v)} style={TOGGLE_BTN}>
+                {expanded ? t.showLess : t.showAll}
+              </button>
+            </span>
+          }
+        >
+          {strings.partners.title}
+        </SectionHeading>
         {strings.partners.subtitle ? (
           <p
             style={{
@@ -40,26 +55,48 @@ export function Partners({
         ) : null}
       </div>
 
-      <ul
-        style={{
-          listStyle: 'none',
-          margin: 'var(--space-5) 0 0',
-          padding: '0 var(--gutter)',
-          display: 'flex',
-          gap: 'var(--space-3)',
-          overflowX: 'auto',
-          scrollSnapType: 'x proximity',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
+      <ul style={expanded ? GRID_LIST : ROW_LIST}>
         {partners.map((p) => (
-          <li key={p.id} style={{ scrollSnapAlign: 'start', flex: 'none' }}>
+          <li key={p.id} style={expanded ? undefined : ROW_ITEM}>
             <PartnerCard partner={p} onOpen={() => onOpen(p.id)} />
           </li>
         ))}
       </ul>
     </section>
   )
+}
+
+const TOGGLE_BTN = {
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-label)',
+  color: 'var(--accent-text)',
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
+}
+
+const ROW_LIST = {
+  listStyle: 'none' as const,
+  margin: 'var(--space-5) 0 0',
+  padding: '0 var(--gutter)',
+  display: 'flex',
+  gap: 'var(--space-3)',
+  overflowX: 'auto' as const,
+  scrollSnapType: 'x proximity' as const,
+  WebkitOverflowScrolling: 'touch' as const,
+}
+
+const ROW_ITEM = { scrollSnapAlign: 'start' as const, flex: 'none' as const }
+
+const GRID_LIST = {
+  listStyle: 'none' as const,
+  margin: 'var(--space-5) 0 0',
+  padding: '0 var(--gutter)',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+  gap: 'var(--space-3)',
 }
 
 function PartnerCard({

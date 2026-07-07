@@ -67,39 +67,54 @@ describe('filterEvents', () => {
     ev({ id: 'kids', group: 'kids', audience: ['Дети 4–8'] }),
     ev({ id: 'teens', group: 'games', audience: ['Подростки'] }),
   ]
+  const noFilter = () => ({ groups: new Set<string>(), audiences: new Set<'Дети' | 'Подростки' | 'Взрослые'>() })
 
-  it('returns everything when both filters are "all"', () => {
-    expect(filterEvents(events, { group: 'all', audience: 'all' })).toHaveLength(4)
+  it('returns everything when both sets are empty', () => {
+    expect(filterEvents(events, noFilter())).toHaveLength(4)
   })
 
-  it('filters by group id', () => {
-    const out = filterEvents(events, { group: 'kids', audience: 'all' })
+  it('filters by a single selected group', () => {
+    const out = filterEvents(events, { ...noFilter(), groups: new Set(['kids']) })
     expect(out.map((e) => e.id)).toEqual(['kids'])
   })
 
-  it('filters by audience bucket', () => {
-    const out = filterEvents(events, { group: 'all', audience: 'Подростки' })
+  it('ORs multiple selected groups together', () => {
+    const out = filterEvents(events, { ...noFilter(), groups: new Set(['games', 'kids']) })
+    expect(out.map((e) => e.id).sort()).toEqual(['kids', 'teens'])
+  })
+
+  it('filters by a single selected audience bucket', () => {
+    const out = filterEvents(events, { ...noFilter(), audiences: new Set(['Подростки']) })
     // The teens event plus the "Все" event, which is for everyone.
     expect(out.map((e) => e.id).sort()).toEqual(['general', 'teens'])
   })
 
-  it('applies group AND audience together', () => {
-    const out = filterEvents(events, { group: 'games', audience: 'Подростки' })
+  it('applies selected groups AND selected audiences together', () => {
+    const out = filterEvents(events, { groups: new Set(['games']), audiences: new Set(['Подростки']) })
     expect(out.map((e) => e.id)).toEqual(['teens'])
   })
 
-  it('an all-audience ("Все") event matches every audience bucket', () => {
-    const out = filterEvents(events, { group: 'all', audience: 'Взрослые' })
+  it('an all-audience ("Все") event matches even when specific audience buckets are selected', () => {
+    const out = filterEvents(events, { ...noFilter(), audiences: new Set(['Взрослые']) })
     expect(out.map((e) => e.id).sort()).toEqual(['general', 'it'])
   })
 
-  it('returns an empty list when nothing matches', () => {
-    expect(filterEvents(events, { group: 'it', audience: 'Дети' })).toEqual([])
+  it('returns an empty list when the selected group and audience never co-occur', () => {
+    expect(filterEvents(events, { groups: new Set(['it']), audiences: new Set(['Дети']) })).toEqual([])
   })
 
   it('does not mutate the input array', () => {
     const copy = [...events]
-    filterEvents(events, { group: 'kids', audience: 'all' })
+    filterEvents(events, { ...noFilter(), groups: new Set(['kids']) })
     expect(events).toEqual(copy)
+  })
+
+  it('does not mutate the input Sets', () => {
+    const state = { groups: new Set(['kids']), audiences: new Set<'Дети' | 'Подростки' | 'Взрослые'>() }
+    const groupsCopy = new Set(state.groups)
+    const audiencesCopy = new Set(state.audiences)
+    filterEvents(events, state)
+    expect(state.groups).toEqual(groupsCopy)
+    expect(state.audiences).toEqual(audiencesCopy)
   })
 })

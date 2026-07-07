@@ -31,6 +31,10 @@ describe('Partners (static render with seed data)', () => {
     expect(html).not.toContain('Подробнее')
   })
 
+  it('offers a "show all" toggle to switch to the gallery layout', () => {
+    expect(html).toContain(strings.partners.showAll)
+  })
+
   it('renders nothing when there are no partners', () => {
     expect(render([])).toBe('')
   })

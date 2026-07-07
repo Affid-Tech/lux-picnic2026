@@ -43,9 +43,10 @@ describe('EventSheet (static render with seed data)', () => {
     expect(html).toContain(escapeHtml(withPartner.title))
   })
 
-  it('offers both calendar actions and (since all events are drop-in) the drop-in copy', () => {
-    expect(html).toContain(strings.eventCard.downloadIcs)
+  it('offers all three calendar providers and (since all events are drop-in) the drop-in copy', () => {
+    expect(html).toContain(strings.eventCard.appleCalendar)
     expect(html).toContain(strings.eventCard.googleCalendar)
+    expect(html).toContain(strings.eventCard.outlookCalendar)
     expect(html).toContain(strings.eventCard.dropIn)
     // No signup button while every event is signup.mode === "none".
     expect(html).not.toContain(strings.eventCard.signup + ' ↗')
@@ -60,7 +61,7 @@ describe('EventSheet (static render with seed data)', () => {
   })
 
   it('labels a point event with the point-event duration text', () => {
-    const point = events.find((e) => e.end === null)!
+    const point: SubEvent = { ...events[0], id: 'synthetic-point', end: null }
     expect(render(point)).toContain(strings.eventCard.pointEvent)
   })
 

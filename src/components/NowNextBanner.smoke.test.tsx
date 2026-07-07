@@ -40,7 +40,7 @@ describe('NowNextBanner (static render with seed data)', () => {
     expect(html).toContain(strings.nowNext.nowLabel)
     expect(html).toContain(strings.nowNext.nextLabel)
     // A soonest-ending running event (ends 15:00) surfaces at the top of the list.
-    expect(html).toContain(escapeHtml('Музыкальный мастер-класс для детей 4–8 лет'))
+    expect(html).toContain(escapeHtml('Мафия для подростков'))
   })
 
   it('caps the running list to 3 and collapses the rest into "+N ещё"', () => {

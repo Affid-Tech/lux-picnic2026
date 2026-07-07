@@ -26,6 +26,7 @@ export interface BesedaTechCta {
 export interface EventOrganizer {
   name: string
   url?: string
+  logo?: string | null
 }
 
 export interface EventInfo {

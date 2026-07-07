@@ -3,6 +3,9 @@ import { fromMinutes, toMinutes } from './time'
 
 const DAY_END = 24 * 60 - 1 // 23:59 — keep entries on the event's own date
 
+/** The calendar providers offered by the "Добавить в календарь" dropdown. */
+export type CalendarMethod = 'ics' | 'gcal' | 'outlook'
+
 /** The configured point-event fallback duration (minutes), defaulting to 30. */
 export function pointDuration(strings: Strings): number {
   return Number(strings.calendar.defaultPointDurationMin) || 30
@@ -72,4 +75,22 @@ export function toCalEntries(
   pointDurationMin: number,
 ): CalEntry[] {
   return events.map((e) => toCalEntry(e, eventInfo, pointDurationMin))
+}
+
+/**
+ * A single entry spanning the whole event (start → end), for calendar
+ * providers whose "add event" link can only represent one event (Google,
+ * Outlook) — unlike the multi-VEVENT `.ics` export, which lists every
+ * sub-event individually.
+ */
+export function wholeDayCalEntry(eventInfo: EventInfo, strings: Strings): CalEntry {
+  return {
+    uid: 'whole-day@piknik-2026',
+    title: String(strings.calendar.wholeDayTitle),
+    description: eventInfo.description,
+    location: eventInfo.location.name || '',
+    tzid: eventInfo.timezone,
+    start: formatLocalDT(eventInfo.date, toMinutes(eventInfo.startTime)),
+    end: formatLocalDT(eventInfo.date, toMinutes(eventInfo.endTime)),
+  }
 }

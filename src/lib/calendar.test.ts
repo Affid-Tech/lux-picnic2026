@@ -1,12 +1,19 @@
 import { describe, it, expect } from 'vitest'
-import type { EventInfo, SubEvent } from '../types'
-import { calTimes, formatLocalDT, toCalEntries, toCalEntry } from './calendar'
+import type { EventInfo, Strings, SubEvent } from '../types'
+import { calTimes, formatLocalDT, toCalEntries, toCalEntry, wholeDayCalEntry } from './calendar'
 
 const eventInfo = {
   date: '2026-07-12',
   timezone: 'Europe/Luxembourg',
   location: { name: 'Главная поляна', address: '', mapUrl: '' },
+  startTime: '10:00',
+  endTime: '19:00',
+  description: 'Целый день на свежем воздухе для всей семьи.',
 } as EventInfo
+
+const strings = {
+  calendar: { wholeDayTitle: 'Большой русскоязычный пикник — весь день' },
+} as unknown as Strings
 
 const ranged: SubEvent = {
   id: 'chgk',
@@ -69,5 +76,16 @@ describe('toCalEntry', () => {
 
   it('maps every event for the whole-day export', () => {
     expect(toCalEntries([ranged, point], eventInfo, 30)).toHaveLength(2)
+  })
+})
+
+describe('wholeDayCalEntry', () => {
+  it('spans the event start/end, not any single sub-event', () => {
+    const entry = wholeDayCalEntry(eventInfo, strings)
+    expect(entry.start).toBe('20260712T100000')
+    expect(entry.end).toBe('20260712T190000')
+    expect(entry.title).toBe(strings.calendar.wholeDayTitle)
+    expect(entry.location).toBe('Главная поляна')
+    expect(entry.tzid).toBe('Europe/Luxembourg')
   })
 })

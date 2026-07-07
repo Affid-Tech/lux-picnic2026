@@ -6,21 +6,22 @@
   "endTime": "19:00",
   "timezone": "Europe/Luxembourg",
   "location": {
-    "name": "Место уточняется",
-    "address": "",
-    "mapUrl": ""
+    "name": "Kinnekswiss Park",
+    "address": "Parc de la Ville, Kinnekswiss, Luxembourg · 49°36'42.1\"N 6°07'25.2\"E",
+    "mapUrl": "https://maps.app.goo.gl/JoTtZPqHhptGHE6R8"
   },
-  "heroImage": null,
-  "heroCaption": "фото · главная поляна",
+  "heroImage": "/assets/hero.webp",
+  "heroCaption": "фото · с прошлого пикника",
   "description": "Целый день на свежем воздухе для всей семьи: книжная ярмарка, детская анимация, настольные игры и D&D, мафия, «Что? Где? Когда?», разговоры про AI и киноклуб. Приходи всей семьёй — вход свободный.",
   "note": "Приходи всей семьёй · вход свободный",
   "organizer": {
     "name": "Monde des Arts",
-    "url": "https://mondedesarts.lu/"
+    "url": "https://mondedesarts.lu/",
+    "logo": null
   },
   "besedatech": {
     "ctaText": "Хотите такую же страницу для своего мероприятия? Сделаем вместе — напишите нам.",
     "ctaLabel": "Написать в BesedaTech",
-    "ctaUrl": "https://besedatech.example/contact"
+    "ctaUrl": "https://tech.beseda.lu/contact"
   }
 }

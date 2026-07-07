@@ -18,7 +18,6 @@
   "timeline": {
     "skipToContent": "Перейти к программе",
     "agendaTitle": "Программа дня",
-    "filterAll": "Все",
     "filterGroupLabel": "Программа",
     "filterAudienceLabel": "Аудитория",
     "empty": "В этом фильтре пока нет событий",
@@ -37,8 +36,11 @@
     "partnersTitle": "Партнёры события",
     "areaTitle": "Где",
     "addToCalendar": "Добавить в календарь",
-    "downloadIcs": "Скачать .ics",
     "googleCalendar": "Google Календарь",
+    "outlookCalendar": "Outlook Календарь",
+    "appleCalendar": "Apple Календарь",
+    "calendarMenuLabel": "Способы добавить в календарь",
+    "calendarWholeDayHint": "Google/Outlook добавят один блок на весь день; Apple — каждую сессию отдельно",
     "signup": "Записаться",
     "dropIn": "Без записи — просто приходи",
     "audienceLabel": "Для кого",
@@ -55,7 +57,9 @@
     "visitSite": "Перейти на сайт",
     "partnersOne": "партнёр",
     "partnersFew": "партнёра",
-    "partnersMany": "партнёров"
+    "partnersMany": "партнёров",
+    "showAll": "Показать все",
+    "showLess": "Свернуть"
   },
   "footer": {
     "poweredBy": "Powered by BesedaTech",

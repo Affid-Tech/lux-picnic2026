@@ -11,9 +11,7 @@ import { ActiveSheets } from './components/ActiveSheets'
 import { NowNextBanner } from './components/NowNextBanner'
 import { liveEvents } from './lib/nowNext'
 import { isSameLocalDate } from './lib/date'
-import { pointDuration, toCalEntries } from './lib/calendar'
-import { buildIcs } from './lib/ics'
-import { downloadTextFile } from './lib/download'
+import { pointDuration } from './lib/calendar'
 import { track } from './lib/analytics'
 
 export function App() {
@@ -61,16 +59,6 @@ export function App() {
 
   const { event, groups, events, partners, strings } = state.data
 
-  const handleAddWholeDay = () => {
-    const ics = buildIcs(
-      toCalEntries(events, event, pointDuration(strings)),
-      new Date(),
-      strings.calendar.wholeDayTitle as string,
-    )
-    downloadTextFile('piknik-2026.ics', ics)
-    track('calendar_add_whole_day')
-  }
-
   // The hash route drives the detail sheets: `/#/event/:id` and `/#/partner/:id`
   // open the matching entity; an unknown id resolves to nothing and stays home.
   const openEvent = (id: string) => navigate({ name: 'event', id })
@@ -94,7 +82,13 @@ export function App() {
           onOpen={openEvent}
           onSeeAll={scrollToNow}
         />
-        <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} compact={isEventDay} />
+        <Hero
+          event={event}
+          events={events}
+          strings={strings}
+          onCalendarAdd={(method) => track('calendar_add_whole_day', { method })}
+          compact={isEventDay}
+        />
         <main id="programme" tabIndex={-1}>
           <Timeline
             events={events}

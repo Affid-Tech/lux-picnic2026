@@ -142,5 +142,23 @@
     "url": "",
     "description": "Шоколад и сладкие радости.",
     "relatedEventIds": []
+  },
+  {
+    "id": "lawiscode",
+    "name": "Lawiscode",
+    "logo": "/assets/partners/lawiscode.png",
+    "category": "Юридические услуги",
+    "url": "https://www.lawiscode.com",
+    "description": "Юридические консультации по бизнесу, налогам и технологиям для стартапов.",
+    "relatedEventIds": ["ai-startup-legal"]
+  },
+  {
+    "id": "ekaterina-yoga",
+    "name": "Екатерина · йога",
+    "logo": null,
+    "category": "Йога",
+    "url": "https://t.me/EkaterinaGalea",
+    "description": "Занятия йогой.",
+    "relatedEventIds": []
   }
 ]

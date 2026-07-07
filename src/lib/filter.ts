@@ -35,22 +35,30 @@ export function deriveAudienceBuckets(events: SubEvent[]): AudienceBucket[] {
 }
 
 export interface FilterState {
-  /** a group id, or 'all' */
-  group: string
-  /** an AudienceBucket, or 'all' */
-  audience: AudienceBucket | 'all'
+  /** selected group ids; empty means "show all" */
+  groups: Set<string>
+  /** selected audience buckets; empty means "show all" */
+  audiences: Set<AudienceBucket>
 }
 
-function matchesAudience(event: SubEvent, audience: AudienceBucket): boolean {
+function matchesAudience(event: SubEvent, audiences: Set<AudienceBucket>): boolean {
   if (isForEveryone(event)) return true
-  return event.audience.some((a) => audienceBucket(a) === audience)
+  return event.audience.some((a) => {
+    const bucket = audienceBucket(a)
+    return bucket !== null && audiences.has(bucket)
+  })
 }
 
-/** Filter events by group and audience (AND semantics). Never mutates input. */
+/**
+ * Filter events by selected groups and audiences. Within a dimension,
+ * multiple selected chips are OR'd (union); the two dimensions are AND'd
+ * together. An empty Set means "no chip selected" = show all. Never mutates
+ * input (array or Sets).
+ */
 export function filterEvents(events: SubEvent[], state: FilterState): SubEvent[] {
   return events.filter((e) => {
-    const groupOk = state.group === 'all' || e.group === state.group
-    const audienceOk = state.audience === 'all' || matchesAudience(e, state.audience)
+    const groupOk = state.groups.size === 0 || state.groups.has(e.group)
+    const audienceOk = state.audiences.size === 0 || matchesAudience(e, state.audiences)
     return groupOk && audienceOk
   })
 }

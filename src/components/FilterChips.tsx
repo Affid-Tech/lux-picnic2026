@@ -5,9 +5,12 @@ import type { AudienceBucket, FilterState } from '../lib/filter'
 /**
  * Sticky filter chips, built entirely from data. Group chips come from
  * groups.json; audience chips are the coarse buckets derived from the events.
- * The active chip flips to the dark-brown fill (per the design invariants);
- * every group chip pairs its colour with a dot + label so colour is never the
- * only signal.
+ * Each chip is an independent on/off toggle (multi-select, no "Все" chip) —
+ * clicking a chip adds or removes it from the selection; when nothing is
+ * selected in a row, every event matches that row (see filterEvents). The
+ * active chip flips to the dark-brown fill (per the design invariants); every
+ * group chip pairs its colour with a dot + label so colour is never the only
+ * signal.
  */
 export function FilterChips({
   groups,
@@ -22,7 +25,16 @@ export function FilterChips({
   onChange: (next: FilterState) => void
   strings: Strings
 }) {
-  const allLabel = strings.timeline.filterAll
+  const toggleGroup = (id: string) => {
+    const next = new Set(state.groups)
+    next.has(id) ? next.delete(id) : next.add(id)
+    onChange({ ...state, groups: next })
+  }
+  const toggleAudience = (a: AudienceBucket) => {
+    const next = new Set(state.audiences)
+    next.has(a) ? next.delete(a) : next.add(a)
+    onChange({ ...state, audiences: next })
+  }
 
   return (
     // minWidth: 0 so this grid item can shrink inside the sticky bar's track
@@ -30,36 +42,26 @@ export function FilterChips({
     // its own single column from doing the same to the chip rows below it.
     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--space-2)', minWidth: 0 }}>
       <ChipRow ariaLabel="Фильтр по программе" label={strings.timeline.filterGroupLabel}>
-        <Chip
-          label={allLabel}
-          active={state.group === 'all'}
-          onClick={() => onChange({ ...state, group: 'all' })}
-        />
         {groups.map((g) => (
           <Chip
             key={g.id}
             label={g.short || g.label}
             ariaLabel={g.label}
             dotColor={g.color}
-            active={state.group === g.id}
-            onClick={() => onChange({ ...state, group: g.id })}
+            active={state.groups.has(g.id)}
+            onClick={() => toggleGroup(g.id)}
           />
         ))}
       </ChipRow>
 
       {audiences.length > 0 ? (
         <ChipRow ariaLabel="Фильтр по аудитории" label={strings.timeline.filterAudienceLabel}>
-          <Chip
-            label={allLabel}
-            active={state.audience === 'all'}
-            onClick={() => onChange({ ...state, audience: 'all' })}
-          />
           {audiences.map((a) => (
             <Chip
               key={a}
               label={a}
-              active={state.audience === a}
-              onClick={() => onChange({ ...state, audience: a })}
+              active={state.audiences.has(a)}
+              onClick={() => toggleAudience(a)}
             />
           ))}
         </ChipRow>

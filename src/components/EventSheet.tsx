@@ -1,17 +1,19 @@
 import { useMemo, type ReactNode } from 'react'
-import type { CalEntry } from '../lib/calendar'
+import type { CalEntry, CalendarMethod } from '../lib/calendar'
 import type { Organizer, Partner, Signup, Strings, SubEvent, Group, EventInfo } from '../types'
 import { Sheet } from './Sheet'
 import { CategoryTag } from './CategoryTag'
+import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
 import { formatDuration, formatTimeRange, toMinutes } from '../lib/time'
 import { pointDuration, toCalEntry } from '../lib/calendar'
 import { buildIcs } from '../lib/ics'
 import { googleCalendarUrl } from '../lib/gcal'
+import { outlookCalendarUrl } from '../lib/outlookCal'
 import { downloadTextFile, icsFilename } from '../lib/download'
 
 const TITLE_ID = 'event-sheet-title'
 
-type CalendarAdd = (id: string, method: 'ics' | 'gcal') => void
+type CalendarAdd = (id: string, method: CalendarMethod) => void
 
 /**
  * Full event detail, presented in the accessible bottom sheet. Every field is
@@ -138,25 +140,31 @@ function CalendarActions({
   onCalendarAdd?: CalendarAdd
 }) {
   const s = strings.eventCard
-  const handleIcs = () => {
-    downloadTextFile(icsFilename(eventId), buildIcs([entry], new Date()))
-    onCalendarAdd?.(eventId, 'ics')
-  }
+  const items: CalendarMenuItem[] = [
+    {
+      key: 'gcal',
+      label: s.googleCalendar,
+      action: { kind: 'link', href: googleCalendarUrl(entry) },
+      onSelect: () => onCalendarAdd?.(eventId, 'gcal'),
+    },
+    {
+      key: 'outlook',
+      label: s.outlookCalendar,
+      action: { kind: 'link', href: outlookCalendarUrl(entry) },
+      onSelect: () => onCalendarAdd?.(eventId, 'outlook'),
+    },
+    {
+      key: 'ics',
+      label: s.appleCalendar,
+      action: {
+        kind: 'button',
+        onClick: () => downloadTextFile(icsFilename(eventId), buildIcs([entry], new Date())),
+      },
+      onSelect: () => onCalendarAdd?.(eventId, 'ics'),
+    },
+  ]
   return (
-    <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-      <button type="button" onClick={handleIcs} style={ACTION_SECONDARY}>
-        {s.downloadIcs}
-      </button>
-      <a
-        href={googleCalendarUrl(entry)}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => onCalendarAdd?.(eventId, 'gcal')}
-        style={ACTION_SECONDARY}
-      >
-        {s.googleCalendar} ↗
-      </a>
-    </div>
+    <CalendarMenu triggerLabel={s.addToCalendar} menuLabel={s.calendarMenuLabel} triggerStyle={ACTION_SECONDARY} items={items} />
   )
 }
 

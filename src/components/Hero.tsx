@@ -1,5 +1,12 @@
-import type { EventInfo, EventOrganizer, Strings } from '../types'
+import type { CalendarMethod } from '../lib/calendar'
+import type { EventInfo, EventOrganizer, Strings, SubEvent } from '../types'
 import { formatDateLong, formatWeekday } from '../lib/date'
+import { pointDuration, toCalEntries, wholeDayCalEntry } from '../lib/calendar'
+import { buildIcs } from '../lib/ics'
+import { googleCalendarUrl } from '../lib/gcal'
+import { outlookCalendarUrl } from '../lib/outlookCal'
+import { downloadTextFile } from '../lib/download'
+import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
 
 /**
  * Hero / event header — name, tagline, date, start time, location (+ map link)
@@ -8,13 +15,15 @@ import { formatDateLong, formatWeekday } from '../lib/date'
  */
 export function Hero({
   event,
+  events,
   strings,
-  onAddWholeDay,
+  onCalendarAdd,
   compact = false,
 }: {
   event: EventInfo
+  events: SubEvent[]
   strings: Strings
-  onAddWholeDay: () => void
+  onCalendarAdd?: (method: CalendarMethod) => void
   /** Day-of variant: a slim strip (name · date · where · calendar link) so the
    *  live "Сейчас / Далее" block owns the top of the screen on the event date. */
   compact?: boolean
@@ -43,9 +52,13 @@ export function Hero({
         <dl style={{ margin: 0 }}>
           <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
         </dl>
-        <button type="button" onClick={onAddWholeDay} style={COMPACT_CAL_BTN}>
-          {strings.hero.addWholeDay} ↓
-        </button>
+        <WholeDayCalendarMenu
+          event={event}
+          events={events}
+          strings={strings}
+          onCalendarAdd={onCalendarAdd}
+          triggerStyle={COMPACT_CAL_BTN}
+        />
       </header>
     )
   }
@@ -75,6 +88,8 @@ export function Hero({
         {event.name}
       </h1>
 
+      {event.organizer ? <OrganizerByline organizer={event.organizer} strings={strings} /> : null}
+
       <p
         style={{
           margin: '0 0 var(--space-5)',
@@ -95,28 +110,15 @@ export function Hero({
       <dl style={{ margin: '0 0 var(--space-5)' }}>
         <MetaRow label="Начало" value={event.startTime} />
         <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
-        {event.organizer ? <MetaRow label="Кто" value={organizerValue(event.organizer)} /> : null}
       </dl>
 
-      <button
-        type="button"
-        onClick={onAddWholeDay}
-        style={{
-          width: '100%',
-          minHeight: 48,
-          fontFamily: 'var(--font-body)',
-          fontWeight: 'var(--fw-bold)',
-          fontSize: '15px',
-          color: 'var(--accent-on)',
-          background: 'var(--accent-strong)',
-          border: 'var(--border-sticker) solid transparent',
-          borderRadius: 'var(--radius-md)',
-          cursor: 'pointer',
-          padding: '14px 18px',
-        }}
-      >
-        {strings.hero.addWholeDay}
-      </button>
+      <WholeDayCalendarMenu
+        event={event}
+        events={events}
+        strings={strings}
+        onCalendarAdd={onCalendarAdd}
+        triggerStyle={PRIMARY_CAL_BTN}
+      />
 
       {event.note ? (
         <p
@@ -162,13 +164,93 @@ function locationValue(event: EventInfo, strings: Strings, hasMap: boolean): Rea
   )
 }
 
-/** "Кто" value — the main organizer, linked to its site when available. */
-function organizerValue(organizer: EventOrganizer): React.ReactNode {
-  if (!organizer.url) return organizer.name
+/** Organizer credit — a small byline under the title: optional logo + "Организатор · Name". */
+function OrganizerByline({ organizer, strings }: { organizer: EventOrganizer; strings: Strings }) {
+  const content = (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+      {organizer.logo ? (
+        <img src={organizer.logo} alt="" style={{ height: 20, width: 'auto' }} />
+      ) : null}
+      <span>
+        {strings.footer.organizerLabel} · <strong style={{ color: 'var(--text-strong)' }}>{organizer.name}</strong>
+      </span>
+    </span>
+  )
   return (
-    <a href={organizer.url} target="_blank" rel="noopener noreferrer" style={HERO_LINK}>
-      {organizer.name} ↗
-    </a>
+    <p
+      style={{
+        margin: '0 0 var(--space-4)',
+        fontFamily: 'var(--font-body)',
+        fontSize: 'var(--fs-body-sm)',
+        color: 'var(--text-muted)',
+      }}
+    >
+      {organizer.url ? (
+        <a href={organizer.url} target="_blank" rel="noopener noreferrer" style={HERO_LINK}>
+          {content} ↗
+        </a>
+      ) : (
+        content
+      )}
+    </p>
+  )
+}
+
+/**
+ * The whole-day "Добавить в календарь" dropdown, shared by the compact and
+ * full hero variants. Google/Outlook can only deep-link one calendar event,
+ * so they get a single entry spanning the whole day; Apple Calendar gets the
+ * full multi-session `.ics` (one VEVENT per sub-event) for full fidelity.
+ */
+function WholeDayCalendarMenu({
+  event,
+  events,
+  strings,
+  onCalendarAdd,
+  triggerStyle,
+}: {
+  event: EventInfo
+  events: SubEvent[]
+  strings: Strings
+  onCalendarAdd?: (method: CalendarMethod) => void
+  triggerStyle: React.CSSProperties
+}) {
+  const wholeDayEntry = wholeDayCalEntry(event, strings)
+  const items: CalendarMenuItem[] = [
+    {
+      key: 'gcal',
+      label: strings.eventCard.googleCalendar,
+      action: { kind: 'link', href: googleCalendarUrl(wholeDayEntry) },
+      onSelect: () => onCalendarAdd?.('gcal'),
+    },
+    {
+      key: 'outlook',
+      label: strings.eventCard.outlookCalendar,
+      action: { kind: 'link', href: outlookCalendarUrl(wholeDayEntry) },
+      onSelect: () => onCalendarAdd?.('outlook'),
+    },
+    {
+      key: 'ics',
+      label: strings.eventCard.appleCalendar,
+      action: {
+        kind: 'button',
+        onClick: () =>
+          downloadTextFile(
+            'piknik-2026.ics',
+            buildIcs(toCalEntries(events, event, pointDuration(strings)), new Date(), String(strings.calendar.wholeDayTitle)),
+          ),
+      },
+      onSelect: () => onCalendarAdd?.('ics'),
+    },
+  ]
+  return (
+    <CalendarMenu
+      triggerLabel={strings.hero.addWholeDay}
+      triggerStyle={triggerStyle}
+      menuLabel={strings.eventCard.calendarMenuLabel}
+      hint={strings.eventCard.calendarWholeDayHint}
+      items={items}
+    />
   )
 }
 
@@ -252,6 +334,20 @@ const COMPACT_CAL_BTN = {
   background: 'none',
   border: 'none',
   cursor: 'pointer',
+}
+
+const PRIMARY_CAL_BTN = {
+  width: '100%',
+  minHeight: 48,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-bold)' as const,
+  fontSize: '15px',
+  color: 'var(--accent-on)',
+  background: 'var(--accent-strong)',
+  border: 'var(--border-sticker) solid transparent',
+  borderRadius: 'var(--radius-md)',
+  cursor: 'pointer',
+  padding: '14px 18px',
 }
 
 function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {
