@@ -2,7 +2,7 @@
   {
     "id": "lux-mafia",
     "name": "Lux Mafia",
-    "logo": null,
+    "logo": "/assets/partners/lux-mafia.png",
     "category": "Игры",
     "url": "https://t.me/lux_mafia",
     "description": "Мафия и настольные игры в Люксембурге.",
@@ -27,7 +27,7 @@
   {
     "id": "chgk",
     "name": "Что? Где? Когда?",
-    "logo": null,
+    "logo": "/assets/partners/chgk.png",
     "category": "Игры",
     "url": "https://www.facebook.com/share/g/14hx72DWhfz/",
     "description": "Клуб интеллектуальных игр «Что? Где? Когда?».",
@@ -38,7 +38,7 @@
   {
     "id": "luxeureka",
     "name": "LuxEureka",
-    "logo": null,
+    "logo": "/assets/partners/luxeureka.png",
     "category": "Лекции",
     "url": "https://luxeureka.lu",
     "description": "Научно-популярные лекции и разговоры.",
@@ -49,7 +49,7 @@
   {
     "id": "monde-des-arts",
     "name": "Monde des Arts",
-    "logo": null,
+    "logo": "/assets/partners/monde-des-arts.png",
     "category": "Искусство",
     "url": "https://mondedesarts.lu/",
     "description": "Творческие и музыкальные занятия для детей.",
@@ -60,7 +60,7 @@
   {
     "id": "educateme",
     "name": "Educateme",
-    "logo": null,
+    "logo": "/assets/partners/educateme.png",
     "category": "Образование",
     "url": "https://educateme.lu",
     "description": "Образовательные программы и занятия.",
@@ -69,7 +69,7 @@
   {
     "id": "lux-photo-pro",
     "name": "Lux Photo Pro",
-    "logo": null,
+    "logo": "/assets/partners/lux-photo-pro.png",
     "category": "Фото",
     "url": "https://luxphotopro.com",
     "description": "Профессиональная фотосъёмка мероприятий.",
@@ -81,7 +81,7 @@
   {
     "id": "storytime",
     "name": "Storytime",
-    "logo": null,
+    "logo": "/assets/partners/storytime.png",
     "category": "Дети",
     "url": "",
     "description": "Детские программы и чтения.",
@@ -99,7 +99,7 @@
   {
     "id": "luxtoday",
     "name": "Luxtoday",
-    "logo": null,
+    "logo": "/assets/partners/luxtoday.png",
     "category": "Медиа",
     "url": "https://luxtoday.lu",
     "description": "Медиа о жизни в Люксембурге.",
@@ -117,7 +117,7 @@
   {
     "id": "chat-vinograd",
     "name": "Чат-Виноград",
-    "logo": null,
+    "logo": "/assets/partners/chat-vinograd.png",
     "category": "Сообщество",
     "url": "https://t.me/+RCR1b25dUXVmMzA0",
     "description": "Тёплое сообщество и чат.",
