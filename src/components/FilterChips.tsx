@@ -80,20 +80,18 @@ function ChipRow({
   label?: string
 }) {
   return (
-    // minWidth: 0 lets this row shrink to its grid track's width instead of
-    // stretching to the chips' unscrolled max-content width (see FilterChips).
-    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', minWidth: 0 }}>
-      {/* Fixed-width row caption so the two filter dimensions read distinctly
-          (they both start with a "Все" chip) and the chips align across rows. */}
+    // Label stacks above its chips (rather than sitting beside them) so the
+    // chip row gets the sticky bar's full width — with a left-hand label
+    // column, four group chips didn't fit without horizontal scroll.
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)', minWidth: 0 }}>
       {label ? <span style={ROW_LABEL}>{label}</span> : null}
       <div
         role="group"
         aria-label={ariaLabel}
         style={{
           display: 'flex',
-          flex: 1,
           minWidth: 0,
-          gap: 'var(--space-2)',
+          gap: 'var(--space-1)',
           overflowX: 'auto',
           paddingBottom: 2,
           scrollbarWidth: 'none',
@@ -106,8 +104,6 @@ function ChipRow({
 }
 
 const ROW_LABEL: CSSProperties = {
-  flex: 'none',
-  width: 74,
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-semibold)',
   fontSize: 'var(--fs-caption)',
@@ -135,7 +131,7 @@ function Chip({
     gap: 6,
     flex: 'none',
     minHeight: 44,
-    padding: '0 14px',
+    padding: '0 12px',
     fontFamily: 'var(--font-body)',
     fontWeight: 'var(--fw-semibold)',
     fontSize: 'var(--fs-body-sm)',
