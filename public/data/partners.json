@@ -160,5 +160,14 @@
     "url": "https://t.me/EkaterinaGalea",
     "description": "Занятия йогой.",
     "relatedEventIds": []
+  },
+  {
+    "id": "beseda",
+    "name": "Beseda · IT-сообщество Люксембурга",
+    "logo": "/assets/partners/beseda.png",
+    "category": "Сообщество",
+    "url": "https://t.me/besedaconf",
+    "description": "Люксембургское русскоязычное IT-сообщество: тёплое и неформальное. «На ты с технологиями, и друг с другом».",
+    "relatedEventIds": []
   }
 ]
