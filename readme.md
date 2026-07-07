@@ -1,4 +1,4 @@
-# «Пикник» — Design System
+# «Пикник» приложение
 
 A warm, tactile design system for **«Большой русскоязычный пикник»** — a full-day,
 Russian-language community picnic event, powered by **BesedaTech**. The aesthetic is "cream paper + printed
