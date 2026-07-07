@@ -73,7 +73,7 @@ function PartnerCard({
     <button type="button" onClick={onOpen} style={CARD}>
       {partner.logo ? (
         <>
-          <div style={LOGO_SLOT}>
+          <div style={LOGO_FRAME}>
             {/* Name already renders as visible text below — alt="" avoids
                 announcing it twice as this button's accessible name. */}
             <img src={partner.logo} alt="" loading="lazy" style={LOGO_IMG} />
@@ -117,22 +117,21 @@ const CARD = {
   font: 'inherit',
 }
 
-const LOGO_SLOT = {
-  minHeight: 56,
+const LOGO_FRAME = {
+  height: 72,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   background: 'var(--surface-panel)',
-  border: 'var(--border-hairline) solid var(--border-card)',
   borderRadius: 'var(--radius-sm)',
-  padding: 'var(--space-2) 6px',
+  padding: 4,
+  overflow: 'hidden',
 }
 
 const LOGO_IMG = {
-  maxWidth: '100%',
-  maxHeight: 48,
+  width: '100%',
+  height: '100%',
   objectFit: 'contain' as const,
-  borderRadius: 4,
 }
 
 const MONOGRAM = {

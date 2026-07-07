@@ -34,12 +34,7 @@ export function PartnerSheet({
           asset we omit the empty logo box entirely (no grey category chip). */}
       {partner.logo ? (
         <div style={LOGO_SLOT}>
-          <img
-            src={partner.logo}
-            alt={partner.name}
-            loading="lazy"
-            style={{ maxWidth: '70%', maxHeight: '70%', objectFit: 'contain' }}
-          />
+          <img src={partner.logo} alt={partner.name} loading="lazy" style={LOGO_IMG} />
         </div>
       ) : null}
 
@@ -100,10 +95,17 @@ const LOGO_SLOT = {
   alignItems: 'center',
   justifyContent: 'center',
   marginBottom: 'var(--space-4)',
+  padding: 'var(--space-3)',
   background: 'var(--surface-card)',
   border: 'var(--border-hairline) solid var(--border-card)',
   borderRadius: 'var(--radius-lg)',
   boxShadow: 'var(--shadow-card)',
+}
+
+const LOGO_IMG = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain' as const,
 }
 
 const TITLE = {
