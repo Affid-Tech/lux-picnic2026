@@ -1,11 +1,12 @@
 import type { CalendarMethod } from '../lib/calendar'
-import type { EventInfo, EventOrganizer, Strings, SubEvent } from '../types'
+import type { EventInfo, EventOrganizer, Strings } from '../types'
 import { formatDateLong, formatWeekday } from '../lib/date'
-import { pointDuration, toCalEntries, wholeDayCalEntry } from '../lib/calendar'
+import { wholeDayCalEntry } from '../lib/calendar'
 import { buildIcs } from '../lib/ics'
 import { googleCalendarUrl } from '../lib/gcal'
 import { outlookCalendarUrl } from '../lib/outlookCal'
 import { downloadTextFile } from '../lib/download'
+import { absoluteRouteUrl } from '../lib/router'
 import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
 
 /**
@@ -15,13 +16,11 @@ import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
  */
 export function Hero({
   event,
-  events,
   strings,
   onCalendarAdd,
   compact = false,
 }: {
   event: EventInfo
-  events: SubEvent[]
   strings: Strings
   onCalendarAdd?: (method: CalendarMethod) => void
   /** Day-of variant: a slim strip (name · date · where · calendar link) so the
@@ -54,7 +53,6 @@ export function Hero({
         </dl>
         <WholeDayCalendarMenu
           event={event}
-          events={events}
           strings={strings}
           onCalendarAdd={onCalendarAdd}
           triggerStyle={COMPACT_CAL_BTN}
@@ -114,7 +112,6 @@ export function Hero({
 
       <WholeDayCalendarMenu
         event={event}
-        events={events}
         strings={strings}
         onCalendarAdd={onCalendarAdd}
         triggerStyle={PRIMARY_CAL_BTN}
@@ -198,24 +195,23 @@ function OrganizerByline({ organizer, strings }: { organizer: EventOrganizer; st
 
 /**
  * The whole-day "Добавить в календарь" dropdown, shared by the compact and
- * full hero variants. Google/Outlook can only deep-link one calendar event,
- * so they get a single entry spanning the whole day; Apple Calendar gets the
- * full multi-session `.ics` (one VEVENT per sub-event) for full fidelity.
+ * full hero variants. Google's and Outlook's web deep links can only prefill
+ * one event each, so all three providers add the same single entry spanning
+ * the whole day — the per-session schedule lives on the site, linked from the
+ * entry's description.
  */
 function WholeDayCalendarMenu({
   event,
-  events,
   strings,
   onCalendarAdd,
   triggerStyle,
 }: {
   event: EventInfo
-  events: SubEvent[]
   strings: Strings
   onCalendarAdd?: (method: CalendarMethod) => void
   triggerStyle: React.CSSProperties
 }) {
-  const wholeDayEntry = wholeDayCalEntry(event, strings)
+  const wholeDayEntry = wholeDayCalEntry(event, strings, absoluteRouteUrl({ name: 'home' }))
   const items: CalendarMenuItem[] = [
     {
       key: 'gcal',
@@ -234,11 +230,7 @@ function WholeDayCalendarMenu({
       label: strings.eventCard.appleCalendar,
       action: {
         kind: 'button',
-        onClick: () =>
-          downloadTextFile(
-            'piknik-2026.ics',
-            buildIcs(toCalEntries(events, event, pointDuration(strings)), new Date(), String(strings.calendar.wholeDayTitle)),
-          ),
+        onClick: () => downloadTextFile('piknik-2026.ics', buildIcs([wholeDayEntry], new Date())),
       },
       onSelect: () => onCalendarAdd?.('ics'),
     },
@@ -337,6 +329,9 @@ const COMPACT_CAL_BTN = {
 }
 
 const PRIMARY_CAL_BTN = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center' as const,
   width: '100%',
   minHeight: 48,
   fontFamily: 'var(--font-body)',

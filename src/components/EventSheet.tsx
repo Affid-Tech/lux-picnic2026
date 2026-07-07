@@ -10,6 +10,7 @@ import { buildIcs } from '../lib/ics'
 import { googleCalendarUrl } from '../lib/gcal'
 import { outlookCalendarUrl } from '../lib/outlookCal'
 import { downloadTextFile, icsFilename } from '../lib/download'
+import { absoluteRouteUrl } from '../lib/router'
 
 const TITLE_ID = 'event-sheet-title'
 
@@ -41,7 +42,7 @@ export function EventSheet({
 }) {
   const s = strings.eventCard
   const entry = useMemo(
-    () => toCalEntry(event, eventInfo, pointDuration(strings)),
+    () => toCalEntry(event, eventInfo, pointDuration(strings), absoluteRouteUrl({ name: 'event', id: event.id })),
     [event, eventInfo, strings],
   )
   const durationLabel = event.end

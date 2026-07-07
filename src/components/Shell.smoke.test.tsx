@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
-import type { EventInfo, Partner, Strings, SubEvent } from '../types'
+import type { EventInfo, Partner, Strings } from '../types'
 import { Hero } from './Hero'
 import { Footer } from './Footer'
 import { Partners } from './Partners'
@@ -10,13 +10,12 @@ const read = <T,>(file: string): T =>
   JSON.parse(readFileSync(`public/data/${file}`, 'utf8')) as T
 
 const event = read<EventInfo>('event.json')
-const events = read<SubEvent[]>('events.json')
 const partners = read<Partner[]>('partners.json')
 const strings = read<Strings>('strings.json')
 const noop = () => {}
 
 describe('Hero (static render)', () => {
-  const html = renderToStaticMarkup(<Hero event={event} events={events} strings={strings} />)
+  const html = renderToStaticMarkup(<Hero event={event} strings={strings} />)
   it('renders the event name, tagline and whole-day CTA in a header landmark', () => {
     expect(html).toContain('<header')
     expect(html).toContain(escapeHtml(event.name))

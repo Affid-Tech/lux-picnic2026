@@ -84,7 +84,6 @@ export function App() {
         />
         <Hero
           event={event}
-          events={events}
           strings={strings}
           onCalendarAdd={(method) => track('calendar_add_whole_day', { method })}
           compact={isEventDay}

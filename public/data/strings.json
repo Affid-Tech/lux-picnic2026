@@ -40,7 +40,7 @@
     "outlookCalendar": "Outlook Календарь",
     "appleCalendar": "Apple Календарь",
     "calendarMenuLabel": "Способы добавить в календарь",
-    "calendarWholeDayHint": "Google/Outlook добавят один блок на весь день; Apple — каждую сессию отдельно",
+    "calendarWholeDayHint": "Добавит один блок на весь день; расписание каждой активности — на сайте",
     "signup": "Записаться",
     "dropIn": "Без записи — просто приходи",
     "audienceLabel": "Для кого",

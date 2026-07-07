@@ -113,7 +113,11 @@ export function CalendarMenu({
   )
 }
 
-const WRAPPER: CSSProperties = { display: 'inline-block' }
+// `block`, not `inline-block`: a shrink-to-fit inline-block has no definite
+// width for a `width: 100%` trigger (e.g. Hero's primary CTA) to resolve
+// against, which left it inconsistently sized — and off-center — on wider
+// screens. `block` gives percentage children the full header width to fill.
+const WRAPPER: CSSProperties = { display: 'block' }
 
 const TRIGGER: CSSProperties = {
   display: 'inline-flex',
@@ -137,7 +141,9 @@ const PANEL_POSITION: CSSProperties = {
   position: 'absolute',
   top: 'calc(100% + 6px)',
   left: 0,
-  zIndex: 5,
+  // Above Timeline's sticky filter bar (zIndex: 10), which shares this root
+  // stacking context when the menu is rendered standalone in Hero.
+  zIndex: 20,
 }
 
 const PANEL: CSSProperties = {

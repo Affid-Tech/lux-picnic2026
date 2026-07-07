@@ -39,6 +39,17 @@ const currentHash = (): string =>
   typeof window === 'undefined' ? '' : window.location.hash
 
 /**
+ * Absolute, shareable URL for a route (origin + deployed base path + hash),
+ * for embedding in calendar event descriptions so people can find their way
+ * back to the programme. Empty outside a browser (no `window` to derive an
+ * origin from).
+ */
+export function absoluteRouteUrl(route: Route): string {
+  if (typeof window === 'undefined') return ''
+  return `${window.location.origin}${window.location.pathname}${routeToHash(route)}`
+}
+
+/**
  * Subscribe to the URL hash. Returns the parsed route plus a `navigate` that
  * updates `location.hash` (which in turn re-runs every subscriber).
  */

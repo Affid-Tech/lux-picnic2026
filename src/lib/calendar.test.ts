@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { EventInfo, Strings, SubEvent } from '../types'
-import { calTimes, formatLocalDT, toCalEntries, toCalEntry, wholeDayCalEntry } from './calendar'
+import { calTimes, formatLocalDT, toCalEntry, wholeDayCalEntry } from './calendar'
 
 const eventInfo = {
   date: '2026-07-12',
@@ -57,7 +57,7 @@ describe('calTimes', () => {
 
 describe('toCalEntry', () => {
   it('builds a neutral entry with wall-clock times and the venue location', () => {
-    const entry = toCalEntry(ranged, eventInfo, 30)
+    const entry = toCalEntry(ranged, eventInfo, 30, '')
     expect(entry).toMatchObject({
       uid: 'chgk@piknik-2026',
       title: '«Что? Где? Когда?»',
@@ -69,23 +69,33 @@ describe('toCalEntry', () => {
   })
 
   it('extends point events by the default duration', () => {
-    const entry = toCalEntry(point, eventInfo, 30)
+    const entry = toCalEntry(point, eventInfo, 30, '')
     expect(entry.start).toBe('20260712T170000')
     expect(entry.end).toBe('20260712T173000')
   })
 
-  it('maps every event for the whole-day export', () => {
-    expect(toCalEntries([ranged, point], eventInfo, 30)).toHaveLength(2)
+  it('leaves the description untouched when no site URL is given', () => {
+    expect(toCalEntry(ranged, eventInfo, 30, '').description).toBe(ranged.description)
+  })
+
+  it('appends a link back to the event page when a site URL is given', () => {
+    const entry = toCalEntry(ranged, eventInfo, 30, 'https://piknik.example/#/event/chgk')
+    expect(entry.description).toBe(`${ranged.description}\n\nПодробнее: https://piknik.example/#/event/chgk`)
   })
 })
 
 describe('wholeDayCalEntry', () => {
   it('spans the event start/end, not any single sub-event', () => {
-    const entry = wholeDayCalEntry(eventInfo, strings)
+    const entry = wholeDayCalEntry(eventInfo, strings, '')
     expect(entry.start).toBe('20260712T100000')
     expect(entry.end).toBe('20260712T190000')
     expect(entry.title).toBe(strings.calendar.wholeDayTitle)
     expect(entry.location).toBe('Главная поляна')
     expect(entry.tzid).toBe('Europe/Luxembourg')
+  })
+
+  it('appends a link back to the programme when a site URL is given', () => {
+    const entry = wholeDayCalEntry(eventInfo, strings, 'https://piknik.example/')
+    expect(entry.description).toBe(`${eventInfo.description}\n\nПодробнее: https://piknik.example/`)
   })
 })

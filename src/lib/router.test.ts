@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseHash, routeToHash } from './router'
+import { absoluteRouteUrl, parseHash, routeToHash } from './router'
 
 describe('parseHash', () => {
   it('parses an event deep link', () => {
@@ -52,5 +52,12 @@ describe('routeToHash', () => {
 
   it('maps the home route to #/', () => {
     expect(routeToHash({ name: 'home' })).toBe('#/')
+  })
+})
+
+describe('absoluteRouteUrl', () => {
+  it('is empty outside a browser (no window to derive an origin from)', () => {
+    expect(absoluteRouteUrl({ name: 'home' })).toBe('')
+    expect(absoluteRouteUrl({ name: 'event', id: 'chgk' })).toBe('')
   })
 })

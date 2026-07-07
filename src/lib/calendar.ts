@@ -50,17 +50,28 @@ export function calTimes(
   return { startMin, endMin }
 }
 
-/** Build a single calendar entry from a sub-event + the headline event context. */
+/** Appends a "read more on the site" line to a calendar description. */
+function withSiteLink(description: string, siteUrl: string): string {
+  return siteUrl ? `${description}\n\nПодробнее: ${siteUrl}` : description
+}
+
+/**
+ * Build a single calendar entry from a sub-event + the headline event context.
+ * `siteUrl` (the event's own page, if known) is appended to the description
+ * so the entry still points back to the source of truth once it's copied into
+ * someone's calendar.
+ */
 export function toCalEntry(
   sub: SubEvent,
   eventInfo: EventInfo,
   pointDurationMin: number,
+  siteUrl: string,
 ): CalEntry {
   const { startMin, endMin } = calTimes(sub, pointDurationMin)
   return {
     uid: `${sub.id}@piknik-2026`,
     title: sub.title,
-    description: sub.description,
+    description: withSiteLink(sub.description, siteUrl),
     location: eventInfo.location.name || '',
     tzid: eventInfo.timezone,
     start: formatLocalDT(eventInfo.date, startMin),
@@ -68,26 +79,19 @@ export function toCalEntry(
   }
 }
 
-/** Every sub-event as calendar entries, for the whole-day export. */
-export function toCalEntries(
-  events: SubEvent[],
-  eventInfo: EventInfo,
-  pointDurationMin: number,
-): CalEntry[] {
-  return events.map((e) => toCalEntry(e, eventInfo, pointDurationMin))
-}
-
 /**
- * A single entry spanning the whole event (start → end), for calendar
- * providers whose "add event" link can only represent one event (Google,
- * Outlook) — unlike the multi-VEVENT `.ics` export, which lists every
- * sub-event individually.
+ * A single entry spanning the whole event (start → end) — used by every
+ * calendar provider in the Hero's "add whole day" menu. Google's and
+ * Outlook's web deep links can only prefill one event each, so all three
+ * providers get this same single block instead of one being more detailed
+ * than the others; `siteUrl` (the programme page) is appended to the
+ * description so people can come back for the per-session schedule.
  */
-export function wholeDayCalEntry(eventInfo: EventInfo, strings: Strings): CalEntry {
+export function wholeDayCalEntry(eventInfo: EventInfo, strings: Strings, siteUrl: string): CalEntry {
   return {
     uid: 'whole-day@piknik-2026',
     title: String(strings.calendar.wholeDayTitle),
-    description: eventInfo.description,
+    description: withSiteLink(eventInfo.description, siteUrl),
     location: eventInfo.location.name || '',
     tzid: eventInfo.timezone,
     start: formatLocalDT(eventInfo.date, toMinutes(eventInfo.startTime)),
