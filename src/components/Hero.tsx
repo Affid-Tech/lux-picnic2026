@@ -1,4 +1,4 @@
-import type { EventInfo, Strings } from '../types'
+import type { EventInfo, EventOrganizer, Strings } from '../types'
 import { formatDateLong, formatWeekday } from '../lib/date'
 
 /**
@@ -10,13 +10,45 @@ export function Hero({
   event,
   strings,
   onAddWholeDay,
+  compact = false,
 }: {
   event: EventInfo
   strings: Strings
   onAddWholeDay: () => void
+  /** Day-of variant: a slim strip (name · date · where · calendar link) so the
+   *  live "Сейчас / Далее" block owns the top of the screen on the event date. */
+  compact?: boolean
 }) {
   const hasMap = Boolean(event.location.mapUrl)
-  const locationText = event.location.name || strings.hero.locationTbd
+
+  if (compact) {
+    return (
+      <header style={{ padding: 'var(--space-6) var(--gutter) var(--space-5)', background: 'var(--surface-page)' }}>
+        <p style={EYEBROW}>
+          {formatDateLong(event.date)} · {formatWeekday(event.date)}
+        </p>
+        <h1
+          style={{
+            margin: '0 0 var(--space-3)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 'var(--fw-bold)',
+            fontSize: 'var(--fs-title)',
+            lineHeight: 'var(--lh-snug)',
+            letterSpacing: 'var(--ls-display)',
+            color: 'var(--text-strong)',
+          }}
+        >
+          {event.name}
+        </h1>
+        <dl style={{ margin: 0 }}>
+          <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
+        </dl>
+        <button type="button" onClick={onAddWholeDay} style={COMPACT_CAL_BTN}>
+          {strings.hero.addWholeDay} ↓
+        </button>
+      </header>
+    )
+  }
 
   return (
     <header
@@ -25,17 +57,7 @@ export function Hero({
         background: 'var(--surface-page)',
       }}
     >
-      <p
-        style={{
-          margin: '0 0 var(--space-4)',
-          fontFamily: 'var(--font-body)',
-          fontWeight: 'var(--fw-semibold)',
-          fontSize: 'var(--fs-caption)',
-          letterSpacing: 'var(--ls-eyebrow)',
-          textTransform: 'uppercase',
-          color: 'var(--accent-text)',
-        }}
-      >
+      <p style={EYEBROW}>
         {formatDateLong(event.date)} · {formatWeekday(event.date)}
       </p>
 
@@ -72,23 +94,8 @@ export function Hero({
 
       <dl style={{ margin: '0 0 var(--space-5)' }}>
         <MetaRow label="Начало" value={event.startTime} />
-        <MetaRow
-          label="Где"
-          value={
-            hasMap ? (
-              <a
-                href={event.location.mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 'var(--fw-semibold)' }}
-              >
-                {locationText} · {strings.hero.openMap} ↗
-              </a>
-            ) : (
-              locationText
-            )
-          }
-        />
+        <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
+        {event.organizer ? <MetaRow label="Кто" value={organizerValue(event.organizer)} /> : null}
       </dl>
 
       <button
@@ -144,6 +151,27 @@ export function Hero({
   )
 }
 
+/** "Где" value — a map link when a URL is present, otherwise plain text. */
+function locationValue(event: EventInfo, strings: Strings, hasMap: boolean): React.ReactNode {
+  const text = event.location.name || strings.hero.locationTbd
+  if (!hasMap) return text
+  return (
+    <a href={event.location.mapUrl} target="_blank" rel="noopener noreferrer" style={HERO_LINK}>
+      {text} · {strings.hero.openMap} ↗
+    </a>
+  )
+}
+
+/** "Кто" value — the main organizer, linked to its site when available. */
+function organizerValue(organizer: EventOrganizer): React.ReactNode {
+  if (!organizer.url) return organizer.name
+  return (
+    <a href={organizer.url} target="_blank" rel="noopener noreferrer" style={HERO_LINK}>
+      {organizer.name} ↗
+    </a>
+  )
+}
+
 function HeroMedia({ event }: { event: EventInfo }) {
   const frame = {
     position: 'relative' as const,
@@ -193,6 +221,37 @@ function HeroMedia({ event }: { event: EventInfo }) {
       </span>
     </div>
   )
+}
+
+const EYEBROW = {
+  margin: '0 0 var(--space-4)',
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-caption)',
+  letterSpacing: 'var(--ls-eyebrow)',
+  textTransform: 'uppercase' as const,
+  color: 'var(--accent-text)',
+}
+
+const HERO_LINK = {
+  color: 'var(--accent-text)',
+  textDecoration: 'none',
+  fontWeight: 'var(--fw-semibold)' as const,
+}
+
+const COMPACT_CAL_BTN = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: 44,
+  marginTop: 'var(--space-4)',
+  padding: '0 2px',
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--accent-text)',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
 }
 
 function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {

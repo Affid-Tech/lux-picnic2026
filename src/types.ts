@@ -22,6 +22,12 @@ export interface BesedaTechCta {
   ctaUrl: string
 }
 
+/** The headline event's main organizer (distinct from per-event hosts). */
+export interface EventOrganizer {
+  name: string
+  url?: string
+}
+
 export interface EventInfo {
   name: string
   tagline: string
@@ -37,6 +43,8 @@ export interface EventInfo {
   heroCaption?: string
   description: string
   note?: string
+  /** Main organizer of the whole event (Monde des Arts). Optional for older data. */
+  organizer?: EventOrganizer
   besedatech: BesedaTechCta
 }
 

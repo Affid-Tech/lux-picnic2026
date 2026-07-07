@@ -13,16 +13,23 @@ export function Timeline({
   groups,
   strings,
   onOpen,
+  liveIds,
+  onJumpToNow,
 }: {
   events: SubEvent[]
   groups: Group[]
   strings: Strings
   onOpen: (id: string) => void
+  /** Ids of currently-running events (day-of only). */
+  liveIds?: Set<string>
+  /** Scroll the agenda to the first live row. Shown only when something is live. */
+  onJumpToNow?: () => void
 }) {
   const [filter, setFilter] = useState<FilterState>({ group: 'all', audience: 'all' })
 
   const audiences = useMemo(() => deriveAudienceBuckets(events), [events])
   const filtered = useMemo(() => filterEvents(events, filter), [events, filter])
+  const showJump = Boolean(onJumpToNow && liveIds && liveIds.size > 0)
 
   return (
     <section style={{ background: 'var(--surface-panel)' }}>
@@ -51,9 +58,40 @@ export function Timeline({
           onChange={setFilter}
           strings={strings}
         />
+        {showJump ? (
+          <button type="button" onClick={onJumpToNow} style={JUMP_BTN}>
+            <span aria-hidden style={JUMP_DOT} />
+            {strings.timeline.jumpToNow} ↓
+          </button>
+        ) : null}
       </div>
 
-      <Agenda events={filtered} groups={groups} strings={strings} onOpen={onOpen} />
+      <Agenda events={filtered} groups={groups} strings={strings} onOpen={onOpen} liveIds={liveIds} />
     </section>
   )
+}
+
+const JUMP_BTN = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
+  minHeight: 44,
+  padding: '0 14px',
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--accent-text)',
+  background: 'var(--surface-card)',
+  border: 'var(--border-sticker) solid var(--accent)',
+  borderRadius: 'var(--radius-pill)',
+  cursor: 'pointer',
+}
+
+const JUMP_DOT = {
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  background: 'var(--accent)',
+  flex: 'none' as const,
 }

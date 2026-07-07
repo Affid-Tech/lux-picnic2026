@@ -2,12 +2,15 @@ import { useMemo } from 'react'
 import { useData } from './data/useData'
 import { useHashRoute } from './lib/router'
 import { useNow } from './hooks/useNow'
+import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion'
 import { Hero } from './components/Hero'
 import { Timeline } from './components/Timeline'
 import { Partners } from './components/Partners'
 import { Footer } from './components/Footer'
 import { ActiveSheets } from './components/ActiveSheets'
 import { NowNextBanner } from './components/NowNextBanner'
+import { liveEvents } from './lib/nowNext'
+import { isSameLocalDate } from './lib/date'
 import { pointDuration, toCalEntries } from './lib/calendar'
 import { buildIcs } from './lib/ics'
 import { downloadTextFile } from './lib/download'
@@ -19,6 +22,7 @@ export function App() {
 
   const data = state.status === 'ready' ? state.data : null
   const now = useNow(data?.event.date ?? '')
+  const reduced = usePrefersReducedMotion()
   const groupById = useMemo(
     () => new Map((data?.groups ?? []).map((g) => [g.id, g])),
     [data],
@@ -27,6 +31,26 @@ export function App() {
     () => new Map((data?.partners ?? []).map((p) => [p.id, p])),
     [data],
   )
+
+  // Day-of state: which events are running right now (empty off-day). Drives the
+  // agenda's live markers, the jump-to-now control, and the compact hero.
+  const pointDurationMin = data ? pointDuration(data.strings) : 30
+  const liveNow = useMemo(
+    () => (data ? liveEvents(now, data.events, data.event.date, pointDurationMin) : []),
+    [data, now, pointDurationMin],
+  )
+  const liveIds = useMemo(() => new Set(liveNow.map((e) => e.id)), [liveNow])
+  const isEventDay = Boolean(data && isSameLocalDate(now, data.event.date))
+
+  // Scroll the agenda to the first live row (or the programme heading as a
+  // fallback), honouring reduced-motion. Shared by the banner's "+N ещё" and the
+  // sticky "что идёт сейчас" button.
+  const scrollToNow = () => {
+    const target =
+      (liveNow[0] && document.getElementById(`event-${liveNow[0].id}`)) ||
+      document.getElementById('programme')
+    target?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+  }
 
   if (state.status === 'loading') {
     return <StatusScreen text="Загружаем программу…" />
@@ -65,13 +89,21 @@ export function App() {
           now={now}
           events={events}
           dateIso={event.date}
-          pointDurationMin={pointDuration(strings)}
+          pointDurationMin={pointDurationMin}
           strings={strings}
           onOpen={openEvent}
+          onSeeAll={scrollToNow}
         />
-        <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} />
+        <Hero event={event} strings={strings} onAddWholeDay={handleAddWholeDay} compact={isEventDay} />
         <main id="programme" tabIndex={-1}>
-          <Timeline events={events} groups={groups} strings={strings} onOpen={openEvent} />
+          <Timeline
+            events={events}
+            groups={groups}
+            strings={strings}
+            onOpen={openEvent}
+            liveIds={liveIds}
+            onJumpToNow={scrollToNow}
+          />
           <Partners partners={partners} strings={strings} onOpen={openPartner} />
         </main>
         <Footer event={event} strings={strings} onCtaClick={() => track('cta_click')} />

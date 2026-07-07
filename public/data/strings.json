@@ -12,7 +12,8 @@
     "dismiss": "Скрыть",
     "betweenEvents": "Небольшой перерыв",
     "endedToday": "На сегодня всё — спасибо, что были с нами",
-    "notStarted": "Пикник ещё впереди"
+    "notStarted": "Пикник ещё впереди",
+    "moreSuffix": "ещё"
   },
   "timeline": {
     "skipToContent": "Перейти к программе",
@@ -21,6 +22,8 @@
     "filterGroupLabel": "Программа",
     "filterAudienceLabel": "Аудитория",
     "empty": "В этом фильтре пока нет событий",
+    "liveNow": "идёт сейчас",
+    "jumpToNow": "Что идёт сейчас",
     "pointShort": "точка",
     "eventsOne": "событие",
     "eventsFew": "события",
@@ -52,7 +55,8 @@
   },
   "footer": {
     "poweredBy": "Powered by BesedaTech",
-    "credit": "Организатор пикника · сообщество BesedaTech",
+    "organizerLabel": "Организатор",
+    "credit": "Страница · сообщество BesedaTech",
     "closing": "До встречи на поляне 🌿"
   },
   "calendar": {

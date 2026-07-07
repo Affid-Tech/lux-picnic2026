@@ -39,8 +39,17 @@ describe('NowNextBanner (static render with seed data)', () => {
     expect(html).toContain(`aria-label="${strings.nowNext.regionLabel}"`)
     expect(html).toContain(strings.nowNext.nowLabel)
     expect(html).toContain(strings.nowNext.nextLabel)
-    // "Мафия и настолки для взрослых" runs 14:00–19:00, so it is on now.
-    expect(html).toContain(escapeHtml('Мафия и настолки для взрослых'))
+    // A soonest-ending running event (ends 15:00) surfaces at the top of the list.
+    expect(html).toContain(escapeHtml('Музыкальный мастер-класс для детей 4–8 лет'))
+  })
+
+  it('caps the running list to 3 and collapses the rest into "+N ещё"', () => {
+    // 14:30 has 7 events running at once; only 3 are listed, the rest fold away.
+    const html = render(at(14, 30))
+    expect(html).toContain(strings.nowNext.moreSuffix)
+    // "Мафия и настолки для взрослых" (14:00–19:00) ends last, so it is in the
+    // overflow rather than the visible list.
+    expect(html).not.toContain(escapeHtml('Мафия и настолки для взрослых'))
   })
 
   it('before the first event shows the not-started copy', () => {

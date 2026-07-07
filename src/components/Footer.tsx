@@ -77,7 +77,10 @@ export function Footer({
           color: 'var(--text-on-inverse-muted)',
         }}
       >
-        {strings.footer.credit} · {new Date().getFullYear()}
+        {event.organizer
+          ? `${strings.footer.organizerLabel} · ${event.organizer.name}`
+          : strings.footer.credit}{' '}
+        · {new Date().getFullYear()}
       </p>
       <p
         style={{

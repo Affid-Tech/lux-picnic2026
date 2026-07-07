@@ -12,6 +12,9 @@ const DISMISS_KEY = 'piknik-nownext-dismissed'
  * otherwise). Dismissible, persisted for the session. No motion — nothing to
  * disable under reduced-motion.
  */
+/** Max live events listed before collapsing the rest into a "+N ещё" jump. */
+const MAX_LIVE = 3
+
 export function NowNextBanner({
   now,
   events,
@@ -19,6 +22,7 @@ export function NowNextBanner({
   pointDurationMin,
   strings,
   onOpen,
+  onSeeAll,
 }: {
   now: Date
   events: SubEvent[]
@@ -26,6 +30,8 @@ export function NowNextBanner({
   pointDurationMin: number
   strings: Strings
   onOpen: (id: string) => void
+  /** Jump to the live rows in the agenda (used by the "+N ещё" affordance). */
+  onSeeAll?: () => void
 }) {
   const [dismissed, setDismissed] = useState(
     () => typeof sessionStorage !== 'undefined' && sessionStorage.getItem(DISMISS_KEY) === '1',
@@ -46,7 +52,7 @@ export function NowNextBanner({
   return (
     <aside aria-label={s.regionLabel} style={BANNER}>
       <div style={{ flex: 1, minWidth: 0, display: 'grid', gap: 'var(--space-2)' }}>
-        <BannerBody state={state} strings={strings} onOpen={onOpen} />
+        <BannerBody state={state} strings={strings} onOpen={onOpen} onSeeAll={onSeeAll} />
       </div>
       <button type="button" onClick={dismiss} aria-label={s.dismiss} style={DISMISS_BTN}>
         <span aria-hidden>✕</span>
@@ -59,10 +65,12 @@ function BannerBody({
   state,
   strings,
   onOpen,
+  onSeeAll,
 }: {
   state: NowNext
   strings: Strings
   onOpen: (id: string) => void
+  onSeeAll?: () => void
 }) {
   const s = strings.nowNext
   if (state.phase === 'before') {
@@ -76,14 +84,21 @@ function BannerBody({
   if (state.phase === 'after') {
     return <Line label={s.nowLabel}>{s.endedToday}</Line>
   }
+  const shown = state.now.slice(0, MAX_LIVE)
+  const extra = state.now.length - shown.length
   return (
     <>
       <Line label={s.nowLabel}>
         {state.now.length > 0 ? (
-          <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-            {state.now.map((e, i) => (
-              <EventLink key={e.id} event={e} onOpen={onOpen} trailing={i < state.now.length - 1} />
+          <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 'var(--space-2)', alignItems: 'baseline' }}>
+            {shown.map((e, i) => (
+              <EventLink key={e.id} event={e} onOpen={onOpen} trailing={i < shown.length - 1 || extra > 0} />
             ))}
+            {extra > 0 ? (
+              <button type="button" onClick={onSeeAll} style={MORE_BTN}>
+                +{extra} {s.moreSuffix} ↓
+              </button>
+            ) : null}
           </span>
         ) : (
           s.betweenEvents
@@ -175,6 +190,18 @@ const LINK = {
   textDecoration: 'underline',
   textDecorationColor: 'var(--accent)',
   cursor: 'pointer',
+}
+
+const MORE_BTN = {
+  padding: 0,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--accent-text)',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap' as const,
 }
 
 const DISMISS_BTN = {

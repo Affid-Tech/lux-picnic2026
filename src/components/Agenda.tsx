@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { Group, Strings, SubEvent } from '../types'
 import { CategoryTag } from './CategoryTag'
 import { SectionHeading } from './SectionHeading'
-import { formatDuration, formatTimeRange, isPointEvent, sortEvents, toMinutes } from '../lib/time'
+import { formatDuration, isPointEvent, sortEvents, toMinutes } from '../lib/time'
 
 /**
  * Vertical agenda: a time rail on the left, category-tagged event rows on the
@@ -18,11 +18,14 @@ export function Agenda({
   groups,
   strings,
   onOpen,
+  liveIds,
 }: {
   events: SubEvent[]
   groups: Group[]
   strings: Strings
   onOpen: (id: string) => void
+  /** Ids of events running right now — rows in this set get an "идёт сейчас" marker. */
+  liveIds?: Set<string>
 }) {
   const groupById = useMemo(() => new Map(groups.map((g) => [g.id, g])), [groups])
   const ordered = useMemo(() => sortEvents(events, groups), [events, groups])
@@ -56,11 +59,14 @@ export function Agenda({
             const point = isPointEvent(e)
             const durMin = point ? null : toMinutes(e.end as string) - toMinutes(e.start)
             return (
-              <li key={e.id} id={`event-${e.id}`}>
+              // scrollMarginTop clears the sticky filter bar when jump-to-now lands here.
+              <li key={e.id} id={`event-${e.id}`} style={{ scrollMarginTop: 120 }}>
                 <AgendaRow
                   event={e}
                   group={group}
                   point={point}
+                  live={liveIds?.has(e.id) ?? false}
+                  liveLabel={t.liveNow}
                   durationLabel={durMin ? formatDuration(durMin) : strings.eventCard.pointEvent}
                   pointShort={t.pointShort}
                   onOpen={() => onOpen(e.id)}
@@ -72,6 +78,26 @@ export function Agenda({
       )}
     </div>
   )
+}
+
+const LIVE_PILL = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-semibold)' as const,
+  fontSize: 'var(--fs-caption)',
+  letterSpacing: 'var(--ls-label)',
+  textTransform: 'uppercase' as const,
+  color: 'var(--accent-text)',
+}
+
+const LIVE_DOT = {
+  width: 7,
+  height: 7,
+  borderRadius: '50%',
+  background: 'var(--accent)',
+  flex: 'none' as const,
 }
 
 /** Russian plural selector: (1) событие, (2–4) события, (5+) событий. */
@@ -87,6 +113,8 @@ function AgendaRow({
   event,
   group,
   point,
+  live,
+  liveLabel,
   durationLabel,
   pointShort,
   onOpen,
@@ -94,10 +122,16 @@ function AgendaRow({
   event: SubEvent
   group: Group | undefined
   point: boolean
+  live: boolean
+  liveLabel: string
   durationLabel: string
   pointShort: string
   onOpen: () => void
 }) {
+  // A live row gets the accent sticker outline; otherwise the hairline card
+  // border, with the group-coloured left edge kept for point events.
+  const baseBorder = 'var(--border-hairline) solid var(--border-card)'
+  const border = live ? 'var(--border-sticker) solid var(--accent)' : baseBorder
   return (
     <button
       type="button"
@@ -110,8 +144,8 @@ function AgendaRow({
         padding: 16,
         minHeight: 44,
         background: 'var(--surface-card)',
-        border: 'var(--border-hairline) solid var(--border-card)',
-        borderLeft: point ? `3px solid ${group?.color || 'var(--cat-general)'}` : 'var(--border-hairline) solid var(--border-card)',
+        border,
+        borderLeft: point && !live ? `3px solid ${group?.color || 'var(--cat-general)'}` : border,
         borderRadius: 'var(--radius-lg)',
         boxShadow: 'var(--shadow-card)',
         cursor: 'pointer',
@@ -146,9 +180,12 @@ function AgendaRow({
       <div style={{ flex: 1, minWidth: 0, borderLeft: '1px dashed var(--border-dashed)', paddingLeft: 14 }}>
         <div style={{ marginBottom: 8, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           {group ? <CategoryTag group={group} size="sm" /> : null}
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-mono)', color: 'var(--text-mono)' }}>
-            {formatTimeRange(event.start, event.end)}
-          </span>
+          {live ? (
+            <span style={LIVE_PILL}>
+              <span aria-hidden style={LIVE_DOT} />
+              {liveLabel}
+            </span>
+          ) : null}
         </div>
         <h3
           style={{

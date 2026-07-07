@@ -88,6 +88,9 @@ const EventSchema = z.object({
   heroCaption: z.string().optional(),
   description: z.string(),
   note: z.string().optional(),
+  organizer: z
+    .object({ name: z.string().min(1), url: urlOrEmpty.optional() })
+    .optional(),
   besedatech: z.object({
     ctaText: z.string(),
     ctaLabel: z.string(),
