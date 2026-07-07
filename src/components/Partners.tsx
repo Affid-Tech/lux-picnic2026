@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import type { Partner, Strings } from '../types'
 import { SectionHeading } from './SectionHeading'
+import { plural } from '../lib/plural'
 
 /**
  * Flat partners section — the sole surface for featured partners/sponsors
@@ -24,10 +25,13 @@ export function Partners({
   )
   if (partners.length === 0) return null
 
+  const t = strings.partners
+  const countLabel = `${partners.length} ${plural(partners.length, t.partnersOne, t.partnersFew, t.partnersMany)}`
+
   return (
     <section aria-label={strings.partners.title} style={{ padding: 'var(--space-7) 0', background: 'var(--surface-page)' }}>
       <div style={{ padding: '0 var(--gutter)' }}>
-        <SectionHeading meta={strings.partners.swipeHint}>{strings.partners.title}</SectionHeading>
+        <SectionHeading meta={countLabel}>{strings.partners.title}</SectionHeading>
         {strings.partners.subtitle ? (
           <p
             style={{
@@ -56,7 +60,7 @@ export function Partners({
       >
         {ordered.map((p) => (
           <li key={p.id} style={{ scrollSnapAlign: 'start', flex: 'none' }}>
-            <PartnerCard partner={p} moreLabel={strings.partners.more} onOpen={() => onOpen(p.id)} />
+            <PartnerCard partner={p} onOpen={() => onOpen(p.id)} />
           </li>
         ))}
       </ul>
@@ -66,11 +70,9 @@ export function Partners({
 
 function PartnerCard({
   partner,
-  moreLabel,
   onOpen,
 }: {
   partner: Partner
-  moreLabel: string
   onOpen: () => void
 }) {
   const featured = partner.featured
@@ -99,8 +101,6 @@ function PartnerCard({
         {partner.logo ? <div style={CARD_NAME}>{partner.name}</div> : null}
         <div style={CARD_CATEGORY}>{partner.category}</div>
       </div>
-
-      <span style={CARD_MORE}>{moreLabel} ›</span>
     </button>
   )
 }
@@ -123,46 +123,47 @@ const CARD_BORDER = 'var(--border-hairline) solid var(--border-card)'
 const CARD_BORDER_FEATURED = 'var(--border-sticker) solid var(--accent)'
 
 const LOGO_SLOT = {
-  height: 48,
+  minHeight: 48,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  background: 'var(--surface-panel)',
+  border: 'var(--border-hairline) solid var(--border-card)',
   borderRadius: 'var(--radius-sm)',
-  padding: '0 6px',
+  padding: 'var(--space-2) 6px',
+}
+
+const CLAMP_2_LINES = {
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical' as const,
+  overflow: 'hidden',
 }
 
 const WORDMARK = {
+  ...CLAMP_2_LINES,
   minWidth: 0,
   padding: '0 4px',
   fontFamily: 'var(--font-display)',
   fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-body-sm)',
+  fontSize: 'var(--fs-heading)',
+  letterSpacing: 'var(--ls-display)',
+  lineHeight: 'var(--lh-snug)',
   color: 'var(--accent-text)',
-  whiteSpace: 'nowrap' as const,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
   textAlign: 'center' as const,
 }
 
 const CARD_NAME = {
+  ...CLAMP_2_LINES,
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-semibold)',
   fontSize: 'var(--fs-body-sm)',
+  lineHeight: 'var(--lh-snug)',
   color: 'var(--text-strong)',
-  whiteSpace: 'nowrap' as const,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
 }
 
 const CARD_CATEGORY = {
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--fs-caption)',
   color: 'var(--text-muted)',
-}
-
-const CARD_MORE = {
-  marginTop: 'auto',
-  fontFamily: 'var(--font-body)',
-  fontSize: 'var(--fs-caption)',
-  color: 'var(--accent-text)',
 }

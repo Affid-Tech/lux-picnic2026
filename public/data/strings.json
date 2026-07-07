@@ -53,8 +53,9 @@
     "subtitle": "Те, благодаря кому пикник состоится",
     "relatedEvents": "События на пикнике",
     "visitSite": "Перейти на сайт",
-    "more": "Подробнее",
-    "swipeHint": "листай вбок →"
+    "partnersOne": "партнёр",
+    "partnersFew": "партнёра",
+    "partnersMany": "партнёров"
   },
   "footer": {
     "poweredBy": "Powered by BesedaTech",

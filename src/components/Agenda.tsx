@@ -3,6 +3,7 @@ import type { Group, Strings, SubEvent } from '../types'
 import { CategoryTag } from './CategoryTag'
 import { SectionHeading } from './SectionHeading'
 import { type Daypart, formatDuration, getDaypart, isPointEvent, sortEvents, toMinutes } from '../lib/time'
+import { plural } from '../lib/plural'
 
 const DAYPART_ORDER: Daypart[] = ['morning', 'day', 'evening']
 
@@ -161,15 +162,6 @@ const LIVE_DOT = {
   borderRadius: '50%',
   background: 'var(--accent)',
   flex: 'none' as const,
-}
-
-/** Russian plural selector: (1) событие, (2–4) события, (5+) событий. */
-function plural(n: number, one: string, few: string, many: string): string {
-  const mod10 = n % 10
-  const mod100 = n % 100
-  if (mod10 === 1 && mod100 !== 11) return one
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few
-  return many
 }
 
 function AgendaRow({
