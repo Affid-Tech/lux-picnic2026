@@ -27,7 +27,10 @@ export function Sheet({
 }) {
   const reduced = usePrefersReducedMotion()
   const panelRef = useRef<HTMLDivElement>(null)
-  const closeTimer = useRef<number>(null)
+  
+  // FIXED LINE 30: Use number | undefined initialized to undefined
+  const closeTimer = useRef<number | undefined>(undefined)
+  
   const closedRef = useRef(false)
   const [entered, setEntered] = useState(reduced)
   const [closing, setClosing] = useState(false)
@@ -46,7 +49,12 @@ export function Sheet({
   const finishClose = useCallback(() => {
     if (closedRef.current) return
     closedRef.current = true
-    window.clearTimeout(closeTimer.current)
+    
+    // FIXED LINE 49: Only clear if the timer is defined
+    if (closeTimer.current !== undefined) {
+      window.clearTimeout(closeTimer.current)
+    }
+    
     onClose()
   }, [onClose])
 
@@ -56,7 +64,12 @@ export function Sheet({
     closeTimer.current = window.setTimeout(finishClose, ENTER_MS + 40) // fallback if transitionend is missed
   }, [reduced, finishClose])
 
-  useEffect(() => () => window.clearTimeout(closeTimer.current), [])
+  // FIXED LINE 59: Only clear if the timer is defined
+  useEffect(() => () => {
+    if (closeTimer.current !== undefined) {
+      window.clearTimeout(closeTimer.current)
+    }
+  }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
