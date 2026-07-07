@@ -122,7 +122,6 @@ const LOGO_FRAME = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'var(--surface-panel)',
   borderRadius: 'var(--radius-sm)',
   padding: 4,
   overflow: 'hidden',
