@@ -13,6 +13,17 @@
   }
 }
 
+/* New elements authored class-first (no pre-existing inline value to
+   conflict with), so their mobile/tablet default lives here unconditionally
+   rather than as a var() fallback. */
+.pk-agenda-desc,
+.pk-agenda-who {
+  display: none;
+}
+.pk-nownext-wrap {
+  display: contents;
+}
+
 /* Desktop: drop the device frame entirely. The page background becomes the
    flat cream surface and content fills a wide fluid container instead of
    floating a phone-shaped card in a brown surround. */
@@ -33,6 +44,8 @@
     --hero-cta-w: auto;
     --hero-media-h: 380px;
     --hero-footnote-align: left;
+    --chip-row-dir: column;
+    --chip-row-overflow: visible;
   }
 
   #page-content > header,
@@ -59,4 +72,28 @@
 
   .pk-footer { display: flex; justify-content: space-between; gap: 56px; }
   .pk-footer-meta { text-align: right; }
+
+  /* Timeline: sticky top filter bar becomes a sticky left sidebar; same
+     FilterChips markup/state, just restyled via --chip-row-* below. */
+  .pk-timeline {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    column-gap: 40px;
+    align-items: start;
+  }
+  .pk-timeline-filters {
+    align-self: start;
+  }
+
+  /* Agenda gets room for the fuller description + lead organizer that
+     mobile skips in favour of the short summary. */
+  .pk-agenda-desc,
+  .pk-agenda-who {
+    display: block;
+  }
+
+  /* Day-of live tracking isn't a desktop use case — see App.tsx comment. */
+  .pk-nownext-wrap {
+    display: none;
+  }
 }

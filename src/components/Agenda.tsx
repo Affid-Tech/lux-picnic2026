@@ -55,7 +55,7 @@ export function Agenda({
   }
 
   return (
-    <div style={{ padding: 'var(--space-6) var(--gutter) var(--space-7)' }}>
+    <div className="pk-agenda" style={{ padding: 'var(--space-6) var(--gutter) var(--space-7)' }}>
       <SectionHeading meta={countLabel}>{strings.timeline.agendaTitle}</SectionHeading>
 
       {ordered.length === 0 ? (
@@ -83,6 +83,7 @@ export function Agenda({
               groupById={groupById}
               t={t}
               pointEventLabel={strings.eventCard.pointEvent}
+              organizersLabel={strings.eventCard.organizersTitle}
               liveIds={liveIds}
               onOpen={onOpen}
             />
@@ -98,6 +99,7 @@ function AgendaRowList({
   groupById,
   t,
   pointEventLabel,
+  organizersLabel,
   liveIds,
   onOpen,
 }: {
@@ -105,6 +107,7 @@ function AgendaRowList({
   groupById: Map<string, Group>
   t: Strings['timeline']
   pointEventLabel: string
+  organizersLabel: string
   liveIds?: Set<string>
   onOpen: (id: string) => void
 }) {
@@ -125,6 +128,7 @@ function AgendaRowList({
               liveLabel={t.liveNow}
               durationLabel={durMin ? formatDuration(durMin) : pointEventLabel}
               pointShort={t.pointShort}
+              organizersLabel={organizersLabel}
               onOpen={() => onOpen(e.id)}
             />
           </li>
@@ -172,6 +176,7 @@ function AgendaRow({
   liveLabel,
   durationLabel,
   pointShort,
+  organizersLabel,
   onOpen,
 }: {
   event: SubEvent
@@ -181,6 +186,7 @@ function AgendaRow({
   liveLabel: string
   durationLabel: string
   pointShort: string
+  organizersLabel: string
   onOpen: () => void
 }) {
   // A live row gets the accent sticker outline; otherwise the hairline card
@@ -266,7 +272,42 @@ function AgendaRow({
             {event.shortDescription}
           </p>
         ) : null}
+
+        {/* Desktop-only (see .pk-agenda-desc/.pk-agenda-who in desktop.css):
+            room for the full description and the lead organizer, which the
+            mobile row skips in favour of the short summary above. */}
+        {event.description ? (
+          <p className="pk-agenda-desc" style={AGENDA_DESC}>
+            {event.description}
+          </p>
+        ) : null}
+        {event.organizers[0] ? (
+          <p className="pk-agenda-who" style={AGENDA_WHO}>
+            <span style={AGENDA_WHO_LABEL}>{organizersLabel}</span> · {event.organizers[0].name}
+          </p>
+        ) : null}
       </div>
     </button>
   )
+}
+
+const AGENDA_DESC = {
+  margin: '6px 0 0',
+  fontFamily: 'var(--font-body)',
+  fontSize: 'var(--fs-body-sm)',
+  lineHeight: 'var(--lh-normal)',
+  color: 'var(--text-body)',
+}
+
+const AGENDA_WHO = {
+  margin: '6px 0 0',
+  fontFamily: 'var(--font-body)',
+  fontSize: 'var(--fs-caption)',
+  color: 'var(--text-muted)',
+}
+
+const AGENDA_WHO_LABEL = {
+  fontWeight: 'var(--fw-semibold)' as const,
+  letterSpacing: 'var(--ls-label)',
+  textTransform: 'uppercase' as const,
 }

@@ -28,9 +28,12 @@ export function Timeline({
   const filtered = useMemo(() => filterEvents(events, filter), [events, filter])
 
   return (
-    <section style={{ background: 'var(--surface-panel)' }}>
-      {/* Sticky filter bar. */}
+    <section className="pk-timeline" style={{ background: 'var(--surface-panel)' }}>
+      {/* Sticky filter bar (mobile/tablet) — becomes a sticky sidebar on
+          desktop via .pk-timeline's grid in desktop.css; same markup and
+          state either way, just restyled. */}
       <div
+        className="pk-timeline-filters"
         style={{
           position: 'sticky',
           top: 0,

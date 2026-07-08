@@ -88,11 +88,15 @@ function ChipRow({
       <div
         role="group"
         aria-label={ariaLabel}
+        className="pk-chip-row"
         style={{
           display: 'flex',
+          // Row of scrolling pills on mobile/tablet; desktop.css flips this
+          // to a stretched vertical list in the sidebar (see Timeline.tsx).
+          flexDirection: 'var(--chip-row-dir, row)' as CSSProperties['flexDirection'],
           minWidth: 0,
           gap: 'var(--space-1)',
-          overflowX: 'auto',
+          overflowX: 'var(--chip-row-overflow, auto)' as CSSProperties['overflowX'],
           paddingBottom: 2,
           scrollbarWidth: 'none',
         }}

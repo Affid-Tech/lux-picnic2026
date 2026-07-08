@@ -70,14 +70,20 @@ export function App() {
         <a className="pk-skip" href="#programme">
           {strings.timeline.skipToContent}
         </a>
-        <NowNextBanner
-          now={now}
-          events={events}
-          dateIso={event.date}
-          pointDurationMin={pointDurationMin}
-          strings={strings}
-          onSeeAll={scrollToNow}
-        />
+        {/* Day-of live tracking isn't a desktop use case (nobody's checking
+            "what's on now" from a laptop at the picnic) — hidden >=1024px,
+            see .pk-nownext-wrap in desktop.css. The component itself still
+            computes normally; only its visibility changes. */}
+        <div className="pk-nownext-wrap">
+          <NowNextBanner
+            now={now}
+            events={events}
+            dateIso={event.date}
+            pointDurationMin={pointDurationMin}
+            strings={strings}
+            onSeeAll={scrollToNow}
+          />
+        </div>
         <Hero
           event={event}
           strings={strings}
