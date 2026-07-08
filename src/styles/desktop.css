@@ -1,0 +1,35 @@
+/* Tablet & desktop layout.
+
+   Mobile (<640px) is untouched — this file only widens things past that
+   point. Loaded after global.css (see main.tsx) so these rules win the
+   cascade on the same selectors (body, #root, header/footer corners)
+   through source order alone, without extra specificity or !important. */
+
+/* Tablet: the phone-width column grows, but keeps the device-frame look
+   from global.css's existing >=500px block (surround, rounded corners). */
+@media (min-width: 640px) {
+  #root {
+    max-width: min(760px, 94vw);
+  }
+}
+
+/* Desktop: drop the device frame entirely. The page background becomes the
+   flat cream surface and content fills a wide fluid container instead of
+   floating a phone-shaped card in a brown surround. */
+@media (min-width: 1024px) {
+  body {
+    background: var(--surface-page);
+    padding: 0;
+  }
+
+  #root {
+    max-width: 1280px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #page-content > header,
+  #page-content > footer {
+    border-radius: 0;
+  }
+}
