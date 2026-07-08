@@ -26,10 +26,37 @@
     max-width: 1280px;
     border-radius: 0;
     box-shadow: none;
+    /* Custom properties read by components' own inline styles (each
+       property is still declared inline as `var(--token, mobileValue)` at
+       its source — this file only swaps the token's value per breakpoint,
+       so there's no specificity fight with the inline style that owns it). */
+    --hero-cta-w: auto;
+    --hero-media-h: 380px;
+    --hero-footnote-align: left;
   }
 
   #page-content > header,
   #page-content > footer {
     border-radius: 0;
   }
+
+  /* Hero: text stays in DOM/reading order (see Hero.tsx comment) — both
+     text groups sit in column 1, the media spans both their rows in
+     column 2, so nothing needs reordering for this to also work on mobile
+     (where .pk-hero isn't a grid, so these placements are simply unused). */
+  .pk-hero {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    column-gap: 56px;
+    align-items: center;
+  }
+  .pk-hero-text-a { grid-column: 1; grid-row: 1; }
+  .pk-hero-media { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .pk-hero-text-b { grid-column: 1; grid-row: 2; }
+
+  .pk-hero-meta { display: flex; gap: 32px; }
+  .pk-hero-meta-row { flex-direction: column; }
+
+  .pk-footer { display: flex; justify-content: space-between; gap: 56px; }
+  .pk-footer-meta { text-align: right; }
 }

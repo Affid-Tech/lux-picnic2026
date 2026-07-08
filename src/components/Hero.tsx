@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { CalendarMethod } from '../lib/calendar'
 import type { EventInfo, EventOrganizer, Strings } from '../types'
 import { formatDateLong, formatWeekday } from '../lib/date'
@@ -27,84 +28,93 @@ export function Hero({
 
   return (
     <header
+      className="pk-hero"
       style={{
         padding: 'var(--space-8) var(--gutter) var(--space-7)',
         background: 'var(--surface-page)',
       }}
     >
-      <p style={EYEBROW}>
-        {formatDateLong(event.date)} · {formatWeekday(event.date)}
-      </p>
+      {/* Two DOM-order groups (not one) so mobile keeps today's stacking
+          order — text, then image, then meta/CTA — via plain block flow.
+          Desktop's grid (see desktop.css) places both text groups in
+          column 1 and the image spanning column 2, with no DOM reorder. */}
+      <div className="pk-hero-text-a">
+        <p style={EYEBROW}>
+          {formatDateLong(event.date)} · {formatWeekday(event.date)}
+        </p>
 
-      <h1
-        style={{
-          margin: '0 0 var(--space-3)',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 'var(--fw-bold)',
-          fontSize: 'var(--fs-hero)',
-          lineHeight: 'var(--lh-hero)',
-          letterSpacing: 'var(--ls-display)',
-          color: 'var(--text-strong)',
-        }}
-      >
-        {event.name}
-      </h1>
+        <h1
+          style={{
+            margin: '0 0 var(--space-3)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 'var(--fw-bold)',
+            fontSize: 'var(--fs-hero)',
+            lineHeight: 'var(--lh-hero)',
+            letterSpacing: 'var(--ls-display)',
+            color: 'var(--text-strong)',
+          }}
+        >
+          {event.name}
+        </h1>
 
-      {event.organizer ? <OrganizerByline organizer={event.organizer} strings={strings} /> : null}
+        {event.organizer ? <OrganizerByline organizer={event.organizer} strings={strings} /> : null}
 
-      <p
-        style={{
-          margin: '0 0 var(--space-5)',
-          fontFamily: 'var(--font-body)',
-          fontSize: 'var(--fs-body)',
-          lineHeight: 'var(--lh-normal)',
-          color: 'var(--text-body)',
-          maxWidth: '34ch',
-        }}
-      >
-        {event.tagline}
-      </p>
+        <p
+          style={{
+            margin: '0 0 var(--space-5)',
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--fs-body)',
+            lineHeight: 'var(--lh-normal)',
+            color: 'var(--text-body)',
+            maxWidth: '34ch',
+          }}
+        >
+          {event.tagline}
+        </p>
+      </div>
 
       {/* Hero media — real photo in a rounded frame, or the diagonal-stripe
           placeholder with a mono caption chip until one is supplied. */}
       <HeroMedia event={event} />
 
-      <dl style={{ margin: '0 0 var(--space-5)' }}>
-        <MetaRow label="Начало" value={event.startTime} />
-        <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
-      </dl>
+      <div className="pk-hero-text-b">
+        <dl className="pk-hero-meta" style={{ margin: '0 0 var(--space-5)' }}>
+          <MetaRow label="Начало" value={event.startTime} />
+          <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
+        </dl>
 
-      <WholeDayCalendarMenu event={event} strings={strings} onCalendarAdd={onCalendarAdd} />
+        <WholeDayCalendarMenu event={event} strings={strings} onCalendarAdd={onCalendarAdd} />
 
-      {event.note ? (
-        <p
-          style={{
-            margin: 'var(--space-3) 0 0',
-            textAlign: 'center',
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--fs-body-sm)',
-            color: 'var(--text-muted)',
-          }}
-        >
-          {event.note}
-        </p>
-      ) : null}
+        {event.note ? (
+          <p
+            style={{
+              margin: 'var(--space-3) 0 0',
+              textAlign: 'var(--hero-footnote-align, center)' as CSSProperties['textAlign'],
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--fs-body-sm)',
+              color: 'var(--text-muted)',
+            }}
+          >
+            {event.note}
+          </p>
+        ) : null}
 
-      {strings.hero.scrollHint ? (
-        <p
-          style={{
-            margin: 'var(--space-4) 0 0',
-            textAlign: 'center',
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--fs-caption)',
-            letterSpacing: 'var(--ls-label)',
-            textTransform: 'uppercase',
-            color: 'var(--text-muted)',
-          }}
-        >
-          {strings.hero.scrollHint}
-        </p>
-      ) : null}
+        {strings.hero.scrollHint ? (
+          <p
+            style={{
+              margin: 'var(--space-4) 0 0',
+              textAlign: 'var(--hero-footnote-align, center)' as CSSProperties['textAlign'],
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--fs-caption)',
+              letterSpacing: 'var(--ls-label)',
+              textTransform: 'uppercase',
+              color: 'var(--text-muted)',
+            }}
+          >
+            {strings.hero.scrollHint}
+          </p>
+        ) : null}
+      </div>
     </header>
   )
 }
@@ -205,7 +215,7 @@ function WholeDayCalendarMenu({
 function HeroMedia({ event }: { event: EventInfo }) {
   const frame = {
     position: 'relative' as const,
-    height: 180,
+    height: 'var(--hero-media-h, 180px)',
     borderRadius: 'var(--radius-xl)',
     overflow: 'hidden',
     marginBottom: 'var(--space-6)',
@@ -214,7 +224,7 @@ function HeroMedia({ event }: { event: EventInfo }) {
 
   if (event.heroImage) {
     return (
-      <div style={frame}>
+      <div className="pk-hero-media" style={frame}>
         <img
           src={event.heroImage}
           alt={event.name}
@@ -227,6 +237,7 @@ function HeroMedia({ event }: { event: EventInfo }) {
 
   return (
     <div
+      className="pk-hero-media"
       style={{
         ...frame,
         background:
@@ -273,7 +284,7 @@ const PRIMARY_CAL_BTN = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center' as const,
-  width: '100%',
+  width: 'var(--hero-cta-w, 100%)',
   minHeight: 48,
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-bold)' as const,
@@ -288,7 +299,7 @@ const PRIMARY_CAL_BTN = {
 
 function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', gap: 'var(--space-3)', padding: '6px 0' }}>
+    <div className="pk-hero-meta-row" style={{ display: 'flex', gap: 'var(--space-3)', padding: '6px 0' }}>
       <dt
         style={{
           flex: 'none',
