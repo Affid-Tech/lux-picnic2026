@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Partner, Strings } from '../types'
 import { SectionHeading } from './SectionHeading'
 import { plural } from '../lib/plural'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 
 /**
  * Flat partners section — the sole surface for partners/sponsors
@@ -20,6 +21,13 @@ export function Partners({
   onOpen: (id: string) => void
 }) {
   const [expanded, setExpanded] = useState(false)
+  // Desktop always shows every partner in the full grid — swipe/toggle is a
+  // narrow-viewport affordance that has nothing to do once there's room for
+  // all of them at once (see .pk-partners-list's auto-fill grid: it already
+  // widens to more columns on its own, no desktop-specific column count
+  // needed here).
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  const showGrid = expanded || isDesktop
 
   if (partners.length === 0) return null
 
@@ -33,9 +41,11 @@ export function Partners({
           meta={
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)' }}>
               {countLabel}
-              <button type="button" onClick={() => setExpanded((v) => !v)} style={TOGGLE_BTN}>
-                {expanded ? t.showLess : t.showAll}
-              </button>
+              {isDesktop ? null : (
+                <button type="button" onClick={() => setExpanded((v) => !v)} style={TOGGLE_BTN}>
+                  {expanded ? t.showLess : t.showAll}
+                </button>
+              )}
             </span>
           }
         >
@@ -55,9 +65,9 @@ export function Partners({
         ) : null}
       </div>
 
-      <ul style={expanded ? GRID_LIST : ROW_LIST}>
+      <ul style={showGrid ? GRID_LIST : ROW_LIST}>
         {partners.map((p) => (
-          <li key={p.id} style={expanded ? undefined : ROW_ITEM}>
+          <li key={p.id} style={showGrid ? undefined : ROW_ITEM}>
             <PartnerCard partner={p} onOpen={() => onOpen(p.id)} />
           </li>
         ))}
