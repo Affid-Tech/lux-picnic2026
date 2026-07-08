@@ -43,7 +43,9 @@
     "url": "https://luxeureka.lu",
     "description": "Научно-популярные лекции и разговоры.",
     "relatedEventIds": [
-      "parenting-sociology"
+      "parenting-sociology",
+      "ai-algorithms",
+      "ai-human"
     ]
   },
   {

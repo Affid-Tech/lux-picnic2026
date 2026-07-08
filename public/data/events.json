@@ -147,7 +147,7 @@
     "organizers": [
       { "name": "Олег Грешнев", "type": "person", "role": "AI архитектор" }
     ],
-    "partnerIds": [],
+    "partnerIds": ["luxeureka"],
     "tags": ["AI"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },
@@ -164,7 +164,7 @@
     "organizers": [
       { "name": "Олег Грешнев", "type": "person", "role": "AI архитектор" }
     ],
-    "partnerIds": [],
+    "partnerIds": ["luxeureka"],
     "tags": ["AI"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },
