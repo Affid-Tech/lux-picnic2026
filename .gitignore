@@ -19,3 +19,10 @@ pnpm-debug.log*
 
 # Windows/WSL zone identifiers
 *:Zone.Identifier
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
