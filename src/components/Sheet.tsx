@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useFocusTrap } from '../hooks/useFocusTrap'
 import { useScrollLock } from '../hooks/useScrollLock'
@@ -6,9 +6,12 @@ import { useScrollLock } from '../hooks/useScrollLock'
 const ENTER_MS = 240
 
 /**
- * Accessible bottom-sheet modal shell. Provides the dialog semantics, focus
- * trap, scroll lock, Esc / backdrop-tap dismissal and a slide-in/out animation
- * that collapses to an instant swap under `prefers-reduced-motion`.
+ * Accessible modal shell — a bottom sheet on mobile/tablet, a centered
+ * dialog on desktop (>=1024px, see the --sheet-* custom properties in
+ * desktop.css). Same dialog semantics, focus trap, scroll lock and Esc /
+ * backdrop-tap dismissal either way; only the CSS entry animation and
+ * panel shape differ (slide-up-from-bottom vs. fade/scale-in centered),
+ * both collapsing to an instant swap under `prefers-reduced-motion`.
  *
  * No translucent scrim (the design bans transparency): the opaque panel lifts
  * off the page with the soft screen shadow, and the uncovered strip above it is
@@ -94,18 +97,22 @@ export function Sheet({
         aria-labelledby={labelledById}
         tabIndex={-1}
         onTransitionEnd={(e) => {
-          if (closing && e.propertyName === 'transform') finishClose()
+          if (closing && (e.propertyName === 'transform' || e.propertyName === 'opacity')) finishClose()
         }}
         style={{
           ...PANEL,
-          transform: hidden ? 'translateY(100%)' : 'translateY(0)',
-          transition: reduced ? undefined : `transform ${ENTER_MS}ms ease`,
+          transform: hidden
+            ? ('var(--sheet-transform-hidden, translateY(100%))' as CSSProperties['transform'])
+            : ('var(--sheet-transform-shown, translateY(0))' as CSSProperties['transform']),
+          opacity: hidden ? 'var(--sheet-opacity-hidden, 1)' : 1,
+          transition: reduced ? undefined : `transform ${ENTER_MS}ms ease, opacity ${ENTER_MS}ms ease`,
         }}
       >
         <div style={HEADER}>
           {/* Grabber: the conventional bottom-sheet affordance signalling this
-              panel is a dismissible sheet (decorative — Esc/backdrop/✕ dismiss). */}
-          <span aria-hidden style={GRABBER} />
+              panel is a dismissible sheet (decorative — Esc/backdrop/✕ dismiss).
+              Hidden on desktop, where the panel is a centered dialog instead. */}
+          <span aria-hidden className="pk-sheet-grabber" style={GRABBER} />
           <button type="button" aria-label={closeLabel} onClick={requestClose} style={CLOSE_BTN}>
             <span aria-hidden>✕</span>
           </button>
@@ -139,18 +146,24 @@ const OVERLAY = {
   inset: 0,
   zIndex: 100,
   display: 'flex',
-  alignItems: 'flex-end',
+  // Bottom-anchored sheet on mobile/tablet; desktop.css redefines this to
+  // 'center' for a centered dialog (>=1024px).
+  alignItems: 'var(--sheet-align, flex-end)' as CSSProperties['alignItems'],
   justifyContent: 'center',
 }
 
 const PANEL = {
   width: '100%',
-  maxWidth: 460,
+  maxWidth: 'var(--sheet-max-w, 460px)',
   maxHeight: '92vh',
   overflowY: 'auto' as const,
   background: 'var(--surface-page)',
   borderTopLeftRadius: 'var(--radius-xl)',
   borderTopRightRadius: 'var(--radius-xl)',
+  // Square on mobile/tablet (flush with the viewport bottom); desktop.css
+  // rounds these too once the panel is a free-floating centered dialog.
+  borderBottomLeftRadius: 'var(--sheet-radius-bottom, 0)',
+  borderBottomRightRadius: 'var(--sheet-radius-bottom, 0)',
   boxShadow: 'var(--shadow-screen)',
   WebkitOverflowScrolling: 'touch' as const,
 }

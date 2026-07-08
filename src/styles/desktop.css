@@ -46,6 +46,15 @@
     --hero-footnote-align: left;
     --chip-row-dir: column;
     --chip-row-overflow: visible;
+
+    /* Sheet: bottom sheet -> centered dialog. Same component/focus-trap,
+       only the entry animation and panel shape change (see Sheet.tsx). */
+    --sheet-align: center;
+    --sheet-max-w: 560px;
+    --sheet-radius-bottom: var(--radius-xl);
+    --sheet-transform-hidden: translateY(16px) scale(0.97);
+    --sheet-transform-shown: translateY(0) scale(1);
+    --sheet-opacity-hidden: 0;
   }
 
   #page-content > header,
@@ -94,6 +103,12 @@
 
   /* Day-of live tracking isn't a desktop use case — see App.tsx comment. */
   .pk-nownext-wrap {
+    display: none;
+  }
+
+  /* Bottom-sheet-only affordance, meaningless once the panel is a centered
+     dialog rather than edge-anchored. */
+  .pk-sheet-grabber {
     display: none;
   }
 }
