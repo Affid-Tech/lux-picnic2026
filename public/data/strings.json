@@ -29,7 +29,6 @@
     "eventsMany": "событий"
   },
   "eventCard": {
-    "organizersTitle": "Ведущие",
     "partnersTitle": "Партнёры события",
     "areaTitle": "Где",
     "addToCalendar": "Добавить в календарь",
@@ -42,10 +41,7 @@
     "dropIn": "Без записи — просто приходи",
     "audienceLabel": "Для кого",
     "close": "Закрыть",
-    "pointEvent": "Точечное событие",
-    "typePerson": "человек",
-    "typeCommunity": "сообщество",
-    "typeOrg": "организация"
+    "pointEvent": "Точечное событие"
   },
   "partners": {
     "title": "Партнёры и друзья пикника",

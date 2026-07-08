@@ -21,7 +21,7 @@ describe('Timeline (static render with seed data)', () => {
       <Timeline events={events} groups={groups} strings={strings} onOpen={noop} />,
     )
     expect(html).toContain(strings.timeline.agendaTitle)
-    expect(html).toContain('IT') // a group chip label from groups.json
+    expect(html).toContain('AI') // a group chip label from groups.json
     for (const e of events) expect(html).toContain(escapeHtml(e.title))
   })
 

@@ -116,7 +116,7 @@
       { "name": "Beseda", "type": "community", "role": "Хост секции" },
       { "name": "Армен", "type": "person", "role": "Координатор", "url": "https://t.me/EULawyer" }
     ],
-    "partnerIds": [],
+    "partnerIds": ["beseda"],
     "tags": ["AI"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },

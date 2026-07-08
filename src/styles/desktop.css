@@ -16,10 +16,6 @@
 /* New elements authored class-first (no pre-existing inline value to
    conflict with), so their mobile/tablet default lives here unconditionally
    rather than as a var() fallback. */
-.pk-agenda-desc,
-.pk-agenda-who {
-  display: none;
-}
 .pk-nownext-wrap {
   display: contents;
 }
@@ -31,10 +27,17 @@
   body {
     background: var(--surface-page);
     padding: 0;
+    /* The footer below breaks out to full viewport width via negative
+       vw-based margins; on platforms with non-overlay scrollbars that can
+       overshoot by a scrollbar's width, so clip rather than let it scroll. */
+    overflow-x: hidden;
   }
 
   #root {
     max-width: 1280px;
+    /* Read by .pk-footer-inner so its content column lines up with #root's
+       edges without hardcoding 1280px a second time. */
+    --content-max-w: 1280px;
     border-radius: 0;
     box-shadow: none;
     /* Custom properties read by components' own inline styles (each
@@ -79,7 +82,22 @@
   .pk-hero-meta { display: flex; gap: 32px; }
   .pk-hero-meta-row { flex-direction: column; }
 
-  .pk-footer { display: flex; justify-content: space-between; gap: 56px; }
+  /* Footer: break the dark band out to the full viewport width instead of
+     stopping at #root's 1280px edge — otherwise on very wide screens it
+     reads as a leftover boxed rectangle rather than an intentional footer.
+     .pk-footer-inner re-centers the actual content at the same 1280px
+     column and gutter as every other section. */
+  .pk-footer {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+  .pk-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 56px;
+    max-width: var(--content-max-w);
+    margin: 0 auto;
+  }
   .pk-footer-meta { text-align: right; }
 
   /* Timeline: sticky top filter bar becomes a sticky left sidebar; same
@@ -92,13 +110,6 @@
   }
   .pk-timeline-filters {
     align-self: start;
-  }
-
-  /* Agenda gets room for the fuller description + lead organizer that
-     mobile skips in favour of the short summary. */
-  .pk-agenda-desc,
-  .pk-agenda-who {
-    display: block;
   }
 
   /* Day-of live tracking isn't a desktop use case — see App.tsx comment. */

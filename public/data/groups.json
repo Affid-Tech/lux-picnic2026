@@ -1,6 +1,6 @@
 [
   { "id": "obshee", "label": "Общее",             "short": "Общее",   "color": "#888780", "order": 1 },
-  { "id": "it",     "label": "IT",                 "short": "IT",      "color": "#2A78D6", "order": 2 },
+  { "id": "it",     "label": "AI",                 "short": "AI",      "color": "#2A78D6", "order": 2 },
   { "id": "kids",   "label": "Детская программа",  "short": "Детская", "color": "#E0642A", "order": 3 },
   { "id": "games",  "label": "Игры",               "short": "Игры",    "color": "#6B62C0", "order": 4 }
 ]

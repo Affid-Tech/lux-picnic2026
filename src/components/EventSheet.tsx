@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react'
 import type { CalEntry, CalendarMethod } from '../lib/calendar'
-import type { Organizer, Partner, Signup, Strings, SubEvent, Group, EventInfo } from '../types'
+import type { Partner, Signup, Strings, SubEvent, Group, EventInfo } from '../types'
 import { Sheet } from './Sheet'
 import { CategoryTag } from './CategoryTag'
 import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
@@ -69,16 +69,6 @@ export function EventSheet({
       {event.area ? (
         <Section title={s.areaTitle}>
           <p style={{ ...BODY, margin: 0 }}>{event.area}</p>
-        </Section>
-      ) : null}
-
-      {event.organizers.length > 0 ? (
-        <Section title={s.organizersTitle}>
-          <List gap="var(--space-3)">
-            {event.organizers.map((o, i) => (
-              <OrganizerItem key={`${o.name}-${i}`} organizer={o} strings={strings} />
-            ))}
-          </List>
         </Section>
       ) : null}
 
@@ -185,23 +175,6 @@ function SignupCta({ signup, strings }: { signup: Signup; strings: Strings }) {
   )
 }
 
-function OrganizerItem({ organizer, strings }: { organizer: Organizer; strings: Strings }) {
-  const meta = [organizer.role, organizerTypeLabel(organizer.type, strings)].filter(Boolean).join(' · ')
-  return (
-    <li>
-      <div style={{ fontFamily: 'var(--font-body)', fontWeight: 'var(--fw-semibold)', color: 'var(--text-strong)' }}>
-        {organizer.name}
-      </div>
-      {meta ? <div style={{ ...META, marginTop: 2 }}>{meta}</div> : null}
-      {organizer.url ? (
-        <a href={organizer.url} target="_blank" rel="noopener noreferrer" style={LINK}>
-          {strings.partners.visitSite} ↗
-        </a>
-      ) : null}
-    </li>
-  )
-}
-
 function PartnerLink({
   partner,
   label,
@@ -237,15 +210,6 @@ function PartnerLink({
       {content}
     </div>
   )
-}
-
-function organizerTypeLabel(type: Organizer['type'], strings: Strings): string {
-  const map: Record<Organizer['type'], string> = {
-    person: strings.eventCard.typePerson,
-    community: strings.eventCard.typeCommunity,
-    org: strings.eventCard.typeOrg,
-  }
-  return map[type] ?? ''
 }
 
 const META = {
@@ -316,16 +280,6 @@ const PARTNER_ROW = {
   boxShadow: 'var(--shadow-card)',
   textDecoration: 'none',
   font: 'inherit',
-}
-
-const LINK = {
-  display: 'inline-block',
-  marginTop: 4,
-  fontFamily: 'var(--font-body)',
-  fontSize: 'var(--fs-body-sm)',
-  fontWeight: 'var(--fw-semibold)',
-  color: 'var(--accent-text)',
-  textDecoration: 'none',
 }
 
 const ACTION_SECONDARY = {

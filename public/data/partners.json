@@ -3,7 +3,7 @@
     "id": "lux-mafia",
     "name": "Lux Mafia",
     "logo": "/assets/partners/lux-mafia.png",
-    "category": "Игры",
+    "category": "Сообщество",
     "url": "https://t.me/lux_mafia",
     "description": "Мафия и настольные игры в Люксембурге.",
     "relatedEventIds": [
@@ -15,9 +15,9 @@
     "id": "letzroll",
     "name": "LetzRoll",
     "logo": "/assets/partners/letzroll.png",
-    "category": "Игры",
-    "url": "",
-    "description": "Настольные ролевые игры и D&D-сессии по возрастам.",
+    "category": "Сообщество",
+    "url": "https://t.me/letzroll_lu",
+    "description": "Настольные игры и D&D-сессии по возрастам.",
     "relatedEventIds": [
       "dnd-adults",
       "dnd-kids",
@@ -28,7 +28,7 @@
     "id": "chgk",
     "name": "Что? Где? Когда?",
     "logo": "/assets/partners/chgk.png",
-    "category": "Игры",
+    "category": "Сообщество",
     "url": "https://www.facebook.com/share/g/14hx72DWhfz/",
     "description": "Клуб интеллектуальных игр «Что? Где? Когда?».",
     "relatedEventIds": [
@@ -39,7 +39,7 @@
     "id": "luxeureka",
     "name": "LuxEureka",
     "logo": "/assets/partners/luxeureka.png",
-    "category": "Лекции",
+    "category": "Сообщество",
     "url": "https://luxeureka.lu",
     "description": "Научно-популярные лекции и разговоры.",
     "relatedEventIds": [
@@ -50,7 +50,7 @@
     "id": "monde-des-arts",
     "name": "Monde des Arts",
     "logo": "/assets/partners/monde-des-arts.png",
-    "category": "Искусство",
+    "category": "Школа",
     "url": "https://mondedesarts.lu/",
     "description": "Творческие и музыкальные занятия для детей.",
     "relatedEventIds": [
@@ -61,7 +61,7 @@
     "id": "educateme",
     "name": "Educateme",
     "logo": "/assets/partners/educateme.png",
-    "category": "Образование",
+    "category": "Школа",
     "url": "https://educateme.lu",
     "description": "Образовательные программы и занятия.",
     "relatedEventIds": []
@@ -70,9 +70,9 @@
     "id": "lux-photo-pro",
     "name": "Lux Photo Pro",
     "logo": "/assets/partners/lux-photo-pro.png",
-    "category": "Фото",
+    "category": "Фотостудия",
     "url": "https://luxphotopro.com",
-    "description": "Профессиональная фотосъёмка мероприятий.",
+    "description": "Профессиональная фотосъёмка.",
     "relatedEventIds": [
       "photo-zone-morning",
       "photo-zone-afternoon"
@@ -82,8 +82,8 @@
     "id": "storytime",
     "name": "Storytime",
     "logo": "/assets/partners/storytime.png",
-    "category": "Дети",
-    "url": "",
+    "category": "Книжный магазин",
+    "url": "https://storytime.lu/ru",
     "description": "Детские программы и чтения.",
     "relatedEventIds": []
   },
@@ -91,7 +91,7 @@
     "id": "maison-skazka",
     "name": "Maison Skazka",
     "logo": null,
-    "category": "Дети",
+    "category": "Книжный магазин",
     "url": "",
     "description": "Детский творческий дом «Сказка».",
     "relatedEventIds": []
@@ -110,7 +110,7 @@
     "name": "C'est Lux",
     "logo": null,
     "category": "Сообщество",
-    "url": "",
+    "url": "https://www.instagram.com/cest.lux/",
     "description": "Сообщество русскоязычного Люксембурга.",
     "relatedEventIds": []
   },
@@ -125,9 +125,9 @@
   },
   {
     "id": "yana-dodina",
-    "name": "Яна Додина · Литквартира",
+    "name": "Яна Додина",
     "logo": null,
-    "category": "Книги",
+    "category": "Литературные лекции",
     "url": "https://t.me/litkvartira",
     "description": "Книжный клуб и «Литквартира».",
     "relatedEventIds": [
@@ -138,36 +138,36 @@
     "id": "salon-shokolad",
     "name": "Салон Шоколад",
     "logo": null,
-    "category": "Еда",
-    "url": "",
-    "description": "Шоколад и сладкие радости.",
+    "category": "Салон красоты",
+    "url": "https://salonkee.lu/salon/studio-chocolat",
+    "description": "Бьюти услуги.",
     "relatedEventIds": []
   },
   {
     "id": "lawiscode",
     "name": "Lawiscode",
     "logo": "/assets/partners/lawiscode.png",
-    "category": "Юридические услуги",
+    "category": "Юридическая консультация",
     "url": "https://www.lawiscode.com",
     "description": "Юридические консультации по бизнесу, налогам и технологиям для стартапов.",
     "relatedEventIds": ["ai-startup-legal"]
   },
   {
     "id": "ekaterina-yoga",
-    "name": "Екатерина · йога",
+    "name": "Екатерина Йога",
     "logo": null,
-    "category": "Йога",
+    "category": "Тренер",
     "url": "https://t.me/EkaterinaGalea",
     "description": "Занятия йогой.",
     "relatedEventIds": []
   },
   {
     "id": "beseda",
-    "name": "Beseda · IT-сообщество Люксембурга",
+    "name": "Beseda",
     "logo": "/assets/partners/beseda.png",
-    "category": "Сообщество",
+    "category": "IT сообщество",
     "url": "https://t.me/besedaconf",
     "description": "Люксембургское русскоязычное IT-сообщество: тёплое и неформальное. «На ты с технологиями, и друг с другом».",
-    "relatedEventIds": []
+    "relatedEventIds": ["beseda-ai"]
   }
 ]
