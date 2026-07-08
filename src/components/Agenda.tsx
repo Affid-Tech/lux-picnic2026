@@ -164,6 +164,28 @@ const LIVE_DOT = {
   flex: 'none' as const,
 }
 
+const AUDIENCE_TAG = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  fontFamily: 'var(--font-body)',
+  fontWeight: 'var(--fw-medium)',
+  fontSize: '11px',
+  lineHeight: 1,
+  color: 'var(--text-muted)',
+  background: 'var(--surface-panel)',
+  border: 'var(--border-hairline) solid var(--border-card)',
+  padding: '5px 9px',
+  borderRadius: 'var(--radius-pill)',
+  whiteSpace: 'nowrap' as const,
+}
+
+const ORGANIZERS_ROW = {
+  margin: '6px 0 0',
+  fontFamily: 'var(--font-body)',
+  fontSize: 'var(--fs-body-sm)',
+  color: 'var(--text-muted)',
+}
+
 function AgendaRow({
   event,
   group,
@@ -235,6 +257,11 @@ function AgendaRow({
       <div style={{ flex: 1, minWidth: 0, borderLeft: '1px dashed var(--border-dashed)', paddingLeft: 14 }}>
         <div style={{ marginBottom: 8, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           {group ? <CategoryTag group={group} size="sm" /> : null}
+          {event.audience.map((a) => (
+            <span key={a} style={AUDIENCE_TAG}>
+              {a}
+            </span>
+          ))}
           {live ? (
             <span style={LIVE_PILL}>
               <span aria-hidden style={LIVE_DOT} />
@@ -265,6 +292,9 @@ function AgendaRow({
           >
             {event.shortDescription}
           </p>
+        ) : null}
+        {event.organizers.length > 0 ? (
+          <p style={ORGANIZERS_ROW}>{event.organizers.map((o) => o.name).join(' · ')}</p>
         ) : null}
       </div>
     </button>

@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react'
 import type { CalEntry, CalendarMethod } from '../lib/calendar'
-import type { Partner, Signup, Strings, SubEvent, Group, EventInfo } from '../types'
+import type { Organizer, Partner, Signup, Strings, SubEvent, Group, EventInfo } from '../types'
 import { Sheet } from './Sheet'
 import { CategoryTag } from './CategoryTag'
 import { CalendarMenu, type CalendarMenuItem } from './CalendarMenu'
@@ -69,6 +69,18 @@ export function EventSheet({
       {event.area ? (
         <Section title={s.areaTitle}>
           <p style={{ ...BODY, margin: 0 }}>{event.area}</p>
+        </Section>
+      ) : null}
+
+      {event.organizers.length > 0 ? (
+        <Section title={s.organizersTitle}>
+          <List gap="var(--space-2)">
+            {event.organizers.map((o, i) => (
+              <li key={`${o.name}-${i}`}>
+                <OrganizerRow organizer={o} />
+              </li>
+            ))}
+          </List>
         </Section>
       ) : null}
 
@@ -172,6 +184,26 @@ function SignupCta({ signup, strings }: { signup: Signup; strings: Strings }) {
         <p style={{ ...META, margin: 0 }}>{s.dropIn}</p>
       )}
     </div>
+  )
+}
+
+/** An event's organizer row — a link only when a url is supplied in the data. */
+function OrganizerRow({ organizer }: { organizer: Organizer }) {
+  const content = (
+    <>
+      <span style={{ fontFamily: 'var(--font-body)', fontWeight: 'var(--fw-semibold)', color: 'var(--text-strong)' }}>
+        {organizer.name}
+      </span>
+      {organizer.role ? <span style={{ ...META, marginLeft: 8 }}>{organizer.role}</span> : null}
+    </>
+  )
+  return organizer.url ? (
+    <a href={organizer.url} target="_blank" rel="noopener noreferrer" style={PARTNER_ROW}>
+      {content}
+      <span aria-hidden style={{ color: 'var(--accent)' }}>↗</span>
+    </a>
+  ) : (
+    <div style={PARTNER_ROW}>{content}</div>
   )
 }
 
