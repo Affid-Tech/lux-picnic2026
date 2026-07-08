@@ -73,10 +73,7 @@
     "category": "Фотостудия",
     "url": "https://luxphotopro.com",
     "description": "Профессиональная фотосъёмка.",
-    "relatedEventIds": [
-      "photo-zone-morning",
-      "photo-zone-afternoon"
-    ]
+    "relatedEventIds": []
   },
   {
     "id": "storytime",
@@ -85,7 +82,7 @@
     "category": "Книжный магазин",
     "url": "https://storytime.lu/ru",
     "description": "Детские программы и чтения.",
-    "relatedEventIds": []
+    "relatedEventIds": ["book-fair"]
   },
   {
     "id": "maison-skazka",
@@ -94,7 +91,7 @@
     "category": "Книжный магазин",
     "url": "",
     "description": "Детский творческий дом «Сказка».",
-    "relatedEventIds": []
+    "relatedEventIds": ["book-fair"]
   },
   {
     "id": "luxtoday",
@@ -129,10 +126,8 @@
     "logo": null,
     "category": "Литературные лекции",
     "url": "https://t.me/litkvartira",
-    "description": "Книжный клуб и «Литквартира».",
-    "relatedEventIds": [
-      "book-fair"
-    ]
+    "description": "",
+    "relatedEventIds": []
   },
   {
     "id": "salon-shokolad",

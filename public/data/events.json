@@ -12,7 +12,7 @@
     "organizers": [
       { "name": "Книжная ярмарка", "type": "org", "role": "Подрядчик ярмарки" }
     ],
-    "partnerIds": ["yana-dodina"],
+    "partnerIds": ["storytime", "maison-skazka"],
     "tags": ["Книги"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },
@@ -27,9 +27,9 @@
     "shortDescription": "Фотозона — утренняя сессия",
     "description": "Фотозона с фотографом. Приходи сделать тёплые кадры с семьёй и друзьями.",
     "organizers": [
-      { "name": "Оля", "type": "person", "role": "Фотограф" }
+      { "name": "Ольга Пашкевич", "type": "person", "role": "Фотограф", "url": "https://t.me/KLIO_2020" }
     ],
-    "partnerIds": ["lux-photo-pro"],
+    "partnerIds": [],
     "tags": ["Фото"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },
@@ -44,9 +44,9 @@
     "shortDescription": "Фотозона — дневная сессия",
     "description": "Фотозона с фотографом. Вторая сессия во второй половине дня.",
     "organizers": [
-      { "name": "Оля", "type": "person", "role": "Фотограф" }
+      { "name": "Ольга Пашкевич", "type": "person", "role": "Фотограф", "url": "https://t.me/KLIO_2020" }
     ],
-    "partnerIds": ["lux-photo-pro"],
+    "partnerIds": [],
     "tags": ["Фото"],
     "signup": { "mode": "none", "url": null, "capacity": null }
   },
@@ -248,7 +248,7 @@
     "end": "15:00",
     "area": "",
     "shortDescription": "Мафия для подростков",
-    "description": "Классическая «Мафия» для подростков. Ведёт Катя.",
+    "description": "«Мафия» для подростков. Ведёт Катя.",
     "organizers": [
       { "name": "Катя", "type": "person", "role": "Ведущая", "url": "https://t.me/katepred" }
     ],
@@ -282,7 +282,7 @@
     "end": "19:00",
     "area": "",
     "shortDescription": "Мафия и настольные игры",
-    "description": "Мафия и настольные игры для взрослых — заходи в любой момент, столы работают до вечера.",
+    "description": "Классическая «Мафия» и настольные игры для взрослых — заходи в любой момент, столы работают до вечера.",
     "organizers": [
       { "name": "Оксана", "type": "person", "role": "Ведущая", "url": "https://t.me/oxanaluxoxana" }
     ],
