@@ -1,27 +1,19 @@
-import { useState } from 'react'
 import type { Strings, SubEvent } from '../types'
-import { selectNowNext, type NowNext } from '../lib/nowNext'
-import { formatTimeRange } from '../lib/time'
-
-const DISMISS_KEY = 'piknik-nownext-dismissed'
+import { selectNowNext, liveEvents, type NowNextPhase } from '../lib/nowNext'
 
 /**
- * Day-of "Сейчас / Далее" banner. Pure presentational: given the client clock
- * (`now`, from useNow) it surfaces what's on now and what's next, each linking
- * to its card. Shows only on the event date (selectNowNext returns `off`
- * otherwise). Dismissible, persisted for the session. No motion — nothing to
- * disable under reduced-motion.
+ * Day-of status pill: names the earliest-started event currently running
+ * (+N for the rest), or a short phase message before/after the event. Tapping
+ * it scrolls to that event's row in the agenda. Sized to sit above the Hero
+ * without competing with it for space. Shows only on the event date
+ * (`selectNowNext` returns `off` otherwise).
  */
-/** Max live events listed before collapsing the rest into a "+N ещё" jump. */
-const MAX_LIVE = 3
-
 export function NowNextBanner({
   now,
   events,
   dateIso,
   pointDurationMin,
   strings,
-  onOpen,
   onSeeAll,
 }: {
   now: Date
@@ -29,192 +21,85 @@ export function NowNextBanner({
   dateIso: string
   pointDurationMin: number
   strings: Strings
-  onOpen: (id: string) => void
-  /** Jump to the live rows in the agenda (used by the "+N ещё" affordance). */
-  onSeeAll?: () => void
+  onSeeAll: () => void
 }) {
-  const [dismissed, setDismissed] = useState(
-    () => typeof sessionStorage !== 'undefined' && sessionStorage.getItem(DISMISS_KEY) === '1',
-  )
   const state = selectNowNext(now, events, dateIso, pointDurationMin)
-  if (state.phase === 'off' || dismissed) return null
-
-  const dismiss = () => {
-    try {
-      sessionStorage.setItem(DISMISS_KEY, '1')
-    } catch {
-      // Private mode etc. — dismissal just won't persist.
-    }
-    setDismissed(true)
-  }
+  if (state.phase === 'off') return null
 
   const s = strings.nowNext
+  // Earliest-started first (not selectNowNext's soonest-ending order) so the
+  // name shown here always matches the row `onSeeAll` scrolls to.
+  const live = state.phase === 'live' ? liveEvents(now, events, dateIso, pointDurationMin) : []
+  const { isLive, label } = pillContent(state.phase, live, s)
+
   return (
-    <aside aria-label={s.regionLabel} style={BANNER}>
-      <div style={{ flex: 1, minWidth: 0, display: 'grid', gap: 'var(--space-2)' }}>
-        <BannerBody state={state} strings={strings} onOpen={onOpen} onSeeAll={onSeeAll} />
-      </div>
-      <button type="button" onClick={dismiss} aria-label={s.dismiss} style={DISMISS_BTN}>
-        <span aria-hidden>✕</span>
+    <div style={WRAP}>
+      <button type="button" onClick={onSeeAll} aria-label={`${s.regionLabel}: ${label}`} style={PILL}>
+        <span
+          aria-hidden
+          style={{ ...DOT, background: isLive ? 'var(--accent)' : 'var(--text-muted)', opacity: isLive ? 1 : 0.55 }}
+        />
+        <span style={LABEL_TEXT}>{label}</span>
+        <span aria-hidden style={ARROW}>
+          ↓
+        </span>
       </button>
-    </aside>
+    </div>
   )
 }
 
-function BannerBody({
-  state,
-  strings,
-  onOpen,
-  onSeeAll,
-}: {
-  state: NowNext
-  strings: Strings
-  onOpen: (id: string) => void
-  onSeeAll?: () => void
-}) {
-  const s = strings.nowNext
-  if (state.phase === 'before') {
-    return (
-      <>
-        <Line label={s.nowLabel}>{s.notStarted}</Line>
-        {state.next ? <NextLine event={state.next} label={s.nextLabel} onOpen={onOpen} /> : null}
-      </>
-    )
-  }
-  if (state.phase === 'after') {
-    return <Line label={s.nowLabel}>{s.endedToday}</Line>
-  }
-  const shown = state.now.slice(0, MAX_LIVE)
-  const extra = state.now.length - shown.length
-  return (
-    <>
-      <Line label={s.nowLabel}>
-        {state.now.length > 0 ? (
-          <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 'var(--space-2)', alignItems: 'baseline' }}>
-            {shown.map((e, i) => (
-              <EventLink key={e.id} event={e} onOpen={onOpen} trailing={i < shown.length - 1 || extra > 0} />
-            ))}
-            {extra > 0 ? (
-              <button type="button" onClick={onSeeAll} style={MORE_BTN}>
-                +{extra} {s.moreSuffix} ↓
-              </button>
-            ) : null}
-          </span>
-        ) : (
-          s.betweenEvents
-        )}
-      </Line>
-      {state.next ? <NextLine event={state.next} label={s.nextLabel} onOpen={onOpen} /> : null}
-    </>
-  )
+function pillContent(
+  phase: Exclude<NowNextPhase, 'off'>,
+  live: SubEvent[],
+  s: Strings['nowNext'],
+): { isLive: boolean; label: string } {
+  if (phase === 'before') return { isLive: false, label: s.notStarted }
+  if (phase === 'after') return { isLive: false, label: s.endedToday }
+  if (live.length === 0) return { isLive: true, label: `${s.nowLabel}: ${s.betweenEvents}` }
+  const extra = live.length - 1
+  const names = extra > 0 ? `${live[0].title} +${extra} ${s.moreSuffix}` : live[0].title
+  return { isLive: true, label: `${s.nowLabel}: ${names}` }
 }
 
-function NextLine({
-  event,
-  label,
-  onOpen,
-}: {
-  event: SubEvent
-  label: string
-  onOpen: (id: string) => void
-}) {
-  return (
-    <Line label={label}>
-      <EventLink event={event} onOpen={onOpen} withTime />
-    </Line>
-  )
+const WRAP = {
+  padding: 'var(--space-4) var(--gutter) 0',
 }
 
-function Line({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <p style={{ margin: 0, display: 'flex', gap: 'var(--space-2)', alignItems: 'baseline' }}>
-      <span style={LABEL}>{label}</span>
-      <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--fs-body-sm)', color: 'var(--text-body)', minWidth: 0 }}>
-        {children}
-      </span>
-    </p>
-  )
-}
-
-function EventLink({
-  event,
-  onOpen,
-  withTime = false,
-  trailing = false,
-}: {
-  event: SubEvent
-  onOpen: (id: string) => void
-  withTime?: boolean
-  trailing?: boolean
-}) {
-  return (
-    <button type="button" onClick={() => onOpen(event.id)} style={LINK}>
-      {event.title}
-      {withTime ? <span style={{ color: 'var(--text-mono)' }}> · {formatTimeRange(event.start, event.end)}</span> : null}
-      {trailing ? <span aria-hidden style={{ color: 'var(--text-mono)' }}> ·</span> : null}
-    </button>
-  )
-}
-
-const BANNER = {
+const PILL = {
   display: 'flex',
-  gap: 'var(--space-3)',
-  alignItems: 'flex-start',
-  margin: 'var(--space-4) var(--gutter) 0',
-  padding: 'var(--space-3) var(--space-4)',
-  background: 'var(--surface-card)',
-  border: 'var(--border-sticker) solid var(--accent)',
-  borderRadius: 'var(--radius-lg)',
-  boxShadow: 'var(--shadow-card)',
-}
-
-const LABEL = {
-  flex: 'none',
-  fontFamily: 'var(--font-body)',
-  fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-caption)',
-  letterSpacing: 'var(--ls-label)',
-  textTransform: 'uppercase' as const,
-  color: 'var(--accent-text)',
-}
-
-const LINK = {
-  padding: 0,
-  fontFamily: 'var(--font-body)',
-  fontWeight: 'var(--fw-semibold)',
-  fontSize: 'var(--fs-body-sm)',
-  color: 'var(--text-strong)',
-  background: 'none',
-  border: 'none',
-  textAlign: 'left' as const,
-  textDecoration: 'underline',
-  textDecorationColor: 'var(--accent)',
-  cursor: 'pointer',
-}
-
-const MORE_BTN = {
-  padding: 0,
+  width: '100%',
+  alignItems: 'center',
+  gap: 8,
+  minHeight: 44,
+  padding: '0 14px',
   fontFamily: 'var(--font-body)',
   fontWeight: 'var(--fw-semibold)' as const,
   fontSize: 'var(--fs-body-sm)',
-  color: 'var(--accent-text)',
-  background: 'none',
-  border: 'none',
+  color: 'var(--text-strong)',
+  background: 'var(--surface-card)',
+  border: 'var(--border-sticker) solid var(--accent)',
+  borderRadius: 'var(--radius-pill)',
+  boxShadow: 'var(--shadow-card)',
   cursor: 'pointer',
-  whiteSpace: 'nowrap' as const,
 }
 
-const DISMISS_BTN = {
-  flex: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: 44,
-  height: 44,
-  margin: 'calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0 0',
-  fontSize: '15px',
-  color: 'var(--text-muted)',
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
+const DOT = {
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  flex: 'none' as const,
+}
+
+const LABEL_TEXT = {
+  flex: '1 1 auto',
+  minWidth: 0,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap' as const,
+  textAlign: 'left' as const,
+}
+
+const ARROW = {
+  flex: 'none' as const,
+  color: 'var(--accent-text)',
 }

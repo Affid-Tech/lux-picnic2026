@@ -10,7 +10,6 @@ import { Footer } from './components/Footer'
 import { ActiveSheets } from './components/ActiveSheets'
 import { NowNextBanner } from './components/NowNextBanner'
 import { liveEvents } from './lib/nowNext'
-import { isSameLocalDate } from './lib/date'
 import { pointDuration } from './lib/calendar'
 import { track } from './lib/analytics'
 
@@ -31,18 +30,16 @@ export function App() {
   )
 
   // Day-of state: which events are running right now (empty off-day). Drives the
-  // agenda's live markers, the jump-to-now control, and the compact hero.
+  // agenda's live markers, the jump-to-now control, and the "Сейчас / Далее" banner.
   const pointDurationMin = data ? pointDuration(data.strings) : 30
   const liveNow = useMemo(
     () => (data ? liveEvents(now, data.events, data.event.date, pointDurationMin) : []),
     [data, now, pointDurationMin],
   )
   const liveIds = useMemo(() => new Set(liveNow.map((e) => e.id)), [liveNow])
-  const isEventDay = Boolean(data && isSameLocalDate(now, data.event.date))
 
   // Scroll the agenda to the first live row (or the programme heading as a
-  // fallback), honouring reduced-motion. Shared by the banner's "+N ещё" and the
-  // sticky "что идёт сейчас" button.
+  // fallback), honouring reduced-motion. Used by the banner's "+N ещё" tap.
   const scrollToNow = () => {
     const target =
       (liveNow[0] && document.getElementById(`event-${liveNow[0].id}`)) ||
@@ -79,14 +76,12 @@ export function App() {
           dateIso={event.date}
           pointDurationMin={pointDurationMin}
           strings={strings}
-          onOpen={openEvent}
           onSeeAll={scrollToNow}
         />
         <Hero
           event={event}
           strings={strings}
           onCalendarAdd={(method) => track('calendar_add_whole_day', { method })}
-          compact={isEventDay}
         />
         <main id="programme" tabIndex={-1}>
           <Timeline
@@ -95,7 +90,6 @@ export function App() {
             strings={strings}
             onOpen={openEvent}
             liveIds={liveIds}
-            onJumpToNow={scrollToNow}
           />
           <Partners partners={partners} strings={strings} onOpen={openPartner} />
         </main>

@@ -18,48 +18,12 @@ export function Hero({
   event,
   strings,
   onCalendarAdd,
-  compact = false,
 }: {
   event: EventInfo
   strings: Strings
   onCalendarAdd?: (method: CalendarMethod) => void
-  /** Day-of variant: a slim strip (name · date · where · calendar link) so the
-   *  live "Сейчас / Далее" block owns the top of the screen on the event date. */
-  compact?: boolean
 }) {
   const hasMap = Boolean(event.location.mapUrl)
-
-  if (compact) {
-    return (
-      <header style={{ padding: 'var(--space-6) var(--gutter) var(--space-5)', background: 'var(--surface-page)' }}>
-        <p style={EYEBROW}>
-          {formatDateLong(event.date)} · {formatWeekday(event.date)}
-        </p>
-        <h1
-          style={{
-            margin: '0 0 var(--space-3)',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 'var(--fw-bold)',
-            fontSize: 'var(--fs-title)',
-            lineHeight: 'var(--lh-snug)',
-            letterSpacing: 'var(--ls-display)',
-            color: 'var(--text-strong)',
-          }}
-        >
-          {event.name}
-        </h1>
-        <dl style={{ margin: 0 }}>
-          <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
-        </dl>
-        <WholeDayCalendarMenu
-          event={event}
-          strings={strings}
-          onCalendarAdd={onCalendarAdd}
-          triggerStyle={COMPACT_CAL_BTN}
-        />
-      </header>
-    )
-  }
 
   return (
     <header
@@ -110,12 +74,7 @@ export function Hero({
         <MetaRow label="Где" value={locationValue(event, strings, hasMap)} />
       </dl>
 
-      <WholeDayCalendarMenu
-        event={event}
-        strings={strings}
-        onCalendarAdd={onCalendarAdd}
-        triggerStyle={PRIMARY_CAL_BTN}
-      />
+      <WholeDayCalendarMenu event={event} strings={strings} onCalendarAdd={onCalendarAdd} />
 
       {event.note ? (
         <p
@@ -194,8 +153,7 @@ function OrganizerByline({ organizer, strings }: { organizer: EventOrganizer; st
 }
 
 /**
- * The whole-day "Добавить в календарь" dropdown, shared by the compact and
- * full hero variants. Google's and Outlook's web deep links can only prefill
+ * The whole-day "Добавить в календарь" dropdown. Google's and Outlook's web deep links can only prefill
  * one event each, so all three providers add the same single entry spanning
  * the whole day — the per-session schedule lives on the site, linked from the
  * entry's description.
@@ -204,12 +162,10 @@ function WholeDayCalendarMenu({
   event,
   strings,
   onCalendarAdd,
-  triggerStyle,
 }: {
   event: EventInfo
   strings: Strings
   onCalendarAdd?: (method: CalendarMethod) => void
-  triggerStyle: React.CSSProperties
 }) {
   const wholeDayEntry = wholeDayCalEntry(event, strings, absoluteRouteUrl({ name: 'home' }))
   const items: CalendarMenuItem[] = [
@@ -238,7 +194,7 @@ function WholeDayCalendarMenu({
   return (
     <CalendarMenu
       triggerLabel={strings.hero.addWholeDay}
-      triggerStyle={triggerStyle}
+      triggerStyle={PRIMARY_CAL_BTN}
       menuLabel={strings.eventCard.calendarMenuLabel}
       hint={strings.eventCard.calendarWholeDayHint}
       items={items}
@@ -311,21 +267,6 @@ const HERO_LINK = {
   color: 'var(--accent-text)',
   textDecoration: 'none',
   fontWeight: 'var(--fw-semibold)' as const,
-}
-
-const COMPACT_CAL_BTN = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: 44,
-  marginTop: 'var(--space-4)',
-  padding: '0 2px',
-  fontFamily: 'var(--font-body)',
-  fontWeight: 'var(--fw-semibold)' as const,
-  fontSize: 'var(--fs-body-sm)',
-  color: 'var(--accent-text)',
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
 }
 
 const PRIMARY_CAL_BTN = {

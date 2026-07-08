@@ -8,8 +8,6 @@
   "nowNext": {
     "regionLabel": "Что сейчас на пикнике",
     "nowLabel": "Сейчас",
-    "nextLabel": "Далее",
-    "dismiss": "Скрыть",
     "betweenEvents": "Небольшой перерыв",
     "endedToday": "На сегодня всё — спасибо, что были с нами",
     "notStarted": "Пикник ещё впереди",
@@ -22,7 +20,6 @@
     "filterAudienceLabel": "Аудитория",
     "empty": "В этом фильтре пока нет событий",
     "liveNow": "идёт сейчас",
-    "jumpToNow": "Что идёт сейчас",
     "pointShort": "точка",
     "daypartMorning": "Утро",
     "daypartDay": "День",

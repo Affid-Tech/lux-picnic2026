@@ -20,7 +20,7 @@ function render(now: Date): string {
       dateIso={event.date}
       pointDurationMin={30}
       strings={strings}
-      onOpen={noop}
+      onSeeAll={noop}
     />,
   )
 }
@@ -33,23 +33,13 @@ describe('NowNextBanner (static render with seed data)', () => {
     expect(render(new Date(2026, 6, 11, 14, 0))).toBe('')
   })
 
-  it('during the day shows the Сейчас/Далее labels and a running event', () => {
+  it('during the day names the earliest-started running event as a single button', () => {
     const html = render(at(14, 30))
-    expect(html).toContain('<aside') // complementary landmark
-    expect(html).toContain(`aria-label="${strings.nowNext.regionLabel}"`)
-    expect(html).toContain(strings.nowNext.nowLabel)
-    expect(html).toContain(strings.nowNext.nextLabel)
-    // A soonest-ending running event (ends 15:00) surfaces at the top of the list.
-    expect(html).toContain(escapeHtml('Мафия для подростков'))
-  })
-
-  it('caps the running list to 3 and collapses the rest into "+N ещё"', () => {
-    // 14:30 has 7 events running at once; only 3 are listed, the rest fold away.
-    const html = render(at(14, 30))
+    expect(html).toContain('<button')
+    // 8 events overlap at 14:30; "Книжная ярмарка" (10:00-18:00) started earliest.
+    expect(html).toContain(escapeHtml('Книжная ярмарка'))
+    expect(html).toContain('+7')
     expect(html).toContain(strings.nowNext.moreSuffix)
-    // "Мафия и настолки для взрослых" (14:00–19:00) ends last, so it is in the
-    // overflow rather than the visible list.
-    expect(html).not.toContain(escapeHtml('Мафия и настолки для взрослых'))
   })
 
   it('before the first event shows the not-started copy', () => {
