@@ -129,7 +129,7 @@
     "shortDescription": "Юридические требования ЕС для AI-стартапов",
     "description": "Доклад о том, какие требования законодательства ЕС нужно учитывать, запуская AI-стартап.",
     "organizers": [
-      { "name": "Армен Степанян", "type": "person", "role": "Спикер", "url": "https://t.me/EULawyer" }
+      { "name": "Армен Степанян", "type": "person", "role": "Спикер" }
     ],
     "partnerIds": ["lawiscode"],
     "tags": ["AI", "Право"],
