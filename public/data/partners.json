@@ -167,5 +167,14 @@
     "url": "https://beseda.lu",
     "description": "Люксембургское русскоязычное IT-сообщество: тёплое и неформальное. «На ты с технологиями, и друг с другом».",
     "relatedEventIds": ["beseda-ai"]
+  },
+  {
+    "id": "the-little-gym",
+    "name": "The Little Gym",
+    "logo": "/assets/partners/the-little-gym.png",
+    "category": "Детский спортивный клуб",
+    "url": "https://esch.thelittlegym.eu/",
+    "description": "Спортивный досуг и развлечения для детей.",
+    "relatedEventIds": []
   }
 ]
